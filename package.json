@@ -1,13 +1,14 @@
 {
   "name": "react-native-job-queue",
   "title": "React Native Job Queue",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "TODO",
   "react-native": "src/index.ts",
   "types": "lib/typescript/src/index.d.ts",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
   "scripts": {
+    "start": "react-native start",
     "validate:eslint": "eslint \"src/**/*.{js,ts,tsx}\" \"example/**/*.{js,ts,tsx}\"",
     "validate:typescript": "tsc --project ./ --noEmit",
     "prepare": "bob build"
@@ -35,15 +36,13 @@
     "@react-native-community/bob": "^0.6.1",
     "@react-native-community/eslint-config": "0.0.5",
     "@types/react-native": "^0.60.3",
-    "@typescript-eslint/eslint-plugin": "^1.13.0",
-    "@typescript-eslint/parser": "^1.13.0",
-    "eslint": "^6.1.0",
-    "eslint-config-prettier": "^6.0.0",
-    "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.8.0",
     "prettier": "^1.18.2",
-    "react": "^16.5.0",
-    "react-native": "^0.59.4",
+    "react": "16.8.0",
+    "react-native": "0.60.4",
+    "tslint": "^5.18.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^4.0.0",
     "typescript": "^3.5.3"
   },
   "@react-native-community/bob": {
