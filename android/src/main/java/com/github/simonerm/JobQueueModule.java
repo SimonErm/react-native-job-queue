@@ -1,9 +1,11 @@
 package com.github.simonerm;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReadableMap;
 
 public class JobQueueModule extends ReactContextBaseJavaModule {
 
@@ -20,8 +22,13 @@ public class JobQueueModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sampleMethod(String stringArgument, int numberArgument, Callback callback) {
-        // TODO: Implement some actually useful functionality
-        callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
+    public void addJob(ReadableMap job, Promise promise) {
+
     }
+
+    @ReactMethod
+    public void getJobById(String id, Promise promise) {
+
+    }
+
 }
