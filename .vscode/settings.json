@@ -1,0 +1,8 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.tslint": true
+  },
+  "typescriptHero.imports.organizeOnSave": true,
+  "javascript.format.enable": false
+}
