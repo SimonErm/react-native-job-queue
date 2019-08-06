@@ -1,22 +1,27 @@
 {
-    "include": [
-        "src/**/*.ts",
-        "example/**/*.ts",
-        "example/**/*.tsx"
-    ],
-    "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
-        "strict": true,
-        "moduleResolution": "node",
-        "lib": [
-            "es2015",
-            "es2016",
-            "esnext"
-        ],
-        "jsx": "react-native"
-    },
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "target": "es2017",
+    "module": "commonjs",
+    "lib": ["es2017"],
+    "jsx": "react-native",
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./lib",
+    "removeComments": true,
+    "noEmit": false,
+    "strict": true,
+    "noImplicitAny": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "types": ["react-native", "react", "jest"],
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "inlineSources": true,
+    "declarationMap": true
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules", "babel.config.js"]
 }
