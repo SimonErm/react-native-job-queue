@@ -53,5 +53,9 @@
       "module",
       "typescript"
     ]
+  },
+  "dependencies": {
+    "promise-reflect": "1.1.0",
+    "react-native-uuid": "1.4.9"
   }
 }
