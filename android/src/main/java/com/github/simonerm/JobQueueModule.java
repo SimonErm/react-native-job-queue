@@ -7,6 +7,9 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReadableMap;
 
+import java.util.Iterator;
+import java.util.List;
+
 public class JobQueueModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
@@ -22,13 +25,39 @@ public class JobQueueModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void addJob(ReadableMap job, Promise promise) {
+    public void addJob(ReadableMap job) {
+        JobDao dao = JobDatabase.getAppDatabase(this.reactContext).jobDao();
+        dao.insert(ConversionHelper.getJobFromReadableMap(job));
+    }
 
+    @ReactMethod
+    public void updateJob(ReadableMap job) {
+        JobDao dao = JobDatabase.getAppDatabase(this.reactContext).jobDao();
+        dao.update(ConversionHelper.getJobFromReadableMap(job));
+    }
+
+    @ReactMethod
+    public void removeJob(ReadableMap job) {
+        JobDao dao = JobDatabase.getAppDatabase(this.reactContext).jobDao();
+        dao.delete(ConversionHelper.getJobFromReadableMap(job));
     }
 
     @ReactMethod
     public void getJobById(String id, Promise promise) {
 
+    }
+
+    @ReactMethod
+    public void getJobsToExecute(Promise promise) {
+        JobDao dao = JobDatabase.getAppDatabase(this.reactContext).jobDao();
+        List<Job> jobsToExecute=dao.getJobsToExecute();
+        Iterator<Job>jobIterator=jobsToExecute.iterator();
+        while(jobIterator.hasNext()){
+            Job job = jobIterator.next();
+            job.setActive(1);
+            dao.update(job);
+        }
+        promise.resolve(ConversionHelper.getJobsAsWritableArray(jobsToExecute));
     }
 
 }

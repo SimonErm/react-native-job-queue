@@ -16,17 +16,23 @@ public class Job {
     @ColumnInfo(name = "worker_name")
     private String workerName;
 
-    private boolean active;
+    private int active;
 
     private String payload;
+
+    private String metaData;
 
     private int attempts;
 
     private String created;
 
-    private boolean success;
+    private int success;
 
-    private boolean completed;
+    private int timeout;
+
+    private int priority;
+
+    private String failed;
 
     public String getId() {
         return id;
@@ -44,11 +50,11 @@ public class Job {
         this.workerName = workerName;
     }
 
-    public boolean isActive() {
+    public int isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(int active) {
         this.active = active;
     }
 
@@ -76,19 +82,43 @@ public class Job {
         this.created = created;
     }
 
-    public boolean isSuccess() {
+    public int isSuccess() {
         return success;
     }
 
-    public void setSuccess(boolean success) {
+    public void setSuccess(int success) {
         this.success = success;
     }
 
-    public boolean isCompleted() {
-        return completed;
+    public int getTimeout() {
+        return timeout;
     }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
+
+    public String getFailed() {
+        return failed;
+    }
+
+    public void setFailed(String failed) {
+        this.failed = failed;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public String getMetaData() {
+        return metaData;
+    }
+
+    public void setMetaData(String metaData) {
+        this.metaData = metaData;
     }
 }
