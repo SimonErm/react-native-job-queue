@@ -1,9 +1,0 @@
-{
-  "requirePragma": true,
-  "singleQuote": true,
-  "trailingComma": "all",
-  "bracketSpacing": false,
-  "jsxBracketSameLine": true,
-  "semi": true,
-  "printWidth": 80
-}
