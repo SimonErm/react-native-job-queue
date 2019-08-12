@@ -26,6 +26,13 @@
 		134814201AA4EA6300B7C361 /* libJobQueue.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJobQueue.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5881CC2AC0600A0062D /* JobQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JobQueue.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* JobQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JobQueue.m; sourceTree = "<group>"; };
+		F4297A7A22FA3484000FE33E /* JobQueue-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JobQueue-Bridging-Header.h"; sourceTree = "<group>"; };
+		F4297A7B22FA3484000FE33E /* JobQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobQueue.swift; sourceTree = "<group>"; };
+		F4297A8A22FB720E000FE33E /* JobQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = JobQueue.m; path = "/Users/simon/Developer/Projects/ReactNative/react-native-job-queue/ios/JobQueue.m"; sourceTree = "<absolute>"; };
+		F4297A8B22FB720E000FE33E /* JobQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JobQueue.swift; path = "/Users/simon/Developer/Projects/ReactNative/react-native-job-queue/ios/JobQueue.swift"; sourceTree = "<absolute>"; };
+		F4297A8C22FB720E000FE33E /* Job.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Job.swift; path = "/Users/simon/Developer/Projects/ReactNative/react-native-job-queue/ios/Job.swift"; sourceTree = "<absolute>"; };
+		F4297A8D22FB720E000FE33E /* SQLiteDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SQLiteDatabase.swift; path = "/Users/simon/Developer/Projects/ReactNative/react-native-job-queue/ios/SQLiteDatabase.swift"; sourceTree = "<absolute>"; };
+		F4297A8E22FB720E000FE33E /* SQLTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SQLTable.swift; path = "/Users/simon/Developer/Projects/ReactNative/react-native-job-queue/ios/SQLTable.swift"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,9 +57,16 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				F4297A7B22FA3484000FE33E /* JobQueue.swift */,
+				F4297A8C22FB720E000FE33E /* Job.swift */,
+				F4297A8A22FB720E000FE33E /* JobQueue.m */,
+				F4297A8B22FB720E000FE33E /* JobQueue.swift */,
+				F4297A8D22FB720E000FE33E /* SQLiteDatabase.swift */,
+				F4297A8E22FB720E000FE33E /* SQLTable.swift */,
 				B3E7B5881CC2AC0600A0062D /* JobQueue.h */,
 				B3E7B5891CC2AC0600A0062D /* JobQueue.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				F4297A7A22FA3484000FE33E /* JobQueue-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -87,6 +101,7 @@
 				TargetAttributes = {
 					58B511DA1A9E6C8500147676 = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 1030;
 					};
 				};
 			};
@@ -95,6 +110,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 58B511D21A9E6C8500147676;
@@ -215,32 +231,41 @@
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = (
-				"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../../../React/**",
-					"$(SRCROOT)/../../react-native/React/**",
-				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = JobQueue;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		58B511F11A9E6C8500147676 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = JobQueue;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "JobQueue-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		58B511F11A9E6C8500147676 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../../../React/**",
+					"$(SRCROOT)/../../react-native/React/**",
+				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = JobQueue;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "JobQueue-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

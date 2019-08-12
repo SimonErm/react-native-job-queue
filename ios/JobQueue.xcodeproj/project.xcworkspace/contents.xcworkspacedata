@@ -2,6 +2,25 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/simon/Developer/Projects/ReactNative/react-native-job-queue/ios/Job.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/simon/Developer/Projects/ReactNative/react-native-job-queue/ios/JobQueue.m">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/simon/Developer/Projects/ReactNative/react-native-job-queue/ios/JobQueue.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/simon/Developer/Projects/ReactNative/react-native-job-queue/ios/SQLiteDatabase.swift">
+   </FileRef>
+   <Group
+      location = "container:"
+      name = "New Group">
+   </Group>
+   <FileRef
+      location = "group:/Users/simon/Developer/Projects/ReactNative/react-native-job-queue/ios/SQLTable.swift">
+   </FileRef>
+   <FileRef
       location = "self:">
    </FileRef>
 </Workspace>

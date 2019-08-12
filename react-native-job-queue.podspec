@@ -18,9 +18,8 @@ Pod::Spec.new do |s|
 
   s.source_files = "ios/**/*.{h,m,swift}"
   s.requires_arc = true
-  s.ios.library = "sqlite3"
   s.dependency "React"
-	s.dependency 'SQLite.swift', '~> 0.12.0'
+  s.library = "sqlite3"
   # s.dependency "..."
 end
 
