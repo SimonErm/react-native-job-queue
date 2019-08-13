@@ -16,6 +16,9 @@ public interface JobDao {
     @Query("SELECT * FROM job WHERE active == 0 AND failed != NULL ORDER BY priority,datetime(created)")
     List<Job> getJobsToExecute();
 
+    @Query("SELECT * FROM job WHERE active == 0 AND failed != NULL AND worker_name LIKE :workerName ORDER BY priority,datetime(created) LIMIT :limit")
+    List<Job> getJobsForWorker(String workerName,int limit);
+
     @Query("SELECT * FROM job where id LIKE  :id")
     Job findById(String id);
 

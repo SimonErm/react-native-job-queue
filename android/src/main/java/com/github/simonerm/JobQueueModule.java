@@ -48,8 +48,22 @@ public class JobQueueModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getJobsForWorker(String workerName,int limit,Promise promise){
+        JobDao dao = JobDatabase.getAppDatabase(this.reactContext).jobDao();
+
+        List<Job> jobsToExecute=dao.getJobsForWorker(workerName,limit);
+        Iterator<Job>jobIterator=jobsToExecute.iterator();
+        while(jobIterator.hasNext()){
+            Job job = jobIterator.next();
+            job.setActive(1);
+            dao.update(job);
+        }
+        promise.resolve(ConversionHelper.getJobsAsWritableArray(jobsToExecute));
+    }
+    @ReactMethod
     public void getJobsToExecute(Promise promise) {
         JobDao dao = JobDatabase.getAppDatabase(this.reactContext).jobDao();
+
         List<Job> jobsToExecute=dao.getJobsToExecute();
         Iterator<Job>jobIterator=jobsToExecute.iterator();
         while(jobIterator.hasNext()){

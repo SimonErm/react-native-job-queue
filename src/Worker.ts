@@ -1,7 +1,9 @@
 import { Job } from './models/Job';
 
 export class Worker {
-    private name: string;
+    private _name: string;
+    private concurrency: number;
+    private executionCount: number;
     private runner: (payload: any) => Promise<any>;
     private onSuccess: (job: Job) => void;
     private onFailure: (job: Job, error: Error) => void;
@@ -10,17 +12,30 @@ export class Worker {
     constructor(
         name: string,
         runner: (payload: any) => Promise<any>,
+        conccurency: number = 5,
         onSuccess = (job: Job) => {},
         onFailure = (job: Job, error: Error) => {},
         onCompletion = (job: Job) => {}
     ) {
-        this.name = name;
+        this._name = name;
+        this.concurrency = conccurency;
+        this.executionCount = 0;
         this.runner = runner;
         this.onSuccess = onSuccess;
         this.onFailure = onFailure;
         this.onCompletion = onCompletion;
     }
+    get name() {
+        return this._name;
+    }
+    get isBusy() {
+        return this.executionCount === this.concurrency;
+    }
+    get availableExecuters() {
+        return this.concurrency - this.executionCount;
+    }
     async execute(job: Job) {
+        this.executionCount++;
         const { timeout } = job;
         try {
             if (timeout > 0) {
@@ -33,6 +48,7 @@ export class Worker {
             this.onFailure(job, error);
             throw error;
         } finally {
+            this.executionCount--;
             this.onCompletion(job);
         }
     }

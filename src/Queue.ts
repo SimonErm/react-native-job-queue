@@ -16,13 +16,16 @@ export class Queue {
         this.isActive = false;
         this.onQueueFinish = () => {};
     }
-    addWorker(name: string, worker: Worker) {
-        if (this.workers[name]) {
-            throw new Error(`Worker "${name}" already exists.`);
+    addWorker(worker: Worker) {
+        if (this.workers[worker.name]) {
+            throw new Error(`Worker "${worker.name}" already exists.`);
         }
-        this.workers[name] = worker;
+        this.workers[worker.name] = worker;
     }
-    removeWorker(name: string) {
+    getWorkers() {
+        return this.workers;
+    }
+    removeWorker(name: string, deleteRelatedJobs: boolean = false) {
         delete this.workers[name];
     }
     async addJob(workerName: string, payload: any, options = { attempts: 0, timeout: 0 }, startQueue: boolean = true) {
@@ -50,13 +53,15 @@ export class Queue {
     }
     async start() {
         this.isActive = true;
-        let jobsToFinish = await this.jobStore.getJobsToExecute();
-        while (this.isActive && jobsToFinish.length > 0) {
-            const processingJobs = jobsToFinish.map(this.excuteJob);
+        let queuedJobs = await this.jobStore.getJobsToExecute();
+        while (this.isActive && queuedJobs.length > 0) {
+            const nextJobs = await this.getJobsByWorker(queuedJobs[0]);
+
+            const processingJobs = nextJobs.map(this.excuteJob);
 
             await Promise.all(processingJobs.map(promiseReflect));
 
-            jobsToFinish = await this.jobStore.getJobsToExecute();
+            queuedJobs = await this.jobStore.getJobsToExecute();
         }
         this.onQueueFinish();
         this.isActive = false;
@@ -64,6 +69,13 @@ export class Queue {
     stop() {
         this.isActive = false;
     }
+    getJobsByWorker = async (job: Job) => {
+        const { isBusy, availableExecuters } = this.workers[job.workerName];
+        if (!isBusy) {
+            return await this.jobStore.getJobsForWorker(job.workerName, availableExecuters);
+        }
+        return [];
+    };
     private excuteJob = async (job: Job) => {
         if (this.workers[job.workerName]) {
             try {
