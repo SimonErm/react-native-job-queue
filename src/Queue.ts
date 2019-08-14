@@ -1,4 +1,3 @@
-import promiseReflect from 'promise-reflect';
 import { NativeModules } from 'react-native';
 import uuid from 'react-native-uuid';
 
