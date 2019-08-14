@@ -13,10 +13,10 @@ public interface JobDao {
     @Query("SELECT * FROM job")
     List<Job> getAll();
 
-    @Query("SELECT * FROM job WHERE active == 0 AND failed != NULL ORDER BY priority,datetime(created)")
     List<Job> getJobsToExecute();
+    @Query("SELECT * FROM job WHERE active == 0  ORDER BY priority,datetime(created) LIMIT 1")
 
-    @Query("SELECT * FROM job WHERE active == 0 AND failed != NULL AND worker_name LIKE :workerName ORDER BY priority,datetime(created) LIMIT :limit")
+    @Query("SELECT * FROM job WHERE active == 0 AND worker_name == :workerName ORDER BY priority,datetime(created) LIMIT :limit")
     List<Job> getJobsForWorker(String workerName,int limit);
 
     @Query("SELECT * FROM job where id LIKE  :id")
