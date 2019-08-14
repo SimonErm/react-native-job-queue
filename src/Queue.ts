@@ -106,3 +106,5 @@ export class Queue {
         }
     };
 }
+const queue = new Queue();
+export default queue;
