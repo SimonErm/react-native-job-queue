@@ -50,7 +50,7 @@ export class Queue {
             timeout,
             priority
         };
-        if (job.workerName) {
+        if (!this.workers[job.workerName]) {
             throw new Error(`Missing worker with name ${job.workerName}`);
         }
 
