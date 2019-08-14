@@ -13,8 +13,8 @@ public interface JobDao {
     @Query("SELECT * FROM job")
     List<Job> getAll();
 
-    List<Job> getJobsToExecute();
     @Query("SELECT * FROM job WHERE active == 0  ORDER BY priority,datetime(created) LIMIT 1")
+    Job getNextJob();
 
     @Query("SELECT * FROM job WHERE active == 0 AND worker_name == :workerName ORDER BY priority,datetime(created) LIMIT :limit")
     List<Job> getJobsForWorker(String workerName,int limit);
