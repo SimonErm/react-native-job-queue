@@ -54,7 +54,7 @@ export class Queue {
             throw new Error(`Missing worker with name ${job.workerName}`);
         }
 
-        await this.jobStore.addJob(job);
+        this.jobStore.addJob(job);
         if (startQueue && !this.isActive) {
             this.start();
         }
@@ -66,8 +66,8 @@ export class Queue {
 
         while (this.isActive && (Object.keys(nextJob).length > 0 || this.activeJobCount > 0)) {
             const processingJobs = nextJobs.map(this.excuteJob);
+            Promise.all(processingJobs);
 
-            await Promise.all(processingJobs.map(promiseReflect));
 
             queuedJobs = await this.jobStore.getJobsToExecute();
         }
