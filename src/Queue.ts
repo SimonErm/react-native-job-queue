@@ -30,8 +30,13 @@ export class Queue {
     removeWorker(name: string, deleteRelatedJobs: boolean = false) {
         delete this.workers[name];
     }
-    async addJob(workerName: string, payload: any, options = { attempts: 0, timeout: 0 }, startQueue: boolean = true) {
-        const { attempts, timeout } = options;
+    async addJob(
+        workerName: string,
+        payload: any,
+        options = { attempts: 0, timeout: 0, priority: 0 },
+        startQueue: boolean = true
+    ) {
+        const { attempts, timeout, priority } = options;
         const job: Job = {
             id: uuid.v4(),
             payload: JSON.stringify(payload),
@@ -42,7 +47,8 @@ export class Queue {
             failed: undefined,
             workerName,
             attempts,
-            timeout
+            timeout,
+            priority
         };
         if (job.workerName) {
             throw new Error(`Missing worker with name ${job.workerName}`);
