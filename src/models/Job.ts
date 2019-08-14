@@ -9,6 +9,7 @@ export interface Job {
     success: Bool;
     failed?: string;
     timeout: number;
+    priority: number;
 }
 export type Bool = TRUE | FALSE;
 type FALSE = 0;
