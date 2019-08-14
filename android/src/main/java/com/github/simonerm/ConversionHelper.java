@@ -24,7 +24,8 @@ public class ConversionHelper {
             Job job =jobIterable.next();
             jobsAsBundleList.add(getJobAsBundle(job));
         }
-        return Arguments.fromArray(jobsAsBundleList.toArray());
+
+        return Arguments.fromArray(jobsAsBundleList.toArray(new Bundle[jobsAsBundleList.size()]));
     }
     public static Job getJobFromReadableMap(ReadableMap jobAsMap){
         Job job = new Job();
