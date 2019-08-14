@@ -49,11 +49,11 @@ public class ConversionHelper {
         Bundle jobAsBundle =new Bundle();
         jobAsBundle.putString("id",job.getId());
         jobAsBundle.putString("workerName",job.getWorkerName());
-        jobAsBundle.putInt("active",job.isActive());
+        jobAsBundle.putInt("active",job.getActive());
         jobAsBundle.putString("payload",job.getPayload());
         jobAsBundle.putString("metaData",job.getMetaData());
         jobAsBundle.putInt("attempts",job.getAttempts());
-        jobAsBundle.putInt("success",job.isSuccess());
+        jobAsBundle.putInt("success",job.getSuccess());
         jobAsBundle.putInt("timeout",job.getTimeout());
         jobAsBundle.putInt("priority",job.getPriority());
         jobAsBundle.putString("created",job.getCreated());

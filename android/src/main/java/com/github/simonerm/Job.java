@@ -50,7 +50,7 @@ public class Job {
         this.workerName = workerName;
     }
 
-    public int isActive() {
+    public int getActive() {
         return active;
     }
 
@@ -82,7 +82,7 @@ public class Job {
         this.created = created;
     }
 
-    public int isSuccess() {
+    public int getSuccess() {
         return success;
     }
 
