@@ -1,7 +1,7 @@
 import Foundation
 import SQLite3
 
-@objc
+@objc(JobQueue)
 public class JobQueue:NSObject{
     
     public override init() {
