@@ -8,12 +8,14 @@ import { Worker } from './Worker';
 
 export class Queue {
     private jobStore: JobStore;
+    private activeJobCount: number;
     private workers: { [key: string]: Worker } = {};
     private isActive: boolean;
     private onQueueFinish: () => void;
     constructor() {
         this.jobStore = NativeModules.JobQueue;
         this.isActive = false;
+        this.activeJobCount = 0;
         this.onQueueFinish = () => {};
     }
     addWorker(worker: Worker) {
@@ -54,9 +56,9 @@ export class Queue {
     async start() {
         this.isActive = true;
         let queuedJobs = await this.jobStore.getJobsToExecute();
-        while (this.isActive && queuedJobs.length > 0) {
             const nextJobs = await this.getJobsByWorker(queuedJobs[0]);
 
+        while (this.isActive && (Object.keys(nextJob).length > 0 || this.activeJobCount > 0)) {
             const processingJobs = nextJobs.map(this.excuteJob);
 
             await Promise.all(processingJobs.map(promiseReflect));
@@ -77,25 +79,26 @@ export class Queue {
         return [];
     };
     private excuteJob = async (job: Job) => {
-        if (this.workers[job.workerName]) {
-            try {
-                await this.workers[job.workerName].execute(job);
-                this.jobStore.deleteJob(job);
-            } catch (error) {
-                // tslint:disable-next-line: prefer-const
-                const { attempts } = job;
-                let { errors, failedAttempts } = JSON.parse(job.metaData);
-                failedAttempts++;
-                let failed;
-                if (failedAttempts > attempts) {
-                    failed = new Date().toISOString();
-                }
-                const metaData = JSON.stringify({ errors: [...errors, error], failedAttempts });
-
-                this.jobStore.updateJob({ ...job, ...{ active: FALSE, metaData, failed } });
+        try {
+            this.activeJobCount++;
+            if (!this.workers[job.workerName]) {
+                throw new Error(`Missing worker with name ${job.workerName}`);
             }
-        } else {
-            Promise.reject(new Error(`No worker with name ${job.workerName} found`));
+            await this.workers[job.workerName].execute(job);
+            this.jobStore.removeJob(job);
+        } catch (error) {
+            // tslint:disable-next-line: prefer-const
+            const { attempts } = job;
+            let { errors, failedAttempts } = JSON.parse(job.metaData);
+            failedAttempts++;
+            let failed;
+            if (failedAttempts > attempts) {
+                failed = new Date().toISOString();
+            }
+            const metaData = JSON.stringify({ errors: [...errors, error], failedAttempts });
+            this.jobStore.updateJob({ ...job, ...{ active: FALSE, metaData, failed } });
+        } finally {
+            this.activeJobCount--;
         }
     };
 }
