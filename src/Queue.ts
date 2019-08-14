@@ -75,7 +75,7 @@ export class Queue {
     stop() {
         this.isActive = false;
     }
-    getJobsByWorker = async (job: Job) => {
+    private getJobsByWorker = async (job: Job) => {
         const { isBusy, availableExecuters } = this.workers[job.workerName];
         if (!isBusy) {
             return await this.jobStore.getJobsForWorker(job.workerName, availableExecuters);
