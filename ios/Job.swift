@@ -88,4 +88,24 @@ extension SQLiteDatabase {
         
         return Job(id: id, name: name)
     }
+    func delete(job: Job) throws{
+        let querySql = "DELETE * FROM Job WHERE id = ?;"
+        guard let deleteStatement = try? prepareStatement(sql: querySql) else {
+            return nil
+        }
+        
+        defer {
+            sqlite3_finalize(queryStatement)
+        }
+        
+        guard sqlite3_bind_text(insertStatement, 1, job.id.utf8String,-1,nil) == SQLITE_OK else {
+           throw SQLiteError.Bind(message: errorMessage)
+        }
+        
+        guard sqlite3_step(queryStatement) == SQLITE_ROW else {
+           throw SQLiteError.Step(message: errorMessage)
+        }
+        
+     
+    }
 }
