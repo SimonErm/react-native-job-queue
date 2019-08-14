@@ -61,15 +61,13 @@ export class Queue {
     }
     async start() {
         this.isActive = true;
-        let queuedJobs = await this.jobStore.getJobsToExecute();
-            const nextJobs = await this.getJobsByWorker(queuedJobs[0]);
-
+        let nextJob = await this.jobStore.getNextJob();
         while (this.isActive && (Object.keys(nextJob).length > 0 || this.activeJobCount > 0)) {
+            const nextJobs = await this.getJobsByWorker(nextJob);
             const processingJobs = nextJobs.map(this.excuteJob);
             Promise.all(processingJobs);
 
-
-            queuedJobs = await this.jobStore.getJobsToExecute();
+            nextJob = await this.jobStore.getNextJob();
         }
         this.onQueueFinish();
         this.isActive = false;
