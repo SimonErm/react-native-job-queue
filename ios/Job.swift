@@ -88,6 +88,35 @@ extension SQLiteDatabase {
         
         return Job(id: id, name: name)
     }
+    func getNextJob() -> Job? {
+        let querySql = "SELECT * FROM job WHERE active == 0  ORDER BY priority,datetime(created) LIMIT 1;"
+        guard let queryStatement = try? prepareStatement(sql: querySql) else {
+            return nil
+        }
+        
+        defer {
+            sqlite3_finalize(queryStatement)
+        }
+        
+        guard sqlite3_step(queryStatement) == SQLITE_ROW else {
+            return nil
+        }
+        
+        let id = sqlite3_column_int(queryStatement, 0)
+        let queryResultCol1 = sqlite3_column_text(queryStatement, 1)
+        let workerName = String(cString: queryResultCol1!) as NSString
+        let active=sqlite3_column_int(queryStatement, 2)
+        let payload: NSString
+        let metaData: NSString
+        let attempts=sqlite3_column_int(queryStatement, 5)
+        let created: NSString
+        let success=sqlite3_column_int(queryStatement, 7)
+        let failed: NSString
+        let timeout=sqlite3_column_int(queryStatement, 9)
+        let priority=sqlite3_column_int(queryStatement, 10)
+        return Job(id: id, workerName: name)
+    }
+    
     func delete(job: Job) throws{
         let querySql = "DELETE * FROM Job WHERE id = ?;"
         guard let deleteStatement = try? prepareStatement(sql: querySql) else {
