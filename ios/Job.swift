@@ -12,6 +12,7 @@ struct Job {
     let success: Int32
     let failed: NSString
     let timeout: Int32
+    let priority: Int32
 }
 extension Job: SQLTable {
     static var createStatement: String {
@@ -25,15 +26,16 @@ extension Job: SQLTable {
         attempts INTEGER NOT NULL,
         created CHAR(255),
         success INTEGER NOT NULL,
+        failed CHAR(255),
         timeout INTEGER NOT NULL,
-        failed CHAR(255)
+        priority Integer NOT NULL
         );
         """
     }
 }
 extension SQLiteDatabase {
     func add(job: Job) throws {
-        let insertSql = "INSERT INTO Job (id, workerName, active, payload, metaData, attempts, created, success, failed,timeout) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+        let insertSql = "INSERT INTO Job (id, workerName, active, payload, metaData, attempts, created, success, failed,timeout,priority) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
         let insertStatement = try prepareStatement(sql: insertSql)
         defer {
             sqlite3_finalize(insertStatement)
@@ -48,7 +50,9 @@ extension SQLiteDatabase {
             sqlite3_bind_text(insertStatement, 7, job.created.utf8String, -1, nil) == SQLITE_OK &&
             sqlite3_bind_int(insertStatement, 8,job.success) == SQLITE_OK &&
             sqlite3_bind_text(insertStatement, 9, job.failed.utf8String, -1, nil) == SQLITE_OK &&
-            sqlite3_bind_int(insertStatement, 10,job.timeout) == SQLITE_OK
+            sqlite3_bind_int(insertStatement, 10,job.timeout) == SQLITE_OK &&
+            sqlite3_bind_int(insertStatement, 11,job.priority) == SQLITE_OK
+
             )else {
                 throw SQLiteError.Bind(message: errorMessage)
         }
