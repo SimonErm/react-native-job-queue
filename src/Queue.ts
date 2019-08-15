@@ -6,18 +6,28 @@ import { JobStore } from './models/JobStore';
 import { Worker } from './Worker';
 
 export class Queue {
+    private static queueInstance: Queue | null;
+
     private jobStore: JobStore;
     private updateInterval: number;
     private activeJobCount: number;
     private workers: { [key: string]: Worker } = {};
     private isActive: boolean;
     private onQueueFinish: () => void;
-    constructor() {
+    private constructor() {
         this.jobStore = NativeModules.JobQueue;
         this.isActive = false;
         this.activeJobCount = 0;
         this.updateInterval = 0;
         this.onQueueFinish = () => {};
+    static get instance() {
+        if (this.queueInstance) {
+            return this.queueInstance;
+        } else {
+            this.queueInstance = new Queue();
+            return this.queueInstance;
+        }
+    }
     }
     addWorker(worker: Worker) {
         if (this.workers[worker.name]) {
@@ -116,5 +126,4 @@ export class Queue {
         }
     };
 }
-const queue = new Queue();
-export default queue;
+export default Queue.instance;
