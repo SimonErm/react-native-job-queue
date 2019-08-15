@@ -1,8 +1,9 @@
 import { Job } from './models/Job';
 
 export class Worker {
-    private _name: string;
-    private concurrency: number;
+    public readonly name: string;
+    public readonly concurrency: number;
+
     private executionCount: number;
     private runner: (payload: any) => Promise<any>;
     private onStart: (job: Job) => void;
@@ -18,9 +19,10 @@ export class Worker {
         onFailure = (job: Job, error: Error) => {},
         onCompletion = (job: Job) => {}
     ) {
-        this._name = name;
-        this.concurrency = conccurency;
             onStart = (job: Job) => {},
+        this.name = name;
+        this.concurrency = concurrency;
+
         this.executionCount = 0;
         this.runner = runner;
 
@@ -29,9 +31,7 @@ export class Worker {
         this.onFailure = onFailure;
         this.onCompletion = onCompletion;
     }
-    get name() {
-        return this._name;
-    }
+
     get isBusy() {
         return this.executionCount === this.concurrency;
     }
