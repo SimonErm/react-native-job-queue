@@ -14,6 +14,11 @@ export default class App extends React.Component<IAppProps, IAppState> {
         this.state = {};
     }
     componentDidMount() {
+        queue.configure({
+            onQueueFinish: (executed) => {
+                console.log('FinishedQueue');
+            }
+        });
         queue.addWorker(
             new Worker('testWorker', async (payload) => {
                 return new Promise((resolve) => {
