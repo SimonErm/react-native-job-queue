@@ -16,7 +16,7 @@ struct Job {
 extension Job: SQLTable {
     static var createStatement: String {
         return """
-        CREATE TABLE Job(
+        CREATE TABLE IF NOT EXISTS Job(
         id CHAR(36) PRIMARY KEY NOT NULL,
         workerName CHAR(255) NOT NULL,
         active INTEGER NOT NULL,
