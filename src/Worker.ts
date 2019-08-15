@@ -5,6 +5,7 @@ export class Worker {
     private concurrency: number;
     private executionCount: number;
     private runner: (payload: any) => Promise<any>;
+    private onStart: (job: Job) => void;
     private onSuccess: (job: Job) => void;
     private onFailure: (job: Job, error: Error) => void;
     private onCompletion: (job: Job) => void;
@@ -19,8 +20,11 @@ export class Worker {
     ) {
         this._name = name;
         this.concurrency = conccurency;
+            onStart = (job: Job) => {},
         this.executionCount = 0;
         this.runner = runner;
+
+        this.onStart = onStart;
         this.onSuccess = onSuccess;
         this.onFailure = onFailure;
         this.onCompletion = onCompletion;
@@ -35,9 +39,11 @@ export class Worker {
         return this.concurrency - this.executionCount;
     }
     async execute(job: Job) {
-        this.executionCount++;
         const { timeout } = job;
+
+        this.executionCount++;
         try {
+            this.onStart(job);
             if (timeout > 0) {
                 await this.executeWithTimeout(job, timeout);
             } else {
