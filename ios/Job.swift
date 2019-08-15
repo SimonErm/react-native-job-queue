@@ -86,7 +86,7 @@ extension SQLiteDatabase {
         
         print("Successfully inserted row.")
     }
-    func getJobBy(id: String) -> Job? {
+    func getJobBy(id: NSString) -> Job? {
         let querySql = "SELECT * FROM Job WHERE id = ?;"
         guard let queryStatement = try? prepareStatement(sql: querySql) else {
             return nil
