@@ -24,4 +24,7 @@ public class JobQueue:NSObject{
         }
         
     }
+    @objc static func requiresMainQueueSetup() -> Bool {
+        return false
+    }
 }
