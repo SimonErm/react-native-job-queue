@@ -67,10 +67,10 @@ extension SQLiteDatabase {
         
         guard (sqlite3_bind_text(insertStatement, 1, job.id.utf8String,-1,nil) == SQLITE_OK  &&
             sqlite3_bind_text(insertStatement, 2, job.workerName.utf8String, -1, nil) == SQLITE_OK &&
-            sqlite3_bind_int(insertStatement, 3,job.active) == SQLITE_OK &&
+            sqlite3_bind_int(insertStatement, 3, job.active) == SQLITE_OK &&
             sqlite3_bind_text(insertStatement, 4, job.payload.utf8String, -1, nil) == SQLITE_OK &&
             sqlite3_bind_text(insertStatement, 5, job.metaData.utf8String, -1, nil) == SQLITE_OK &&
-            sqlite3_bind_int(insertStatement, 6,job.attempts) == SQLITE_OK &&
+            sqlite3_bind_int(insertStatement, 6, job.attempts) == SQLITE_OK &&
             sqlite3_bind_text(insertStatement, 7, job.created.utf8String, -1, nil) == SQLITE_OK &&
             sqlite3_bind_text(insertStatement, 8, job.failed.utf8String, -1, nil) == SQLITE_OK &&
             sqlite3_bind_int(insertStatement, 9, job.timeout) == SQLITE_OK &&
