@@ -7,7 +7,9 @@ public class JobQueue:NSObject{
     public override init() {
         let db: SQLiteDatabase
         do {
-            db = try SQLiteDatabase.open(path: "testdb")
+            var path = try FileManager.default.url(for:.libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true);
+            path.appendPathComponent("jobdb")
+            db = try SQLiteDatabase.open(path: path.path)
             print("Successfully opened connection to database.")
             do {
                 try db.createTable(table: Job.self)
