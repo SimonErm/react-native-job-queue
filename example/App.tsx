@@ -27,7 +27,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
     }
     public render() {
         return (
-            <View>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Button
                     title='add Job'
                     onPress={() => {
