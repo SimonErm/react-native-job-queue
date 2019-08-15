@@ -16,7 +16,12 @@ export default class App extends React.Component<IAppProps, IAppState> {
     componentDidMount() {
         queue.addWorker(
             new Worker('testWorker', async (payload) => {
-                setTimeout(() => console.log(payload), 10000);
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        console.log(payload);
+                        resolve();
+                    }, 50000);
+                });
             })
         );
     }
