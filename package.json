@@ -47,6 +47,8 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "4.0.0",
     "tslint-react-native": "0.0.7",
+    "typedoc": "^0.15.0",
+    "typedoc-plugin-markdown": "^2.1.1",
     "typescript": "3.5.3"
   },
   "@react-native-community/bob": {
