@@ -7,6 +7,7 @@ import { Worker } from './Worker';
 
 export class Queue {
     private jobStore: JobStore;
+    private updateInterval: number;
     private activeJobCount: number;
     private workers: { [key: string]: Worker } = {};
     private isActive: boolean;
@@ -15,6 +16,7 @@ export class Queue {
         this.jobStore = NativeModules.JobQueue;
         this.isActive = false;
         this.activeJobCount = 0;
+        this.updateInterval = 0;
         this.onQueueFinish = () => {};
     }
     addWorker(worker: Worker) {
@@ -59,20 +61,29 @@ export class Queue {
     }
     async start() {
         this.isActive = true;
-        let nextJob = await this.jobStore.getNextJob();
-        while (this.isActive && (Object.keys(nextJob).length > 0 || this.activeJobCount > 0)) {
+
+        this.updateInterval = setInterval(async () => {
+            const nextJob = await this.jobStore.getNextJob();
+            if (!this.isActive) {
+                this.finishQueue();
+            }
+
             if (Object.keys(nextJob).length > 0) {
                 const nextJobs = await this.getJobsByWorker(nextJob);
                 const processingJobs = nextJobs.map(this.excuteJob);
                 Promise.all(processingJobs);
+            } else if (!(this.activeJobCount > 0)) {
+                this.finishQueue();
             }
-            nextJob = await this.jobStore.getNextJob();
-        }
-        this.onQueueFinish();
-        this.isActive = false;
+        }, 10);
     }
     stop() {
         this.isActive = false;
+    }
+    private finishQueue() {
+        this.onQueueFinish();
+        this.isActive = false;
+        clearInterval(this.updateInterval);
     }
     private getJobsByWorker = async (job: Job) => {
         const { isBusy, availableExecuters } = this.workers[job.workerName];
