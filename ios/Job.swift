@@ -30,6 +30,32 @@ extension Job: SQLTable {
         );
         """
     }
+    static func createJobFromDictionary(job:[String:Any])->Job{
+        return Job(id:job["id"] as! NSString,
+                   workerName: job["workerName"] as! NSString,
+                   active:job["active"] as! Int32,
+                   payload:job["payload"] as! NSString,
+                   metaData: job["metaData"] as! NSString,
+                   attempts: job["attempts"] as! Int32,
+                   created: job["created"] as! NSString,
+                   failed: job["failed"] as! NSString,
+                   timeout: job["timeout"] as! Int32,
+                   priority: job["timeout"] as! Int32)
+    }
+    func toDictionary()->[String:Any]{
+        var jobAsDictionary=[String:Any]()
+        jobAsDictionary["id"]=self.id
+        jobAsDictionary["workerName"]=self.workerName
+        jobAsDictionary["active"]=self.active
+        jobAsDictionary["payload"]=self.payload
+        jobAsDictionary["metaData"]=self.metaData
+        jobAsDictionary["attempts"]=self.attempts
+        jobAsDictionary["created"]=self.created
+        jobAsDictionary["failed"]=self.failed
+        jobAsDictionary["timeout"]=self.timeout
+        jobAsDictionary["priority"]=self.priority
+        return jobAsDictionary;
+    }
 }
 extension SQLiteDatabase {
     func add(job: Job) throws {
