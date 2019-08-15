@@ -20,7 +20,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
                     setTimeout(() => {
                         console.log(payload);
                         resolve();
-                    }, 50000);
+                    }, 5000);
                 });
             })
         );
