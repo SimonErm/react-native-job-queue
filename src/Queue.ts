@@ -5,23 +5,37 @@ import { FALSE, Job } from './models/Job';
 import { JobStore } from './models/JobStore';
 import { Worker } from './Worker';
 
+export interface QueueOptions {
+    onQueueFinish?: (executedJobs: Job[]) => void;
+    updateInterval?: number;
+}
 export class Queue {
     private static queueInstance: Queue | null;
 
     private jobStore: JobStore;
-    private updateInterval: number;
-    private activeJobCount: number;
-    private workers: { [key: string]: Worker } = {};
+    private workers: { [key: string]: Worker };
     private isActive: boolean;
-    private onQueueFinish: () => void;
+
+    private intervalId: number;
+    private executedJobs: Job[];
+    private activeJobCount: number;
+
+    private updateInterval: number;
     private onQueueFinish: (executedJobs: Job[]) => void;
+
     private constructor() {
         this.jobStore = NativeModules.JobQueue;
+        this.workers = {};
         this.isActive = false;
+
+        this.intervalId = 0;
         this.executedJobs = [];
         this.activeJobCount = 0;
-        this.updateInterval = 0;
+
+        this.updateInterval = 10;
         this.onQueueFinish = (executedJobs: Job[]) => {};
+    }
+
     static get instance() {
         if (this.queueInstance) {
             return this.queueInstance;
@@ -30,26 +44,31 @@ export class Queue {
             return this.queueInstance;
         }
     }
+
+    get registeredWorkers() {
+        return this.workers;
+    }
+
     configure(options: QueueOptions) {
         const { onQueueFinish = (executedJobs: Job[]) => {}, updateInterval = 10 } = options;
         this.onQueueFinish = onQueueFinish;
         this.updateInterval = updateInterval;
     }
+
     addWorker(worker: Worker) {
         if (this.workers[worker.name]) {
             throw new Error(`Worker "${worker.name}" already exists.`);
         }
         this.workers[worker.name] = worker;
     }
-    getWorkers() {
-        return this.workers;
-    }
+
     removeWorker(name: string, deleteRelatedJobs: boolean = false) {
         delete this.workers[name];
     }
-    async addJob(
+
+    addJob(
         workerName: string,
-        payload: any,
+        payload: any = {},
         options = { attempts: 0, timeout: 0, priority: 0 },
         startQueue: boolean = true
     ) {
@@ -75,32 +94,44 @@ export class Queue {
             this.start();
         }
     }
+
     async start() {
         this.isActive = true;
         this.executedJobs = [];
 
-        this.updateInterval = setInterval(async () => {
-            const nextJob = await this.jobStore.getNextJob();
-            if (!this.isActive) {
-                this.finishQueue();
-            }
-
-            if (Object.keys(nextJob).length > 0) {
-                const nextJobs = await this.getJobsByWorker(nextJob);
-                const processingJobs = nextJobs.map(this.excuteJob);
-                Promise.all(processingJobs);
-            } else if (!(this.activeJobCount > 0)) {
-                this.finishQueue();
-            }
-        }, 10);
+        this.intervalId = setInterval(this.runQueue, this.updateInterval);
     }
+
     stop() {
         this.isActive = false;
     }
+
+    private runQueue = async () => {
+        const nextJob = await this.jobStore.getNextJob();
+        if (!this.isActive) {
+            this.finishQueue();
+        }
+        if (this.isJobNotEmpty(nextJob)) {
+            const nextJobs = await this.getJobsForWorker(nextJob.workerName);
+            const processingJobs = nextJobs.map(this.excuteJob);
+            Promise.all(processingJobs);
+        } else if (!this.isExecuting()) {
+            this.finishQueue();
+        }
+    };
+
+    private isJobNotEmpty(job: Job | {}) {
+        return Object.keys(job).length > 0;
+    }
+
+    private isExecuting() {
+        return this.activeJobCount > 0;
+    }
+
     private finishQueue() {
         this.onQueueFinish(this.executedJobs);
         this.isActive = false;
-        clearInterval(this.updateInterval);
+        clearInterval(this.intervalId);
     }
 
     private async getJobsForWorker(workerName: string) {
@@ -120,7 +151,8 @@ export class Queue {
             }
         }
         return [];
-    };
+    }
+
     private excuteJob = async (job: Job) => {
         try {
             this.activeJobCount++;
@@ -130,8 +162,8 @@ export class Queue {
             await this.workers[job.workerName].execute(job);
             this.jobStore.removeJob(job);
         } catch (error) {
-            // tslint:disable-next-line: prefer-const
             const { attempts } = job;
+            // tslint:disable-next-line: prefer-const
             let { errors, failedAttempts } = JSON.parse(job.metaData);
             failedAttempts++;
             let failed = '';
