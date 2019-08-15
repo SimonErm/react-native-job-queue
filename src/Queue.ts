@@ -35,7 +35,7 @@ export class Queue {
         options = { attempts: 0, timeout: 0, priority: 0 },
         startQueue: boolean = true
     ) {
-        const { attempts, timeout, priority } = options;
+        const { attempts = 0, timeout = 0, priority = 0 } = options;
         const job: Job = {
             id: uuid.v4(),
             payload: JSON.stringify(payload),
