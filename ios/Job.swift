@@ -158,5 +158,27 @@ extension SQLiteDatabase {
         }
         
      
+    func mapColumnsToJob(sqlStatement: OpaquePointer?)->Job?{
+        if(sqlStatement != nil){
+            let idColumnContent = sqlite3_column_text(sqlStatement, 0)
+            let id = String(cString: idColumnContent!) as NSString
+            let workerNameColumnContent = sqlite3_column_text(sqlStatement, 1)
+            let workerName = String(cString: workerNameColumnContent!) as NSString
+            let active=sqlite3_column_int(sqlStatement, 2)
+            let payloadColumnContent = sqlite3_column_text(sqlStatement, 3)
+            let payload = String(cString: payloadColumnContent!) as NSString
+            let metaDataColumnContent = sqlite3_column_text(sqlStatement, 4)
+            let metaData = String(cString: metaDataColumnContent!) as NSString
+            let attempts=sqlite3_column_int(sqlStatement, 5)
+            let createdColumnContent = sqlite3_column_text(sqlStatement, 6)
+            let created = String(cString: createdColumnContent!) as NSString
+            let failedColumnContent = sqlite3_column_text(sqlStatement, 7)
+            let failed = String(cString: failedColumnContent!) as NSString
+            let timeout=sqlite3_column_int(sqlStatement, 8)
+            let priority=sqlite3_column_int(sqlStatement, 9)
+            return Job(id: id, workerName: workerName,active:active,payload:payload,metaData: metaData,attempts: attempts,created: created,failed: failed,timeout: timeout,priority: priority)
+        }else{
+            return nil
+        }
     }
 }
