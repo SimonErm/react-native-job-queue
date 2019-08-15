@@ -30,6 +30,10 @@ export class Queue {
             return this.queueInstance;
         }
     }
+    configure(options: QueueOptions) {
+        const { onQueueFinish = (executedJobs: Job[]) => {}, updateInterval = 10 } = options;
+        this.onQueueFinish = onQueueFinish;
+        this.updateInterval = updateInterval;
     }
     addWorker(worker: Worker) {
         if (this.workers[worker.name]) {
