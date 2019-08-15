@@ -38,11 +38,7 @@ public class ConversionHelper {
         job.setTimeout(jobAsMap.getInt("timeout"));
         job.setPriority(jobAsMap.getInt("priority"));
         job.setCreated(jobAsMap.getString("created"));
-        if(jobAsMap.hasKey("failed")){
-            job.setFailed(jobAsMap.getString("failed"));
-        }else{
-            job.setFailed(null);
-        }
+        job.setFailed(jobAsMap.getString("failed"));
         return job;
     }
     private static Bundle getJobAsBundle(Job job){
