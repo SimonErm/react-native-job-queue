@@ -102,10 +102,22 @@ export class Queue {
         this.isActive = false;
         clearInterval(this.updateInterval);
     }
-    private getJobsByWorker = async (job: Job) => {
-        const { isBusy, availableExecuters } = this.workers[job.workerName];
+
+    private async getJobsForWorker(workerName: string) {
+        const { isBusy, availableExecuters } = this.workers[workerName];
         if (!isBusy) {
-            return await this.jobStore.getJobsForWorker(job.workerName, availableExecuters);
+            return await this.jobStore.getJobsForWorker(workerName, availableExecuters);
+        } else {
+            return await this.getJobsForAlternateWorker();
+        }
+    }
+
+    private async getJobsForAlternateWorker() {
+        for (const workerName of Object.keys(this.workers)) {
+            const { isBusy, availableExecuters } = this.workers[workerName];
+            if (!isBusy) {
+                return await this.jobStore.getJobsForWorker(workerName, availableExecuters);
+            }
         }
         return [];
     };
