@@ -5,7 +5,7 @@ export interface JobStore {
     getJobs(): Promise<Job[]>;
     getNextJob(): Promise<Job>;
     getJobsForWorker(name: string, count: number): Promise<Job[]>;
-    updateJob(job: Job): Promise<void>;
-    removeJob(job: Job): Promise<void>;
+    updateJob(job: Job): void;
+    removeJob(job: Job): void;
     deleteAllJobs(): Promise<void>;
 }
