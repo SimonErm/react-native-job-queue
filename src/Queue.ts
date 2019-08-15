@@ -14,12 +14,14 @@ export class Queue {
     private workers: { [key: string]: Worker } = {};
     private isActive: boolean;
     private onQueueFinish: () => void;
+    private onQueueFinish: (executedJobs: Job[]) => void;
     private constructor() {
         this.jobStore = NativeModules.JobQueue;
         this.isActive = false;
+        this.executedJobs = [];
         this.activeJobCount = 0;
         this.updateInterval = 0;
-        this.onQueueFinish = () => {};
+        this.onQueueFinish = (executedJobs: Job[]) => {};
     static get instance() {
         if (this.queueInstance) {
             return this.queueInstance;
@@ -71,6 +73,7 @@ export class Queue {
     }
     async start() {
         this.isActive = true;
+        this.executedJobs = [];
 
         this.updateInterval = setInterval(async () => {
             const nextJob = await this.jobStore.getNextJob();
@@ -91,7 +94,7 @@ export class Queue {
         this.isActive = false;
     }
     private finishQueue() {
-        this.onQueueFinish();
+        this.onQueueFinish(this.executedJobs);
         this.isActive = false;
         clearInterval(this.updateInterval);
     }
@@ -122,6 +125,7 @@ export class Queue {
             const metaData = JSON.stringify({ errors: [...errors, error], failedAttempts });
             this.jobStore.updateJob({ ...job, ...{ active: FALSE, metaData, failed } });
         } finally {
+            this.executedJobs.push(job);
             this.activeJobCount--;
         }
     };
