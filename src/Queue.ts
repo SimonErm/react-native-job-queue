@@ -42,7 +42,6 @@ export class Queue {
             metaData: JSON.stringify({ faileAttempts: 0, errors: [] }),
             active: FALSE,
             created: new Date().toISOString(),
-            success: FALSE,
             failed: undefined,
             workerName,
             attempts,

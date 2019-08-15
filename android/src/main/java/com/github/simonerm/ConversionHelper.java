@@ -35,7 +35,6 @@ public class ConversionHelper {
         job.setPayload(jobAsMap.getString("payload"));
         job.setAttempts(jobAsMap.getInt("attempts"));
         job.setMetaData(jobAsMap.getString("metaData"));
-        job.setSuccess(jobAsMap.getInt("success"));
         job.setTimeout(jobAsMap.getInt("timeout"));
         job.setPriority(jobAsMap.getInt("priority"));
         job.setCreated(jobAsMap.getString("created"));
@@ -54,7 +53,6 @@ public class ConversionHelper {
         jobAsBundle.putString("payload",job.getPayload());
         jobAsBundle.putString("metaData",job.getMetaData());
         jobAsBundle.putInt("attempts",job.getAttempts());
-        jobAsBundle.putInt("success",job.getSuccess());
         jobAsBundle.putInt("timeout",job.getTimeout());
         jobAsBundle.putInt("priority",job.getPriority());
         jobAsBundle.putString("created",job.getCreated());

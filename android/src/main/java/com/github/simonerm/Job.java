@@ -26,8 +26,6 @@ public class Job {
 
     private String created;
 
-    private int success;
-
     private int timeout;
 
     private int priority;
@@ -80,14 +78,6 @@ public class Job {
 
     public void setCreated(String created) {
         this.created = created;
-    }
-
-    public int getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(int success) {
-        this.success = success;
     }
 
     public int getTimeout() {

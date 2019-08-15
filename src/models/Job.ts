@@ -6,8 +6,7 @@ export interface Job {
     metaData: string;
     attempts: number;
     created: string;
-    success: Bool;
-    failed?: string;
+    failed: string;
     timeout: number;
     priority: number;
 }
