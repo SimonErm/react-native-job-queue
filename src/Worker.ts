@@ -1,25 +1,33 @@
 import { Job } from './models/Job';
 
+export interface WorkerOptions {
+    onStart?: (job: Job) => void;
+    onSuccess?: (job: Job) => void;
+    onFailure?: (job: Job, error: Error) => void;
+    onCompletion?: (job: Job) => void;
+    concurrency?: number;
+}
 export class Worker {
     public readonly name: string;
     public readonly concurrency: number;
 
     private executionCount: number;
     private runner: (payload: any) => Promise<any>;
+
     private onStart: (job: Job) => void;
     private onSuccess: (job: Job) => void;
     private onFailure: (job: Job, error: Error) => void;
     private onCompletion: (job: Job) => void;
 
-    constructor(
-        name: string,
-        runner: (payload: any) => Promise<any>,
-        conccurency: number = 5,
-        onSuccess = (job: Job) => {},
-        onFailure = (job: Job, error: Error) => {},
-        onCompletion = (job: Job) => {}
-    ) {
+    constructor(name: string, runner: (payload: any) => Promise<any>, options: WorkerOptions = {}) {
+        const {
             onStart = (job: Job) => {},
+            onSuccess = (job: Job) => {},
+            onFailure = (job: Job, error: Error) => {},
+            onCompletion = (job: Job) => {},
+            concurrency = 5
+        } = options;
+
         this.name = name;
         this.concurrency = concurrency;
 
