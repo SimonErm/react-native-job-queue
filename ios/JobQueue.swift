@@ -6,6 +6,7 @@ public class JobQueue:NSObject{
     
     public override init() {
         let db: SQLiteDatabase
+        super.init()
         do {
             var path = try FileManager.default.url(for:.libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true);
             path.appendPathComponent("jobdb")
