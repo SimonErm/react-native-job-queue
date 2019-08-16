@@ -103,11 +103,13 @@ export class Queue {
         }
     }
 
-    async start() {
-        this.isActive = true;
-        this.executedJobs = [];
+    start() {
+        if (!this.isActive) {
+            this.isActive = true;
+            this.executedJobs = [];
 
-        this.intervalId = setInterval(this.runQueue, this.updateInterval);
+            this.intervalId = setInterval(this.runQueue, this.updateInterval);
+        }
     }
 
     stop() {
