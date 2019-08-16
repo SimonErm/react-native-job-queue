@@ -156,7 +156,7 @@ export class Queue {
     private async getJobsForAlternateWorker() {
         for (const workerName of Object.keys(this.workers)) {
             const { isBusy, availableExecuters } = this.workers[workerName];
-            let nextJobs:Job[]=[]
+            let nextJobs: Job[] = [];
             if (!isBusy) {
                 nextJobs = await this.jobStore.getJobsForWorker(workerName, availableExecuters);
             }
