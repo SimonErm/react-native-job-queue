@@ -53,6 +53,10 @@ export class Queue {
         return this.workers;
     }
 
+    async getJobs() {
+        return await this.jobStore.getJobs();
+    }
+
     configure(options: QueueOptions) {
         const { onQueueFinish = (executedJobs: Job[]) => {}, updateInterval = 10 } = options;
         this.onQueueFinish = onQueueFinish;

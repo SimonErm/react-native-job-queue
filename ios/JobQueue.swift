@@ -91,6 +91,21 @@ public class JobQueue:NSObject{
             
         }
     }
+    @objc
+    public func getJobs(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock){
+        if(db != nil){
+            if let jobs =  db?.getJobs(){
+                var jobsAsDictionaryArray=[[String:Any]]()
+                for job in jobs{
+                    jobsAsDictionaryArray.append(job.toDictionary())
+                }
+                resolve(jobsAsDictionaryArray)
+            }else{
+                resolve([[String:Any]]())
+            }
+            
+        }
+    }
     @objc static func requiresMainQueueSetup() -> Bool {
         return false
     }

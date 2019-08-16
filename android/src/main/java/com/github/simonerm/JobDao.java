@@ -16,6 +16,9 @@ public interface JobDao {
     @Query("SELECT * FROM job WHERE active == 0 AND failed == '' ORDER BY priority,datetime(created) LIMIT 1")
     Job getNextJob();
 
+    @Query("SELECT * FROM job WHERE active == 0 AND failed == '' ORDER BY priority,datetime(created)")
+    List<Job> getJobs();
+
     @Query("SELECT * FROM job WHERE active == 0 AND failed == '' AND worker_name == :workerName ORDER BY priority,datetime(created) LIMIT :limit")
     List<Job> getJobsForWorker(String workerName, int limit);
 

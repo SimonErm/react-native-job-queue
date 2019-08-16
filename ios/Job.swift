@@ -146,6 +146,24 @@ extension SQLiteDatabase {
         
         return jobs
     }
+    func getJobs() -> [Job]? {
+        let querySql = "SELECT * FROM job WHERE active == 0 AND failed == '' AND ORDER BY priority,datetime(created);"
+        guard let queryStatement = try? prepareStatement(sql: querySql) else {
+            return nil
+        }
+        defer {
+            sqlite3_finalize(queryStatement)
+        }
+        
+        var jobs = [Job]()
+        while(sqlite3_step(queryStatement) == SQLITE_ROW){
+            if let job=mapColumnsToJob(sqlStatement: queryStatement){
+                jobs.append(job)
+            }
+        }
+        
+        return jobs
+    }
     
     func delete(job: Job) throws{
         let querySql = "DELETE FROM Job WHERE id = ?;"
