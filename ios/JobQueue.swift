@@ -91,6 +91,7 @@ public class JobQueue:NSObject{
             
         }
     }
+    
     @objc
     public func getJobs(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock){
         if(db != nil){
