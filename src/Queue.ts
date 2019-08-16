@@ -45,6 +45,10 @@ export class Queue {
         }
     }
 
+    get isRunning() {
+        return this.isActive;
+    }
+
     get registeredWorkers() {
         return this.workers;
     }
