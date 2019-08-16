@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "description": "TODO",
   "react-native": "src/index.ts",
-  "types": "lib/typescript/src/index.d.ts",
+  "types": "lib/typescript/src",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
   "scripts": {
