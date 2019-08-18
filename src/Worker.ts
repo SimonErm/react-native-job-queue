@@ -12,14 +12,14 @@ export class Worker {
     public readonly concurrency: number;
 
     private executionCount: number;
-    private runner: (payload: any) => Promise<any>;
+    private executer: (payload: any) => Promise<any>;
 
     private onStart: (job: Job) => void;
     private onSuccess: (job: Job) => void;
     private onFailure: (job: Job, error: Error) => void;
     private onCompletion: (job: Job) => void;
 
-    constructor(name: string, runner: (payload: any) => Promise<any>, options: WorkerOptions = {}) {
+    constructor(name: string, executer: (payload: any) => Promise<any>, options: WorkerOptions = {}) {
         const {
             onStart = (job: Job) => {},
             onSuccess = (job: Job) => {},
@@ -32,7 +32,7 @@ export class Worker {
         this.concurrency = concurrency;
 
         this.executionCount = 0;
-        this.runner = runner;
+        this.executer = executer;
 
         this.onStart = onStart;
         this.onSuccess = onSuccess;
@@ -55,7 +55,7 @@ export class Worker {
             if (timeout > 0) {
                 await this.executeWithTimeout(job, timeout);
             } else {
-                await this.runner(JSON.parse(job.payload));
+                await this.executer(JSON.parse(job.payload));
             }
             this.onSuccess(job);
         } catch (error) {
@@ -72,6 +72,6 @@ export class Worker {
                 reject(new Error(`Job ${job.id} timed out`));
             }, timeout);
         });
-        await Promise.race([timeoutPromise, this.runner(JSON.parse(job.payload))]);
+        await Promise.race([timeoutPromise, this.executer(JSON.parse(job.payload))]);
     }
 }
