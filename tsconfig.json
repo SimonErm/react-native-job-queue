@@ -22,5 +22,15 @@
     "declarationMap": true
   },
   "include": ["./src"],
-  "exclude": ["node_modules", "babel.config.js"]
+  "exclude": ["node_modules", "babel.config.js"],
+  "typedocOptions":{
+    "excludePrivate":true,
+    "readme":"none",
+    "mode":"file",
+    "theme":"markdown",
+    "ignoreCompilerErrors":true,
+    "platform":"docusaurus",
+    "out":"./docs",
+    "disableOutputCheck":true
+  }
 }

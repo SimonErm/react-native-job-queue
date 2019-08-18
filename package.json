@@ -12,7 +12,8 @@
     "validate:eslint": "eslint \"src/**/*.{js,ts,tsx}\" \"example/**/*.{js,ts,tsx}\"",
     "validate:typescript": "tsc --project ./ --noEmit",
     "test": "jest --coverage",
-    "prepare": "bob build"
+    "prepare": "bob build",
+    "typedoc":"typedoc"
   },
   "repository": {
     "type": "git",
