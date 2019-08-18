@@ -40,12 +40,22 @@ export class Worker {
         this.onCompletion = onCompletion;
     }
 
+    /**
+     * @returns true if worker runs max concurrent amout of jobs
+     */
     get isBusy() {
         return this.executionCount === this.concurrency;
     }
+    /**
+     * @returns amount of available Executers for current worker
+     */
     get availableExecuters() {
         return this.concurrency - this.executionCount;
     }
+    /**
+     * This method should not be invoked manually and is used by the queue to execute jobs
+     * @param job to be executed
+     */
     async execute(job: Job) {
         const { timeout } = job;
 

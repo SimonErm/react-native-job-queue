@@ -1,3 +1,6 @@
+/**
+ * represents native Job model
+ */
 export interface Job {
     id: string;
     workerName: string;
@@ -10,6 +13,9 @@ export interface Job {
     timeout: number;
     priority: number;
 }
+/**
+ * used to map booleans to integer since Sqlite doesn't support boolean
+ */
 export type Bool = TRUE | FALSE;
 type FALSE = 0;
 type TRUE = 1;

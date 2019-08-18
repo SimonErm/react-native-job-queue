@@ -1,5 +1,8 @@
 import { Job } from './Job';
 
+/**
+ * maps typescript to native functions
+ */
 export interface JobStore {
     addJob(job: Job): Promise<void>;
     getJobs(): Promise<Job[]>;

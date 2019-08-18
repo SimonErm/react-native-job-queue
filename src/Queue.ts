@@ -44,15 +44,21 @@ export class Queue {
             return this.queueInstance;
         }
     }
-
+    /**
+     * @returns true if the Queue is running and false otherwise
+     */
     get isRunning() {
         return this.isActive;
     }
-
+    /**
+     * @returns the workers map (readonly)
+     */
     get registeredWorkers() {
         return this.workers;
     }
-
+    /**
+     * @returns a promise that resolves all jobs that are queued and not active
+     */
     async getJobs() {
         return await this.jobStore.getJobs();
     }
@@ -62,7 +68,10 @@ export class Queue {
         this.onQueueFinish = onQueueFinish;
         this.updateInterval = updateInterval;
     }
-
+    /**
+     * adds a [[Worker]] to the queue which can execute Jobs
+     * @param worker
+     */
     addWorker(worker: Worker) {
         if (this.workers[worker.name]) {
             throw new Error(`Worker "${worker.name}" already exists.`);
@@ -70,10 +79,23 @@ export class Queue {
         this.workers[worker.name] = worker;
     }
 
+    /**
+     * removes worker from queue
+     *
+     * @param name
+     * @param [deleteRelatedJobs=false] removes all queued jobs releated to the worker if set to true
+     */
     removeWorker(name: string, deleteRelatedJobs: boolean = false) {
         delete this.workers[name];
     }
 
+    /**
+     * adds a job to the queue
+     * @param workerName name of the worker which should be used to excute the job
+     * @param [payload={}] payload which is passed as parameter to the executer
+     * @param [options={ attempts: 0, timeout: 0, priority: 0 }] options to set max attempts, a timeout and a priority
+     * @param [startQueue=true] if set to false the queue won't start automaticly when adding a job
+     */
     addJob(
         workerName: string,
         payload: any = {},
@@ -103,6 +125,9 @@ export class Queue {
         }
     }
 
+    /**
+     * starts the queue to execute queued jobs
+     */
     start() {
         if (!this.isActive) {
             this.isActive = true;
@@ -111,7 +136,9 @@ export class Queue {
             this.intervalId = setInterval(this.runQueue, this.updateInterval);
         }
     }
-
+    /**
+     * stop the queue from executing queued jobs
+     */
     stop() {
         this.isActive = false;
     }
