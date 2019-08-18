@@ -18,10 +18,10 @@ extension Job: SQLTable {
         return """
         CREATE TABLE IF NOT EXISTS Job(
         id CHAR(36) PRIMARY KEY NOT NULL,
-        workerName CHAR(255) NOT NULL,
+        worker_name CHAR(255) NOT NULL,
         active INTEGER NOT NULL,
         payload CHAR(1024),
-        metaData CHAR(1024),
+        meta_data CHAR(1024),
         attempts INTEGER NOT NULL,
         created CHAR(255),
         failed CHAR(255),
@@ -59,7 +59,7 @@ extension Job: SQLTable {
 }
 extension SQLiteDatabase {
     func add(job: Job) throws {
-        let insertSql = "INSERT INTO Job (id, workerName, active, payload, metaData, attempts, created, failed,timeout,priority) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+        let insertSql = "INSERT INTO job (id, worker_name, active, payload, meta_data, attempts, created, failed,timeout,priority) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
         let insertStatement = try prepareStatement(sql: insertSql)
         defer {
             sqlite3_finalize(insertStatement)
@@ -87,7 +87,7 @@ extension SQLiteDatabase {
         print("Successfully inserted row.")
     }
     func getJobBy(id: NSString) -> Job? {
-        let querySql = "SELECT * FROM Job WHERE id = ?;"
+        let querySql = "SELECT * FROM job WHERE id = ?;"
         guard let queryStatement = try? prepareStatement(sql: querySql) else {
             return nil
         }
@@ -124,7 +124,7 @@ extension SQLiteDatabase {
         return mapColumnsToJob(sqlStatement: queryStatement)
     }
     func getJobsForWorker(name:NSString,count:Int32) -> [Job]? {
-        let querySql = "SELECT * FROM job WHERE active == 0 AND failed == '' AND workerName == ? ORDER BY priority,datetime(created) LIMIT ?;"
+        let querySql = "SELECT * FROM job WHERE active == 0 AND failed == '' AND worker_name == ? ORDER BY priority,datetime(created) LIMIT ?;"
         guard let queryStatement = try? prepareStatement(sql: querySql) else {
             return nil
         }
@@ -166,7 +166,7 @@ extension SQLiteDatabase {
     }
     
     func delete(job: Job) throws{
-        let querySql = "DELETE FROM Job WHERE id = ?;"
+        let querySql = "DELETE FROM job WHERE id = ?;"
         guard let deleteStatement = try? prepareStatement(sql: querySql) else {
             throw SQLiteError.Prepare(message: errorMessage)
         }
@@ -203,7 +203,7 @@ extension SQLiteDatabase {
     }
     
     func update(job: Job) throws{
-        let querySql = "UPDATE Job SET active = ?, failed = ?, metaData = ?, attempts = ? WHERE id = ?;"
+        let querySql = "UPDATE job SET active = ?, failed = ?, meta_data = ?, attempts = ? WHERE id = ?;"
         guard let updateStatement = try? prepareStatement(sql: querySql) else {
             throw SQLiteError.Prepare(message: errorMessage)
         }

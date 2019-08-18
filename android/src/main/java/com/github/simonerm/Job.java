@@ -20,6 +20,7 @@ public class Job {
 
     private String payload;
 
+    @ColumnInfo(name = "meta_data")
     private String metaData;
 
     private int attempts;

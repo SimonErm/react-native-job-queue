@@ -32,12 +32,12 @@ public abstract class JobDatabase extends RoomDatabase {
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
-            database.execSQL(" CREATE TABLE IF NOT EXISTS Job(" +
+            database.execSQL(" CREATE TABLE IF NOT EXISTS job(" +
                     "id CHAR(36) PRIMARY KEY NOT NULL," +
-                    "workerName CHAR(255) NOT NULL," +
+                    "worker_name CHAR(255) NOT NULL," +
                     "active INTEGER NOT NULL," +
                     "payload CHAR(1024)," +
-                    "metaData CHAR(1024)," +
+                    "meta_data CHAR(1024)," +
                     "attempts INTEGER NOT NULL," +
                     "created CHAR(255)," +
                     "failed CHAR(255)," +
