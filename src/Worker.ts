@@ -66,7 +66,7 @@ export class Worker {
             this.onCompletion(job);
         }
     }
-    async executeWithTimeout(job: Job, timeout: number) {
+    private async executeWithTimeout(job: Job, timeout: number) {
         const timeoutPromise = new Promise((resolve, reject) => {
             setTimeout(() => {
                 reject(new Error(`Job ${job.id} timed out`));
