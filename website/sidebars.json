@@ -1,0 +1,17 @@
+{
+  "react-native-job-queue": {
+    "Introduction": [
+      "index"
+    ],
+    "Classes": [
+      "classes/queue",
+      "classes/worker"
+    ],
+    "Interfaces": [
+      "interfaces/job",
+      "interfaces/jobstore",
+      "interfaces/queueoptions",
+      "interfaces/workeroptions"
+    ]
+  }
+}
