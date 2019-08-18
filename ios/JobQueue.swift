@@ -46,6 +46,16 @@ public class JobQueue:NSObject{
         }
     }
     @objc
+    public func removeJobsByWorkerName(_ workerName:String){
+        if(db != nil){
+            do{
+                try db?.deleteJobsByWorkerName(workerName:workerName as NSString)
+            }catch{
+                print("Couln't remove job Job to Database: ",error)
+            }
+        }
+    }
+    @objc
     public func updateJob(_ job:[String:Any]){
         if(db != nil){
             do{

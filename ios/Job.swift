@@ -183,6 +183,24 @@ extension SQLiteDatabase {
             throw SQLiteError.Step(message: errorMessage)
         }
     }
+    func deleteJobsByWorkerName(workerName: NSString) throws{
+        let querySql = "DELETE FROM job WHERE worker_name = ?;"
+        guard let deleteStatement = try? prepareStatement(sql: querySql) else {
+            throw SQLiteError.Prepare(message: errorMessage)
+        }
+        
+        defer {
+            sqlite3_finalize(deleteStatement)
+        }
+        
+        guard sqlite3_bind_text(deleteStatement, 1, workerName.utf8String,-1,nil) == SQLITE_OK else {
+            throw SQLiteError.Bind(message: errorMessage)
+        }
+        
+        guard sqlite3_step(deleteStatement) == SQLITE_DONE else {
+            throw SQLiteError.Step(message: errorMessage)
+        }
+    }
     
     func update(job: Job) throws{
         let querySql = "UPDATE Job SET active = ?, failed = ?, metaData = ?, attempts = ? WHERE id = ?;"

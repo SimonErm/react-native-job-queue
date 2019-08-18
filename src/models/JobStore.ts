@@ -10,5 +10,6 @@ export interface JobStore {
     getJobsForWorker(name: string, count: number): Promise<Job[]>;
     updateJob(job: Job): void;
     removeJob(job: Job): void;
+    removeJobsByWorkerName(workerName: string): void;
     deleteAllJobs(): Promise<void>;
 }

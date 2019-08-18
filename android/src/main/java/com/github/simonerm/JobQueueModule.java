@@ -44,6 +44,12 @@ public class JobQueueModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void removeJobsByWorkerName(String workerName) {
+        JobDao dao = JobDatabase.getAppDatabase(this.reactContext).jobDao();
+        dao.deleteJobsByWorkerName(workerName);
+    }
+
+    @ReactMethod
     public void getJobById(String id, Promise promise) {
         JobDao dao = JobDatabase.getAppDatabase(this.reactContext).jobDao();
         Job job = dao.findById(id);

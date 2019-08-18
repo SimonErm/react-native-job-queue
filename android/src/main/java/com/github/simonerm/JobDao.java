@@ -36,4 +36,7 @@ public interface JobDao {
 
     @Delete
     void delete(Job job);
+
+    @Query("DELETE FROM job WHERE worker_name == :workerName")
+    void deleteJobsByWorkerName(String workerName);
 }

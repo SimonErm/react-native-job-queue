@@ -87,6 +87,9 @@ export class Queue {
      */
     removeWorker(name: string, deleteRelatedJobs: boolean = false) {
         delete this.workers[name];
+        if (deleteRelatedJobs) {
+            this.jobStore.removeJobsByWorkerName(name);
+        }
     }
 
     /**
