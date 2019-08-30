@@ -439,7 +439,6 @@ website/node_modules
 website/i18n/*
 
 example/
-src/
 website/
 .dockerignore
 .gitattributes
