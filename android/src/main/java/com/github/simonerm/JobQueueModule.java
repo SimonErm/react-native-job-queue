@@ -57,7 +57,7 @@ public class JobQueueModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getJobs(String id, Promise promise) {
+    public void getJobs(Promise promise) {
         JobDao dao = JobDatabase.getAppDatabase(this.reactContext).jobDao();
 
         List<Job> jobs=dao.getJobs();
