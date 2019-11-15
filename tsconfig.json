@@ -25,6 +25,7 @@
   "exclude": ["node_modules", "babel.config.js"],
   "typedocOptions":{
     "excludePrivate":true,
+    "exclude": ["**/*.test.ts"],
     "readme":"none",
     "mode":"file",
     "theme":"markdown",
