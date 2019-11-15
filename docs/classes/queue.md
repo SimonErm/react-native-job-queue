@@ -6,6 +6,24 @@ sidebar_label: Queue
 
 [Queue](queue.md) /
 
+## Usage
+
+```typescript
+import queue from 'react-native-job-queue'
+
+queue.configure({onQueueFinish:(executedJobs:Job[])=>{
+     console.log("Queue stopped and executed",executedJobs)
+}});
+queue.addWorker(new Worker("testWorker",async(payload)=>{
+     return new Promise((resolve) => {
+     setTimeout(() => {
+         console.log(payload.text);
+         resolve();
+     }, payload.delay);});
+}))
+queue.addJob("testWorker",{text:"Job example palyoad content text",delay:5000})
+```
+
 ## Hierarchy
 
 * **Queue**
@@ -34,7 +52,7 @@ sidebar_label: Queue
 
 • **get isRunning**(): *boolean*
 
-*Defined in [Queue.ts:50](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Queue.ts#L50)*
+*Defined in [Queue.ts:79](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L79)*
 
 **Returns:** *boolean*
 
@@ -46,7 +64,7 @@ ___
 
 • **get registeredWorkers**(): *object*
 
-*Defined in [Queue.ts:56](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Queue.ts#L56)*
+*Defined in [Queue.ts:85](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L85)*
 
 **Returns:** *object*
 
@@ -60,7 +78,7 @@ ___
 
 • **get instance**(): *[Queue](queue.md)*
 
-*Defined in [Queue.ts:39](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Queue.ts#L39)*
+*Defined in [Queue.ts:68](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L68)*
 
 **Returns:** *[Queue](queue.md)*
 
@@ -70,7 +88,7 @@ ___
 
 ▸ **addJob**(`workerName`: string, `payload`: any, `options`: object, `startQueue`: boolean): *void*
 
-*Defined in [Queue.ts:102](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Queue.ts#L102)*
+*Defined in [Queue.ts:131](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L131)*
 
 adds a job to the queue
 
@@ -104,11 +122,8 @@ ___
 
 ▸ **addWorker**(`worker`: [Worker](worker.md)): *void*
 
-*Defined in [Queue.ts:78](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Queue.ts#L78)*
+*Defined in [Queue.ts:104](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L104)*
 
-```typescript
-queue.addWorker(new Worker("test"))
-```
 adds a [Worker](worker.md) to the queue which can execute Jobs
 
 **Parameters:**
@@ -125,7 +140,7 @@ ___
 
 ▸ **configure**(`options`: [QueueOptions](../interfaces/queueoptions.md)): *void*
 
-*Defined in [Queue.ts:66](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Queue.ts#L66)*
+*Defined in [Queue.ts:95](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L95)*
 
 **Parameters:**
 
@@ -141,7 +156,7 @@ ___
 
 ▸ **getJobs**(): *`Promise<Job[]>`*
 
-*Defined in [Queue.ts:62](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Queue.ts#L62)*
+*Defined in [Queue.ts:91](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L91)*
 
 **Returns:** *`Promise<Job[]>`*
 
@@ -153,7 +168,7 @@ ___
 
 ▸ **removeWorker**(`name`: string, `deleteRelatedJobs`: boolean): *void*
 
-*Defined in [Queue.ts:91](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Queue.ts#L91)*
+*Defined in [Queue.ts:117](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L117)*
 
 removes worker from queue
 
@@ -172,7 +187,7 @@ ___
 
 ▸ **start**(): *void*
 
-*Defined in [Queue.ts:134](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Queue.ts#L134)*
+*Defined in [Queue.ts:163](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L163)*
 
 starts the queue to execute queued jobs
 
@@ -184,7 +199,7 @@ ___
 
 ▸ **stop**(): *void*
 
-*Defined in [Queue.ts:145](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Queue.ts#L145)*
+*Defined in [Queue.ts:174](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L174)*
 
 stop the queue from executing queued jobs
 

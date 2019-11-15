@@ -26,7 +26,7 @@ sidebar_label: WorkerOptions
 
 • **concurrency**? : *undefined | number*
 
-*Defined in [Worker.ts:8](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Worker.ts#L8)*
+*Defined in [Worker.ts:8](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L8)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **onCompletion**? : *undefined | function*
 
-*Defined in [Worker.ts:7](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Worker.ts#L7)*
+*Defined in [Worker.ts:7](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L7)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **onFailure**? : *undefined | function*
 
-*Defined in [Worker.ts:6](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Worker.ts#L6)*
+*Defined in [Worker.ts:6](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L6)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **onStart**? : *undefined | function*
 
-*Defined in [Worker.ts:4](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Worker.ts#L4)*
+*Defined in [Worker.ts:4](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L4)*
 
 ___
 
@@ -58,4 +58,4 @@ ___
 
 • **onSuccess**? : *undefined | function*
 
-*Defined in [Worker.ts:5](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Worker.ts#L5)*
+*Defined in [Worker.ts:5](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L5)*

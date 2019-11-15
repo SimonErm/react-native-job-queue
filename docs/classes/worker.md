@@ -29,21 +29,20 @@ sidebar_label: Worker
 ### Methods
 
 * [execute](worker.md#execute)
-* [executeWithTimeout](worker.md#executewithtimeout)
 
 ## Constructors
 
 ###  constructor
 
-\+ **new Worker**(`name`: string, `runner`: function, `options`: [WorkerOptions](../interfaces/workeroptions.md)): *[Worker](worker.md)*
+\+ **new Worker**(`name`: string, `executer`: function, `options`: [WorkerOptions](../interfaces/workeroptions.md)): *[Worker](worker.md)*
 
-*Defined in [Worker.ts:20](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Worker.ts#L20)*
+*Defined in [Worker.ts:20](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L20)*
 
 **Parameters:**
 
 ▪ **name**: *string*
 
-▪ **runner**: *function*
+▪ **executer**: *function*
 
 ▸ (`payload`: any): *`Promise<any>`*
 
@@ -63,7 +62,7 @@ Name | Type |
 
 • **concurrency**: *number*
 
-*Defined in [Worker.ts:12](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Worker.ts#L12)*
+*Defined in [Worker.ts:12](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L12)*
 
 ___
 
@@ -71,7 +70,7 @@ ___
 
 • **name**: *string*
 
-*Defined in [Worker.ts:11](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Worker.ts#L11)*
+*Defined in [Worker.ts:11](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L11)*
 
 ## Accessors
 
@@ -79,9 +78,11 @@ ___
 
 • **get availableExecuters**(): *number*
 
-*Defined in [Worker.ts:46](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Worker.ts#L46)*
+*Defined in [Worker.ts:52](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L52)*
 
 **Returns:** *number*
+
+amount of available Executers for current worker
 
 ___
 
@@ -89,9 +90,11 @@ ___
 
 • **get isBusy**(): *boolean*
 
-*Defined in [Worker.ts:43](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Worker.ts#L43)*
+*Defined in [Worker.ts:46](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L46)*
 
 **Returns:** *boolean*
+
+true if worker runs max concurrent amout of jobs
 
 ## Methods
 
@@ -99,29 +102,14 @@ ___
 
 ▸ **execute**(`job`: [Job](../interfaces/job.md)): *`Promise<void>`*
 
-*Defined in [Worker.ts:49](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Worker.ts#L49)*
+*Defined in [Worker.ts:59](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L59)*
+
+This method should not be invoked manually and is used by the queue to execute jobs
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`job` | [Job](../interfaces/job.md) |
-
-**Returns:** *`Promise<void>`*
-
-___
-
-###  executeWithTimeout
-
-▸ **executeWithTimeout**(`job`: [Job](../interfaces/job.md), `timeout`: number): *`Promise<void>`*
-
-*Defined in [Worker.ts:69](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Worker.ts#L69)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`job` | [Job](../interfaces/job.md) |
-`timeout` | number |
+Name | Type | Description |
+------ | ------ | ------ |
+`job` | [Job](../interfaces/job.md) | to be executed  |
 
 **Returns:** *`Promise<void>`*

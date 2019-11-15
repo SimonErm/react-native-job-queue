@@ -6,6 +6,8 @@ sidebar_label: JobStore
 
 [JobStore](jobstore.md) /
 
+maps typescript to native functions
+
 ## Hierarchy
 
 * **JobStore**
@@ -20,6 +22,7 @@ sidebar_label: JobStore
 * [getJobsForWorker](jobstore.md#getjobsforworker)
 * [getNextJob](jobstore.md#getnextjob)
 * [removeJob](jobstore.md#removejob)
+* [removeJobsByWorkerName](jobstore.md#removejobsbyworkername)
 * [updateJob](jobstore.md#updatejob)
 
 ## Methods
@@ -28,7 +31,7 @@ sidebar_label: JobStore
 
 ▸ **addJob**(`job`: [Job](job.md)): *`Promise<void>`*
 
-*Defined in [models/JobStore.ts:4](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/models/JobStore.ts#L4)*
+*Defined in [models/JobStore.ts:7](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L7)*
 
 **Parameters:**
 
@@ -44,7 +47,7 @@ ___
 
 ▸ **deleteAllJobs**(): *`Promise<void>`*
 
-*Defined in [models/JobStore.ts:10](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/models/JobStore.ts#L10)*
+*Defined in [models/JobStore.ts:14](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L14)*
 
 **Returns:** *`Promise<void>`*
 
@@ -54,7 +57,7 @@ ___
 
 ▸ **getJobs**(): *`Promise<Job[]>`*
 
-*Defined in [models/JobStore.ts:5](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/models/JobStore.ts#L5)*
+*Defined in [models/JobStore.ts:8](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L8)*
 
 **Returns:** *`Promise<Job[]>`*
 
@@ -64,7 +67,7 @@ ___
 
 ▸ **getJobsForWorker**(`name`: string, `count`: number): *`Promise<Job[]>`*
 
-*Defined in [models/JobStore.ts:7](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/models/JobStore.ts#L7)*
+*Defined in [models/JobStore.ts:10](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L10)*
 
 **Parameters:**
 
@@ -81,7 +84,7 @@ ___
 
 ▸ **getNextJob**(): *`Promise<Job>`*
 
-*Defined in [models/JobStore.ts:6](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/models/JobStore.ts#L6)*
+*Defined in [models/JobStore.ts:9](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L9)*
 
 **Returns:** *`Promise<Job>`*
 
@@ -91,7 +94,7 @@ ___
 
 ▸ **removeJob**(`job`: [Job](job.md)): *void*
 
-*Defined in [models/JobStore.ts:9](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/models/JobStore.ts#L9)*
+*Defined in [models/JobStore.ts:12](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L12)*
 
 **Parameters:**
 
@@ -103,11 +106,27 @@ Name | Type |
 
 ___
 
+###  removeJobsByWorkerName
+
+▸ **removeJobsByWorkerName**(`workerName`: string): *void*
+
+*Defined in [models/JobStore.ts:13](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L13)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`workerName` | string |
+
+**Returns:** *void*
+
+___
+
 ###  updateJob
 
 ▸ **updateJob**(`job`: [Job](job.md)): *void*
 
-*Defined in [models/JobStore.ts:8](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/models/JobStore.ts#L8)*
+*Defined in [models/JobStore.ts:11](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L11)*
 
 **Parameters:**
 

@@ -5,6 +5,7 @@
     ],
     "Classes": [
       "classes/queue",
+      "classes/uuid",
       "classes/worker"
     ],
     "Interfaces": [

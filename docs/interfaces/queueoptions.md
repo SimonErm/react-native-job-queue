@@ -6,6 +6,8 @@ sidebar_label: QueueOptions
 
 [QueueOptions](queueoptions.md) /
 
+Options to configure the queue
+
 ## Hierarchy
 
 * **QueueOptions**
@@ -23,7 +25,11 @@ sidebar_label: QueueOptions
 
 • **onQueueFinish**? : *undefined | function*
 
-*Defined in [Queue.ts:9](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Queue.ts#L9)*
+*Defined in [Queue.ts:16](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L16)*
+
+A callback function which is called after the queue has been stopped
+
+**`parameter`** executedJobs
 
 ___
 
@@ -31,4 +37,6 @@ ___
 
 • **updateInterval**? : *undefined | number*
 
-*Defined in [Queue.ts:10](https://github.com/SimonErm/react-native-job-queue/blob/ff11380/src/Queue.ts#L10)*
+*Defined in [Queue.ts:20](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L20)*
+
+Interval in which the queue checks for new jobs to execute
