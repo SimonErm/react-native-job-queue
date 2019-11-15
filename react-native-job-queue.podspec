@@ -15,6 +15,7 @@ Pod::Spec.new do |s|
   s.authors      = { "Simon" => "simon_ermler@web.de" }
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/SimonErm/react-native-job-queue.git", :tag => "#{s.version}" }
+  s.swift_version = "5.0"
 
   s.source_files = "ios/**/*.{h,m,swift}"
   s.requires_arc = true
