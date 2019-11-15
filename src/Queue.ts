@@ -5,8 +5,18 @@ import { FALSE, Job } from './models/Job';
 import { JobStore } from './models/JobStore';
 import { Worker } from './Worker';
 
+/**
+ * Options to configure the queue
+ */
 export interface QueueOptions {
+    /**
+     * A callback function which is called after the queue has been stopped
+     * @parameter executedJobs
+     */
     onQueueFinish?: (executedJobs: Job[]) => void;
+    /**
+     * Interval in which the queue checks for new jobs to execute
+     */
     updateInterval?: number;
 }
 /**
