@@ -9,6 +9,25 @@ export interface QueueOptions {
     onQueueFinish?: (executedJobs: Job[]) => void;
     updateInterval?: number;
 }
+/**
+ * ## Usage
+ *
+ * ```typescript
+ * import queue from 'react-native-job-queue'
+ *
+ * queue.configure({onQueueFinish:(executedJobs:Job[])=>{
+ *      console.log("Queue stopped and executed",executedJobs)
+ * }});
+ * queue.addWorker(new Worker("testWorker",async(payload)=>{
+ *      return new Promise((resolve) => {
+ *      setTimeout(() => {
+ *          console.log(payload.text);
+ *          resolve();
+ *      }, payload.delay);});
+ * }))
+ * queue.addJob("testWorker",{text:"Job example palyoad content text",delay:5000})
+ * ```
+ */
 export class Queue {
     private static queueInstance: Queue | null;
 
