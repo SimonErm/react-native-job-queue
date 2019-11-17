@@ -1,8 +1,8 @@
 import { NativeModules } from 'react-native';
-import uuid from 'react-native-uuid';
 
 import { FALSE, Job } from './models/Job';
 import { JobStore } from './models/JobStore';
+import { Uuid } from './utils/Uuid';
 import { Worker } from './Worker';
 
 /**
@@ -136,7 +136,7 @@ export class Queue {
     ) {
         const { attempts = 0, timeout = 0, priority = 0 } = options;
         const job: Job = {
-            id: uuid.v4(),
+            id: Uuid.v4(),
             payload: JSON.stringify(payload),
             metaData: JSON.stringify({ faileAttempts: 0, errors: [] }),
             active: FALSE,
