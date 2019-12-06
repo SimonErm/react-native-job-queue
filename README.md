@@ -10,7 +10,7 @@ You can find API-Reference [here](https://simonerm.github.io/react-native-job-qu
 
 ## Getting started (RN>=0.60)
 
-`$ npm install react-native-job-queue@git+https://git@github.com/SimonErm/react-native-job-queue.git --save`
+`$ npm install react-native-job-queue --save`
 
 ### Install Pods
 
