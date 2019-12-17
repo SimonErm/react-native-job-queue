@@ -4,5 +4,5 @@ module.exports = {
         '\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js'
     },
     testPathIgnorePatterns: ['<rootDir>/lib/', '<rootDir>/node_modules/', '<rootDir>/example/'],
-    setupFilesAfterEnv: ['<rootDir>/jest.setup.js']
+    setupFilesAfterEnv: ['<rootDir>/jest.setup.ts']
 };
