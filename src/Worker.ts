@@ -1,30 +1,40 @@
-import { Job } from './models/Job';
+import { Job, RawJob } from './models/Job';
 
-export interface WorkerOptions {
-    onStart?: (job: Job) => void;
-    onSuccess?: (job: Job) => void;
-    onFailure?: (job: Job, error: Error) => void;
-    onCompletion?: (job: Job) => void;
+export interface WorkerOptions<P extends object> {
+    onStart?: (job: Job<P>) => void;
+    onSuccess?: (job: Job<P>) => void;
+    onFailure?: (job: Job<P>, error: Error) => void;
+    onCompletion?: (job: Job<P>) => void;
     concurrency?: number;
 }
-export class Worker {
+/**
+ * @typeparam P specifies the Type of the Job-Payload.
+ */
+export class Worker<P extends object> {
     public readonly name: string;
     public readonly concurrency: number;
 
     private executionCount: number;
-    private executer: (payload: any) => Promise<any>;
+    private executer: (payload: P) => Promise<any>;
 
-    private onStart: (job: Job) => void;
-    private onSuccess: (job: Job) => void;
-    private onFailure: (job: Job, error: Error) => void;
-    private onCompletion: (job: Job) => void;
+    private onStart: (job: Job<P>) => void;
+    private onSuccess: (job: Job<P>) => void;
+    private onFailure: (job: Job<P>, error: Error) => void;
+    private onCompletion: (job: Job<P>) => void;
 
-    constructor(name: string, executer: (payload: any) => Promise<any>, options: WorkerOptions = {}) {
+    /**
+     *
+     * @typeparam P specifies the type of the job-payload.
+     * @param name of worker
+     * @param executer function to run jobs
+     * @param options to configure worker
+     */
+    constructor(name: string, executer: (payload: P) => Promise<any>, options: WorkerOptions<P> = {}) {
         const {
-            onStart = (job: Job) => {},
-            onSuccess = (job: Job) => {},
-            onFailure = (job: Job, error: Error) => {},
-            onCompletion = (job: Job) => {},
+            onStart = (job: Job<P>) => {},
+            onSuccess = (job: Job<P>) => {},
+            onFailure = (job: Job<P>, error: Error) => {},
+            onCompletion = (job: Job<P>) => {},
             concurrency = 5
         } = options;
 
@@ -56,16 +66,17 @@ export class Worker {
      * This method should not be invoked manually and is used by the queue to execute jobs
      * @param job to be executed
      */
-    async execute(job: Job) {
-        const { timeout } = job;
-
+    async execute(rawJob: RawJob) {
+        const { timeout } = rawJob;
+        const payload: P = JSON.parse(rawJob.payload);
+        const job = { ...rawJob, ...{ payload } };
         this.executionCount++;
         try {
             this.onStart(job);
             if (timeout > 0) {
                 await this.executeWithTimeout(job, timeout);
             } else {
-                await this.executer(JSON.parse(job.payload));
+                await this.executer(payload);
             }
             this.onSuccess(job);
         } catch (error) {
@@ -76,12 +87,12 @@ export class Worker {
             this.onCompletion(job);
         }
     }
-    private async executeWithTimeout(job: Job, timeout: number) {
+    private async executeWithTimeout(job: Job<P>, timeout: number) {
         const timeoutPromise = new Promise((resolve, reject) => {
             setTimeout(() => {
                 reject(new Error(`Job ${job.id} timed out`));
             }, timeout);
         });
-        await Promise.race([timeoutPromise, this.executer(JSON.parse(job.payload))]);
+        await Promise.race([timeoutPromise, this.executer(job.payload)]);
     }
 }

@@ -13,7 +13,7 @@ export interface QueueOptions {
      * A callback function which is called after the queue has been stopped
      * @parameter executedJobs
      */
-    onQueueFinish?: (executedJobs: Job[]) => void;
+    onQueueFinish?: (executedJobs: Array<Job<any>>) => void;
     /**
      * Interval in which the queue checks for new jobs to execute
      */
@@ -42,15 +42,15 @@ export class Queue {
     private static queueInstance: Queue | null;
 
     private jobStore: JobStore;
-    private workers: { [key: string]: Worker };
+    private workers: { [key: string]: Worker<any> };
     private isActive: boolean;
 
     private timeoutId: number;
-    private executedJobs: Job[];
+    private executedJobs: Array<Job<any>>;
     private activeJobCount: number;
 
     private updateInterval: number;
-    private onQueueFinish: (executedJobs: Job[]) => void;
+    private onQueueFinish: (executedJobs: Array<Job<any>>) => void;
 
     private constructor() {
         this.jobStore = NativeModules.JobQueue;
@@ -62,7 +62,7 @@ export class Queue {
         this.activeJobCount = 0;
 
         this.updateInterval = 10;
-        this.onQueueFinish = (executedJobs: Job[]) => {};
+        this.onQueueFinish = (executedJobs: Array<Job<any>>) => {};
     }
 
     static get instance() {
@@ -93,7 +93,7 @@ export class Queue {
     }
 
     configure(options: QueueOptions) {
-        const { onQueueFinish = (executedJobs: Job[]) => {}, updateInterval = 10 } = options;
+        const { onQueueFinish = (executedJobs: Array<Job<any>>) => {}, updateInterval = 10 } = options;
         this.onQueueFinish = onQueueFinish;
         this.updateInterval = updateInterval;
     }
@@ -101,7 +101,7 @@ export class Queue {
      * adds a [[Worker]] to the queue which can execute Jobs
      * @param worker
      */
-    addWorker(worker: Worker) {
+    addWorker(worker: Worker<any>) {
         if (this.workers[worker.name]) {
             throw new Error(`Worker "${worker.name}" already exists.`);
         }
