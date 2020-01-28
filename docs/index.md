@@ -17,6 +17,7 @@ sidebar_label: Globals
 * [Job](interfaces/job.md)
 * [JobStore](interfaces/jobstore.md)
 * [QueueOptions](interfaces/queueoptions.md)
+* [RawJob](interfaces/rawjob.md)
 * [WorkerOptions](interfaces/workeroptions.md)
 
 ### Type aliases
@@ -36,7 +37,7 @@ sidebar_label: Globals
 
 Ƭ **Bool**: *[TRUE](index.md#true) | [FALSE](index.md#false)*
 
-*Defined in [models/Job.ts:19](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/Job.ts#L19)*
+*Defined in [models/Job.ts:34](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L34)*
 
 used to map booleans to integer since Sqlite doesn't support boolean
 
@@ -46,7 +47,7 @@ ___
 
 Ƭ **FALSE**: *`0`*
 
-*Defined in [models/Job.ts:20](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/Job.ts#L20)*
+*Defined in [models/Job.ts:35](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L35)*
 
 ___
 
@@ -54,7 +55,7 @@ ___
 
 Ƭ **TRUE**: *`1`*
 
-*Defined in [models/Job.ts:21](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/Job.ts#L21)*
+*Defined in [models/Job.ts:36](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L36)*
 
 ## Variables
 
@@ -62,7 +63,7 @@ ___
 
 • **FALSE**: *`0`* = 0
 
-*Defined in [models/Job.ts:22](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/Job.ts#L22)*
+*Defined in [models/Job.ts:37](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L37)*
 
 ___
 
@@ -70,4 +71,4 @@ ___
 
 • **TRUE**: *`1`* = 1
 
-*Defined in [models/Job.ts:23](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/Job.ts#L23)*
+*Defined in [models/Job.ts:38](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L38)*

@@ -25,7 +25,7 @@ Options to configure the queue
 
 • **onQueueFinish**? : *undefined | function*
 
-*Defined in [Queue.ts:16](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L16)*
+*Defined in [Queue.ts:16](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L16)*
 
 A callback function which is called after the queue has been stopped
 
@@ -37,6 +37,6 @@ ___
 
 • **updateInterval**? : *undefined | number*
 
-*Defined in [Queue.ts:20](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Queue.ts#L20)*
+*Defined in [Queue.ts:20](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L20)*
 
 Interval in which the queue checks for new jobs to execute
