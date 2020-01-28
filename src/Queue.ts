@@ -180,6 +180,7 @@ export class Queue {
     private runQueue = async () => {
         if (!this.isActive) {
             this.finishQueue();
+            return;
         }
         const nextJob = await this.jobStore.getNextJob();
         if (this.isJobNotEmpty(nextJob)) {
@@ -188,6 +189,7 @@ export class Queue {
             await Promise.all(processingJobs);
         } else if (!this.isExecuting()) {
             this.finishQueue();
+            return;
         }
         this.scheduleQueue();
     };
