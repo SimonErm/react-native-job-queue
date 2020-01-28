@@ -178,10 +178,10 @@ export class Queue {
         this.timeoutId = setTimeout(this.runQueue, this.updateInterval);
     }
     private runQueue = async () => {
-        const nextJob = await this.jobStore.getNextJob();
         if (!this.isActive) {
             this.finishQueue();
         }
+        const nextJob = await this.jobStore.getNextJob();
         if (this.isJobNotEmpty(nextJob)) {
             const nextJobs = await this.getJobsForWorker(nextJob.workerName);
             const processingJobs = nextJobs.map(this.excuteJob);
