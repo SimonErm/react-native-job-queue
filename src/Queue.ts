@@ -45,7 +45,7 @@ export class Queue {
     private workers: { [key: string]: Worker };
     private isActive: boolean;
 
-    private intervalId: number;
+    private timeoutId: number;
     private executedJobs: Job[];
     private activeJobCount: number;
 
@@ -57,7 +57,7 @@ export class Queue {
         this.workers = {};
         this.isActive = false;
 
-        this.intervalId = 0;
+        this.timeoutId = 0;
         this.executedJobs = [];
         this.activeJobCount = 0;
 
@@ -165,7 +165,7 @@ export class Queue {
             this.isActive = true;
             this.executedJobs = [];
 
-            this.intervalId = setInterval(this.runQueue, this.updateInterval);
+            this.scheduleQueue();
         }
     }
     /**
@@ -174,7 +174,9 @@ export class Queue {
     stop() {
         this.isActive = false;
     }
-
+    private scheduleQueue() {
+        this.timeoutId = setTimeout(this.runQueue, this.updateInterval);
+    }
     private runQueue = async () => {
         const nextJob = await this.jobStore.getNextJob();
         if (!this.isActive) {
@@ -187,6 +189,7 @@ export class Queue {
         } else if (!this.isExecuting()) {
             this.finishQueue();
         }
+        this.scheduleQueue();
     };
 
     private isJobNotEmpty(job: Job | {}) {
@@ -200,7 +203,7 @@ export class Queue {
     private finishQueue() {
         this.onQueueFinish(this.executedJobs);
         this.isActive = false;
-        clearInterval(this.intervalId);
+        clearTimeout(this.timeoutId);
     }
 
     private async getJobsForWorker(workerName: string) {
