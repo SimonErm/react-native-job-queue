@@ -128,16 +128,16 @@ export class Queue {
      * @param [options={ attempts: 0, timeout: 0, priority: 0 }] options to set max attempts, a timeout and a priority
      * @param [startQueue=true] if set to false the queue won't start automaticly when adding a job
      */
-    addJob(
+    addJob<P extends object>(
         workerName: string,
-        payload: any = {},
+        payload: P,
         options = { attempts: 0, timeout: 0, priority: 0 },
         startQueue: boolean = true
     ) {
         const { attempts = 0, timeout = 0, priority = 0 } = options;
         const job: RawJob = {
             id: Uuid.v4(),
-            payload: JSON.stringify(payload),
+            payload: JSON.stringify(payload || {}),
             metaData: JSON.stringify({ faileAttempts: 0, errors: [] }),
             active: FALSE,
             created: new Date().toISOString(),
