@@ -185,7 +185,7 @@ export class Queue {
         if (this.isJobNotEmpty(nextJob)) {
             const nextJobs = await this.getJobsForWorker(nextJob.workerName);
             const processingJobs = nextJobs.map(this.excuteJob);
-            Promise.all(processingJobs);
+            await Promise.all(processingJobs);
         } else if (!this.isExecuting()) {
             this.finishQueue();
         }
