@@ -12,6 +12,7 @@
       "interfaces/job",
       "interfaces/jobstore",
       "interfaces/queueoptions",
+      "interfaces/rawjob",
       "interfaces/workeroptions"
     ]
   }

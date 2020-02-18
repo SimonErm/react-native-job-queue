@@ -29,15 +29,15 @@ maps typescript to native functions
 
 ###  addJob
 
-▸ **addJob**(`job`: [Job](job.md)): *`Promise<void>`*
+▸ **addJob**(`job`: [RawJob](rawjob.md)): *`Promise<void>`*
 
-*Defined in [models/JobStore.ts:7](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L7)*
+*Defined in [models/JobStore.ts:7](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/JobStore.ts#L7)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`job` | [Job](job.md) |
+`job` | [RawJob](rawjob.md) |
 
 **Returns:** *`Promise<void>`*
 
@@ -47,7 +47,7 @@ ___
 
 ▸ **deleteAllJobs**(): *`Promise<void>`*
 
-*Defined in [models/JobStore.ts:14](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L14)*
+*Defined in [models/JobStore.ts:14](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/JobStore.ts#L14)*
 
 **Returns:** *`Promise<void>`*
 
@@ -55,19 +55,19 @@ ___
 
 ###  getJobs
 
-▸ **getJobs**(): *`Promise<Job[]>`*
+▸ **getJobs**(): *`Promise<RawJob[]>`*
 
-*Defined in [models/JobStore.ts:8](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L8)*
+*Defined in [models/JobStore.ts:8](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/JobStore.ts#L8)*
 
-**Returns:** *`Promise<Job[]>`*
+**Returns:** *`Promise<RawJob[]>`*
 
 ___
 
 ###  getJobsForWorker
 
-▸ **getJobsForWorker**(`name`: string, `count`: number): *`Promise<Job[]>`*
+▸ **getJobsForWorker**(`name`: string, `count`: number): *`Promise<RawJob[]>`*
 
-*Defined in [models/JobStore.ts:10](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L10)*
+*Defined in [models/JobStore.ts:10](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/JobStore.ts#L10)*
 
 **Parameters:**
 
@@ -76,31 +76,31 @@ Name | Type |
 `name` | string |
 `count` | number |
 
-**Returns:** *`Promise<Job[]>`*
+**Returns:** *`Promise<RawJob[]>`*
 
 ___
 
 ###  getNextJob
 
-▸ **getNextJob**(): *`Promise<Job>`*
+▸ **getNextJob**(): *`Promise<RawJob>`*
 
-*Defined in [models/JobStore.ts:9](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L9)*
+*Defined in [models/JobStore.ts:9](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/JobStore.ts#L9)*
 
-**Returns:** *`Promise<Job>`*
+**Returns:** *`Promise<RawJob>`*
 
 ___
 
 ###  removeJob
 
-▸ **removeJob**(`job`: [Job](job.md)): *void*
+▸ **removeJob**(`job`: [RawJob](rawjob.md)): *void*
 
-*Defined in [models/JobStore.ts:12](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L12)*
+*Defined in [models/JobStore.ts:12](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/JobStore.ts#L12)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`job` | [Job](job.md) |
+`job` | [RawJob](rawjob.md) |
 
 **Returns:** *void*
 
@@ -110,7 +110,7 @@ ___
 
 ▸ **removeJobsByWorkerName**(`workerName`: string): *void*
 
-*Defined in [models/JobStore.ts:13](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L13)*
+*Defined in [models/JobStore.ts:13](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/JobStore.ts#L13)*
 
 **Parameters:**
 
@@ -124,14 +124,14 @@ ___
 
 ###  updateJob
 
-▸ **updateJob**(`job`: [Job](job.md)): *void*
+▸ **updateJob**(`job`: [RawJob](rawjob.md)): *void*
 
-*Defined in [models/JobStore.ts:11](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/models/JobStore.ts#L11)*
+*Defined in [models/JobStore.ts:11](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/JobStore.ts#L11)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`job` | [Job](job.md) |
+`job` | [RawJob](rawjob.md) |
 
 **Returns:** *void*

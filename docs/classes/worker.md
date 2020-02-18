@@ -6,6 +6,12 @@ sidebar_label: Worker
 
 [Worker](worker.md) /
 
+## Type parameters
+
+▪ **P**: *object*
+
+specifies the Type of the Job-Payload.
+
 ## Hierarchy
 
 * **Worker**
@@ -34,25 +40,33 @@ sidebar_label: Worker
 
 ###  constructor
 
-\+ **new Worker**(`name`: string, `executer`: function, `options`: [WorkerOptions](../interfaces/workeroptions.md)): *[Worker](worker.md)*
+\+ **new Worker**(`name`: string, `executer`: function, `options`: [WorkerOptions](../interfaces/workeroptions.md)‹*`P`*›): *[Worker](worker.md)*
 
-*Defined in [Worker.ts:20](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L20)*
+*Defined in [Worker.ts:23](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Worker.ts#L23)*
+
+**`typeparam`** specifies the type of the job-payload.
 
 **Parameters:**
 
 ▪ **name**: *string*
 
+of worker
+
 ▪ **executer**: *function*
 
-▸ (`payload`: any): *`Promise<any>`*
+function to run jobs
+
+▸ (`payload`: `P`): *`Promise<any>`*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`payload` | any |
+`payload` | `P` |
 
-▪`Default value`  **options**: *[WorkerOptions](../interfaces/workeroptions.md)*=  {}
+▪`Default value`  **options**: *[WorkerOptions](../interfaces/workeroptions.md)‹*`P`*›*=  {}
+
+to configure worker
 
 **Returns:** *[Worker](worker.md)*
 
@@ -62,7 +76,7 @@ Name | Type |
 
 • **concurrency**: *number*
 
-*Defined in [Worker.ts:12](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L12)*
+*Defined in [Worker.ts:15](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Worker.ts#L15)*
 
 ___
 
@@ -70,7 +84,7 @@ ___
 
 • **name**: *string*
 
-*Defined in [Worker.ts:11](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L11)*
+*Defined in [Worker.ts:14](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Worker.ts#L14)*
 
 ## Accessors
 
@@ -78,7 +92,7 @@ ___
 
 • **get availableExecuters**(): *number*
 
-*Defined in [Worker.ts:52](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L52)*
+*Defined in [Worker.ts:62](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Worker.ts#L62)*
 
 **Returns:** *number*
 
@@ -90,7 +104,7 @@ ___
 
 • **get isBusy**(): *boolean*
 
-*Defined in [Worker.ts:46](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L46)*
+*Defined in [Worker.ts:56](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Worker.ts#L56)*
 
 **Returns:** *boolean*
 
@@ -100,16 +114,16 @@ true if worker runs max concurrent amout of jobs
 
 ###  execute
 
-▸ **execute**(`job`: [Job](../interfaces/job.md)): *`Promise<void>`*
+▸ **execute**(`rawJob`: [RawJob](../interfaces/rawjob.md)): *`Promise<void>`*
 
-*Defined in [Worker.ts:59](https://github.com/SimonErm/react-native-job-queue/blob/ee4ec3d/src/Worker.ts#L59)*
+*Defined in [Worker.ts:69](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Worker.ts#L69)*
 
 This method should not be invoked manually and is used by the queue to execute jobs
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`job` | [Job](../interfaces/job.md) | to be executed  |
+Name | Type |
+------ | ------ |
+`rawJob` | [RawJob](../interfaces/rawjob.md) |
 
 **Returns:** *`Promise<void>`*
