@@ -205,6 +205,9 @@ export class Queue {
         return Object.keys(rawJob).length > 0;
     }
 
+    private isExecuterAvailable() {
+        return this.concurrency <= 0 || this.activeJobCount < this.concurrency;
+    }
     private isExecuting() {
         return this.activeJobCount > 0;
     }
