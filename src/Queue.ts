@@ -74,6 +74,8 @@ export class Queue {
     private updateInterval: number;
     private onQueueFinish: (executedJobs: Array<Job<any>>) => void;
 
+    private queuedJobExecuter: any[] = [];
+
     private constructor() {
         this.jobStore = NativeModules.JobQueue;
         this.workers = {};
@@ -192,7 +194,7 @@ export class Queue {
         const nextJob = await this.jobStore.getNextJob();
         if (this.isJobNotEmpty(nextJob)) {
             const nextJobs = await this.getJobsForWorker(nextJob.workerName);
-            const processingJobs = nextJobs.map(this.excuteJob);
+            const processingJobs = nextJobs.map(async (job) => this.limitExecution(this.excuteJob, job));
             await Promise.all(processingJobs);
         } else if (!this.isExecuting()) {
             this.finishQueue();
@@ -205,6 +207,32 @@ export class Queue {
         return Object.keys(rawJob).length > 0;
     }
 
+    private limitExecution = async (executer: (rawJob: RawJob) => Promise<void>, rawJob: RawJob) => {
+        return new Promise(async (resolve) => await this.enqueueJobExecuter(executer, resolve, rawJob));
+    };
+
+    private enqueueJobExecuter = async (
+        executer: (rawJob: RawJob) => Promise<void>,
+        resolve: () => void,
+        rawJob: RawJob
+    ) => {
+        if (this.isExecuterAvailable()) {
+            await this.runExecuter(executer, resolve, rawJob);
+        } else {
+            this.queuedJobExecuter.push(this.runExecuter.bind(null, executer, resolve, rawJob));
+        }
+    };
+
+    private runExecuter = async (executer: (rawJob: RawJob) => Promise<void>, resolve: () => void, rawJob: RawJob) => {
+        try {
+            await executer(rawJob);
+        } finally {
+            resolve();
+            if (this.queuedJobExecuter.length > 0 && this.isExecuterAvailable()) {
+                await this.queuedJobExecuter.shift()();
+            }
+        }
+    };
     private isExecuterAvailable() {
         return this.concurrency <= 0 || this.activeJobCount < this.concurrency;
     }
