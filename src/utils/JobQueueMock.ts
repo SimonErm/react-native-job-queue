@@ -4,6 +4,24 @@ import { JobStore } from '../models/JobStore';
 export class JobStoreMock implements JobStore {
     jobs: RawJob[] = [];
     constructor() {}
+
+    sortJobs(jobs: RawJob[]) {
+        // Sort by date ascending
+        jobs.sort((a, b) => {
+            if (new Date(a.created).getTime() > new Date(b.created).getTime()) {
+                return -1;
+            }
+            return 1;
+        });
+        // Sort by priority descending
+        jobs.sort((a, b) => {
+            if (a.priority > b.priority) {
+                return -1;
+            }
+            return 1;
+        });
+    }
+
     addJob(job: RawJob): Promise<void> {
         this.jobs.push(job);
         return new Promise((resolve) => resolve());
@@ -14,22 +32,12 @@ export class JobStoreMock implements JobStore {
     getNextJob(): Promise<RawJob> {
         // "SELECT * FROM job WHERE active == 0 AND failed == '' ORDER BY priority,datetime(created) LIMIT 1"
         const filtered = this.jobs.filter((job) => job.active === 0 && job.failed === '');
-        const sortedByPrior = filtered.sort((a, b) => {
-            if (a.priority > b.priority) {
-                return -1;
-            }
-            return 1;
-        });
-        const sortedByDate = sortedByPrior.sort((a, b) => {
-            if (new Date(a.created).getTime() > new Date(b.created).getTime()) {
-                return -1;
-            }
-            return 1;
-        });
-        return new Promise((resolve) => resolve(sortedByDate[0] || {}));
+        this.sortJobs(filtered);
+        return new Promise((resolve) => resolve(filtered[0] || {}));
     }
     getJobsForWorker(name: string, count: number): Promise<RawJob[]> {
         const filtered = this.jobs.filter((job) => job.workerName === name);
+        this.sortJobs(filtered);
         return new Promise((resolve) => resolve(filtered.slice(0, count)));
     }
     updateJob(rawJob: RawJob): void {
