@@ -108,7 +108,7 @@ extension SQLiteDatabase {
         return mapColumnsToJob(sqlStatement: queryStatement)
     }
     func getNextJob() -> Job? {
-        let querySql = "SELECT * FROM job WHERE active == 0 AND failed == '' ORDER BY priority,datetime(created) LIMIT 1;"
+        let querySql = "SELECT * FROM job WHERE active == 0 AND failed == '' ORDER BY priority DESC,datetime(created) LIMIT 1;"
         guard let queryStatement = try? prepareStatement(sql: querySql) else {
             return nil
         }
@@ -124,7 +124,7 @@ extension SQLiteDatabase {
         return mapColumnsToJob(sqlStatement: queryStatement)
     }
     func getJobsForWorker(name:NSString,count:Int32) -> [Job]? {
-        let querySql = "SELECT * FROM job WHERE active == 0 AND failed == '' AND worker_name == ? ORDER BY priority,datetime(created) LIMIT ?;"
+        let querySql = "SELECT * FROM job WHERE active == 0 AND failed == '' AND worker_name == ? ORDER BY priority DESC,datetime(created) LIMIT ?;"
         guard let queryStatement = try? prepareStatement(sql: querySql) else {
             return nil
         }
@@ -147,7 +147,7 @@ extension SQLiteDatabase {
         return jobs
     }
     func getJobs() -> [Job]? {
-        let querySql = "SELECT * FROM job WHERE active == 0 AND failed == '' ORDER BY priority,datetime(created);"
+        let querySql = "SELECT * FROM job WHERE active == 0 AND failed == '' ORDER BY priority DESC,datetime(created);"
         guard let queryStatement = try? prepareStatement(sql: querySql) else {
             return nil
         }
