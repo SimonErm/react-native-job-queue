@@ -40,7 +40,7 @@ extension Job: SQLTable {
                    created: job["created"] as! NSString,
                    failed: job["failed"] as! NSString,
                    timeout: job["timeout"] as! Int32,
-                   priority: job["timeout"] as! Int32)
+                   priority: job["priority"] as! Int32)
     }
     func toDictionary()->[String:Any]{
         var jobAsDictionary=[String:Any]()
