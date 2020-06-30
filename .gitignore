@@ -344,6 +344,9 @@ typings/
 
 # Log Files
 
+# IDEA
+.idea/
+
 # Android Studio
 /*/build/
 /*/local.properties
