@@ -5,23 +5,6 @@ export class JobStoreMock implements JobStore {
     jobs: RawJob[] = [];
     constructor() {}
 
-    sortJobs(jobs: RawJob[]) {
-        // Sort by date ascending
-        jobs.sort((a, b) => {
-            if (new Date(a.created).getTime() > new Date(b.created).getTime()) {
-                return -1;
-            }
-            return 1;
-        });
-        // Sort by priority descending
-        jobs.sort((a, b) => {
-            if (a.priority > b.priority) {
-                return -1;
-            }
-            return 1;
-        });
-    }
-
     addJob(job: RawJob): Promise<void> {
         this.jobs.push(job);
         return new Promise((resolve) => resolve());
@@ -57,5 +40,23 @@ export class JobStoreMock implements JobStore {
     deleteAllJobs(): Promise<void> {
         this.jobs = [];
         return new Promise((resolve) => resolve());
+    }
+    private sortJobs(jobs: RawJob[]) {
+        // Sort by date ascending
+        const sortByDate = jobs.sort((a, b) => {
+            if (new Date(a.created).getTime() > new Date(b.created).getTime()) {
+                return -1;
+            }
+            return 1;
+        });
+        // Then, sort by priority descending
+        const sortByPriority = sortByDate.sort((a, b) => {
+            if (a.priority > b.priority) {
+                return -1;
+            }
+            return 1;
+        });
+
+        return sortByPriority;
     }
 }
