@@ -19,6 +19,9 @@ public interface JobDao {
     @Query("SELECT * FROM job WHERE active == 0 AND failed == '' ORDER BY priority DESC,datetime(created)")
     List<Job> getJobs();
 
+    @Query("SELECT * FROM job WHERE active == 1 AND failed == '' AND timeout != 0 AND datetime(created, ('+' || (timeout/1000) || ' seconds')) < datetime('now')")
+    List<Job> getActiveButTimedOutJobs();
+
     @Query("SELECT * FROM job WHERE active == 0 AND failed == '' AND worker_name == :workerName ORDER BY priority DESC,datetime(created) LIMIT :limit")
     List<Job> getJobsForWorker(String workerName, int limit);
 

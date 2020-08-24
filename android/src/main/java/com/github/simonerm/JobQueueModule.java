@@ -64,6 +64,14 @@ public class JobQueueModule extends ReactContextBaseJavaModule {
         promise.resolve(ConversionHelper.getJobsAsWritableArray(jobs));
     }
 
+    @ReactMethod
+    public void getActiveButTimedOutJobs(Promise promise) {
+        JobDao dao = JobDatabase.getAppDatabase(this.reactContext).jobDao();
+
+        List<Job> jobs=dao.getActiveButTimedOutJobs();
+        promise.resolve(ConversionHelper.getJobsAsWritableArray(jobs));
+    }
+
 
     @ReactMethod
     public void getJobsForWorker(String workerName,int limit,Promise promise){

@@ -7,6 +7,7 @@ export interface JobStore {
     addJob(job: RawJob): Promise<void>;
     getJobs(): Promise<RawJob[]>;
     getNextJob(): Promise<RawJob>;
+    getActiveButTimedOutJobs(): Promise<RawJob[]>;
     getJobsForWorker(name: string, count: number): Promise<RawJob[]>;
     updateJob(job: RawJob): void;
     removeJob(job: RawJob): void;

@@ -93,6 +93,7 @@ export class Worker<P extends object> {
                 reject(new Error(`Job ${job.id} timed out`));
             }, timeout);
         });
+        // TODO: race doesn't cancel the executer
         await Promise.race([timeoutPromise, this.executer(job.payload)]);
     }
 }

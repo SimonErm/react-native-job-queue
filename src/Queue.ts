@@ -169,10 +169,12 @@ export class Queue {
     /**
      * starts the queue to execute queued jobs
      */
-    start() {
+    async start() {
         if (!this.isActive) {
             this.isActive = true;
             this.executedJobs = [];
+
+            await this.markActiveButTimeoutJobsAsFailed();
 
             this.scheduleQueue();
         }
@@ -246,6 +248,34 @@ export class Queue {
         clearTimeout(this.timeoutId);
     }
 
+    /**
+     * Sets a job to failed
+     * @param rawJob the job that has failed
+     * @param error the error why the job has failed
+     */
+    private markJobAsFailed = (rawJob: RawJob, error: Error) => {
+        const { attempts } = rawJob;
+        // tslint:disable-next-line: prefer-const
+        let { errors, failedAttempts } = JSON.parse(rawJob.metaData);
+        failedAttempts++;
+        let failed = '';
+        if (failedAttempts > attempts) {
+            failed = new Date().toISOString();
+        }
+        const metaData = JSON.stringify({ errors: [...errors, error], failedAttempts });
+        this.jobStore.updateJob({ ...rawJob, ...{ active: FALSE, metaData, failed } });
+    }
+
+    /**
+     * Gets all jobs from the store that are marked as active, haven't failed yet
+     * but have timeout already (this happens for example in cases where the app
+     * is being closed while the job was running).
+     */
+    private async markActiveButTimeoutJobsAsFailed() {
+        const timedOutJobs = await this.jobStore.getActiveButTimedOutJobs();
+        timedOutJobs.forEach((job) => this.markJobAsFailed(job, new Error("Job has timed out.")));
+    }
+
     private async getJobsForWorker(workerName: string) {
         const { isBusy, availableExecuters } = this.workers[workerName];
         if (!isBusy) {
@@ -278,16 +308,7 @@ export class Queue {
             await this.workers[rawJob.workerName].execute(rawJob);
             this.jobStore.removeJob(rawJob);
         } catch (error) {
-            const { attempts } = rawJob;
-            // tslint:disable-next-line: prefer-const
-            let { errors, failedAttempts } = JSON.parse(rawJob.metaData);
-            failedAttempts++;
-            let failed = '';
-            if (failedAttempts > attempts) {
-                failed = new Date().toISOString();
-            }
-            const metaData = JSON.stringify({ errors: [...errors, error], failedAttempts });
-            this.jobStore.updateJob({ ...rawJob, ...{ active: FALSE, metaData, failed } });
+            this.markJobAsFailed(rawJob, error);
         } finally {
             this.executedJobs.push(rawJob);
             this.activeJobCount--;
