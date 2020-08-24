@@ -146,8 +146,8 @@ extension SQLiteDatabase {
         
         return jobs
     }
-    func getJobs() -> [Job]? {
-        let querySql = "SELECT * FROM job WHERE active == 0 AND failed == '' ORDER BY priority DESC,datetime(created);"
+    
+    func executeAndReturnJobs(querySql: String) -> [Job]? {
         guard let queryStatement = try? prepareStatement(sql: querySql) else {
             return nil
         }
@@ -163,6 +163,16 @@ extension SQLiteDatabase {
         }
         
         return jobs
+    }
+    
+    func getJobs() -> [Job]? {
+        let querySql = "SELECT * FROM job WHERE active == 0 AND failed == '' ORDER BY priority DESC,datetime(created);"
+        return executeAndReturnJobs(querySql: querySql)
+    }
+    
+    func getActiveButTimedOutJobs() -> [Job]? {
+        let querySql = "SELECT * FROM job WHERE active == 1 AND failed == '' AND timeout != 0 AND datetime(created, ('+' || (timeout/1000) || ' seconds')) < datetime('now');"
+        return executeAndReturnJobs(querySql: querySql)
     }
     
     func delete(job: Job) throws{

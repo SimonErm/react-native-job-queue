@@ -102,21 +102,38 @@ public class JobQueue:NSObject{
         }
     }
     
+    func getJobsAsDicArray(resolver: () -> [Job]?) -> [[String: Any]] {
+        if let jobs =  resolver(){
+            var jobsAsDictionaryArray=[[String:Any]]()
+            for job in jobs{
+                jobsAsDictionaryArray.append(job.toDictionary())
+            }
+            return jobsAsDictionaryArray
+        }
+        
+        return [[String:Any]]()
+    }
+    
     @objc
     public func getJobs(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock){
-        if(db != nil){
-            if let jobs =  db?.getJobs(){
-                var jobsAsDictionaryArray=[[String:Any]]()
-                for job in jobs{
-                    jobsAsDictionaryArray.append(job.toDictionary())
-                }
-                resolve(jobsAsDictionaryArray)
-            }else{
-                resolve([[String:Any]]())
-            }
-            
+        if(db != nil) {
+            let jobs = getJobsAsDicArray(resolver: db!.getJobs)
+            resolve(jobs);
+        } else {
+            reject(nil, "Database was not initialized", nil)
         }
     }
+    
+    @objc
+    public func getActiveButTimedOutJobs(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock){
+        if(db != nil) {
+            let jobs = getJobsAsDicArray(resolver: db!.getActiveButTimedOutJobs)
+            resolve(jobs);
+        } else {
+            reject(nil, "Database was not initialized", nil)
+        }
+    }
+
     @objc static func requiresMainQueueSetup() -> Bool {
         return false
     }
