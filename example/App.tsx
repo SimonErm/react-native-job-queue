@@ -8,6 +8,7 @@ export interface IAppProps {}
 
 export interface IAppState {
     counter: number;
+    fails: number;
 }
 
 export default class App extends React.Component<IAppProps, IAppState> {
@@ -15,6 +16,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
         super(props);
         this.state = {
             counter: 0,
+            fails: 0,
         };
     }
     componentDidMount() {
@@ -28,17 +30,23 @@ export default class App extends React.Component<IAppProps, IAppState> {
                 return new Promise((resolve) => {
                     setTimeout(() => {
                         this.setState({
-                            counter: payload.id
+                            counter: this.state.counter + payload.id
                         })
                         resolve();
                     }, 5000);
                 });
+            }, {
+                onFailure: () => {
+                    this.setState({
+                        fails: this.state.fails + 1,
+                    })
+                }
             })
         );
     }
 
     public render() {
-        const { counter } = this.state;
+        const { counter, fails } = this.state;
         return (
             <View style={styles.container}>
                 <Button
@@ -49,6 +57,19 @@ export default class App extends React.Component<IAppProps, IAppState> {
                 />
                 <View style={styles.spacing}>
                     <Button
+                        title='add job with 4 sec timeout'
+                        onPress={() => {
+                            queue.addJob('testWorker', { id: counter + 1 }, {
+                                timeout: 4000,
+                                priority: 1,
+                                attempts: 2,
+                            }, false);
+                        }}
+                    />
+                </View>
+                <Text style={styles.textCenter}>This job should fail, as the executer takes 5 seconds to execute the job.</Text>
+                <View style={styles.spacing}>
+                    <Button
                         title='start Queue'
                         onPress={() => {
                             queue.start();
@@ -57,6 +78,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
                 </View>
                 <View style={styles.spacing}>
                     <Text>Counter: {counter}</Text>
+                    <Text>Fails: {fails}</Text>
                 </View>
             </View>
         );
@@ -71,5 +93,8 @@ const styles = StyleSheet.create({
     },
     spacing: {
         marginTop: 20,
+    },
+    textCenter: {
+        textAlign: "center",
     }
 });
