@@ -12,6 +12,9 @@ export class JobStoreMock implements JobStore {
     getJobs(): Promise<RawJob[]> {
         return new Promise((resolve) => resolve(this.jobs));
     }
+    getActiveButTimedOutJobs(): Promise<RawJob[]> {
+        return Promise.resolve([]);
+    }
     getNextJob(): Promise<RawJob> {
         // "SELECT * FROM job WHERE active == 0 AND failed == '' ORDER BY priority,datetime(created) LIMIT 1"
         const filtered = this.jobs.filter((job) => job.active === 0 && job.failed === '');
