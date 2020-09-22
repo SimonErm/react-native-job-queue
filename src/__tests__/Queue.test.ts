@@ -42,7 +42,7 @@ describe('Queue Basics', () => {
      */
     it('handle priority correctly', (done) => {
         const calledOrder: string[] = [];
-        const expectedCallOrder = ["priority_id", "1"];
+        const expectedCallOrder = ['priority_id', '1'];
 
         function evaluateTest() {
             expect(calledOrder).toEqual(expectedCallOrder);
@@ -58,9 +58,13 @@ describe('Queue Basics', () => {
                 setTimeout(evaluateTest, 0);
             }
         };
-        queue.addWorker(new Worker<Payload>('testWorker', executer, {concurrency: 1}));
-        queue.addJob('testWorker', {test: "1"}, { attempts: 0, timeout: 0, priority: 0 }, false);
-        queue.addJob('testWorker', {test: "priority_id"}, {priority: 100, attempts: 0, timeout: 0}, false);
+        queue.addWorker(
+            new Worker<Payload>('testWorker', executer, { concurrency: 1 })
+        );
+        queue.addJob('testWorker', { test: '1' }, { attempts: 0, timeout: 0, priority: 0 }, false);
+        queue.addJob('testWorker', { test: 'priority_id' }, { priority: 100, attempts: 0, timeout: 0 }, false);
+        queue.start();
+    });
     it('handle attempts correctly', (done) => {
         const onQueueFinish = () => {
             expect(executer).toBeCalledTimes(6);
