@@ -1,9 +1,11 @@
+import { Job } from '../models/Job';
 import queue from '../Queue';
 import { Worker } from '../Worker';
 
 export interface Payload {
     test: string;
 }
+
 describe('Queue Basics', () => {
     beforeEach(() => {
         queue.removeWorker('testWorker', true);
