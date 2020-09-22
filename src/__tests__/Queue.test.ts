@@ -18,6 +18,13 @@ describe('Queue Basics', () => {
         expect(workerNames.length).toEqual(1);
         expect(workerNames[0]).toEqual('testWorker');
     });
+    it('add Job for invalid Worker', () => {
+        queue.addWorker(
+            new Worker<Payload>('testWorker', async (payload: Payload) => {})
+        );
+        expect(() => queue.addJob('wrongWorker', {})).toThrowError('Missing worker with name wrongWorker');
+    });
+
     it('run queue', (done) => {
         const executer = async (payload: Payload) => {
             done();
