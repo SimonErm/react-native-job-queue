@@ -61,6 +61,21 @@ describe('Queue Basics', () => {
         queue.addWorker(new Worker<Payload>('testWorker', executer, {concurrency: 1}));
         queue.addJob('testWorker', {test: "1"}, { attempts: 0, timeout: 0, priority: 0 }, false);
         queue.addJob('testWorker', {test: "priority_id"}, {priority: 100, attempts: 0, timeout: 0}, false);
+    it('handle attempts correctly', (done) => {
+        const onQueueFinish = () => {
+            expect(executer).toBeCalledTimes(6);
+            done();
+        };
+        const executer = jest.fn(() => {
+            throw new Error();
+        });
+        queue.configure({ onQueueFinish: onQueueFinish });
+        queue.addWorker(
+            new Worker<Payload>('testWorker', executer, { concurrency: 1 })
+        );
+        queue.addJob('testWorker', { test: '1' }, { attempts: 5, timeout: 0, priority: 0 }, false);
+        queue.start();
+    });
         queue.start();
     });
 });
