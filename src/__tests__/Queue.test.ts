@@ -76,6 +76,27 @@ describe('Queue Basics', () => {
         queue.addJob('testWorker', { test: '1' }, { attempts: 5, timeout: 0, priority: 0 }, false);
         queue.start();
     });
+    it('handle timeouts correctly', (done) => {
+        const onQueueFinish = () => {
+            expect(executer).toBeCalledTimes(1);
+        };
+        const onError = (job: Job<Payload>, error: Error) => {
+            expect(error).toEqual(new Error(`Job ${job.id} timed out`));
+            done();
+        };
+        const executer = jest.fn(
+            () =>
+                new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve();
+                    }, 100);
+                })
+        );
+        queue.configure({ onQueueFinish: onQueueFinish });
+        queue.addWorker(
+            new Worker<Payload>('testWorker', executer, { concurrency: 1, onFailure: onError })
+        );
+        queue.addJob('testWorker', { test: '1' }, { attempts: 0, timeout: 5, priority: 0 }, false);
         queue.start();
     });
 });
