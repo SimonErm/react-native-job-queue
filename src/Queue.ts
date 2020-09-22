@@ -165,15 +165,14 @@ export class Queue {
             this.start();
         }
     }
-
     /**
      * starts the queue to execute queued jobs
      */
-    start() {
+    async start() {
         if (!this.isActive) {
             this.isActive = true;
             this.executedJobs = [];
-
+            await this.resetActiveJobs();
             this.scheduleQueue();
         }
     }
@@ -182,6 +181,14 @@ export class Queue {
      */
     stop() {
         this.isActive = false;
+    }
+    private resetActiveJob = async (job: RawJob) => {
+        this.jobStore.updateJob({ ...job, ...{ active: FALSE } });
+    };
+    private async resetActiveJobs() {
+        const activeMarkedJobs = await this.jobStore.getActiveMarkedJobs();
+        const resetTasks = activeMarkedJobs.map(this.resetActiveJob);
+        await Promise.all(resetTasks);
     }
     private scheduleQueue() {
         this.timeoutId = setTimeout(this.runQueue, this.updateInterval);
