@@ -6,7 +6,8 @@ export interface Payload {
 }
 describe('Queue Basics', () => {
     beforeEach(() => {
-        queue.removeWorker('testWorker');
+        queue.removeWorker('testWorker', true);
+        queue.configure({});
     });
     it('add Workers', () => {
         queue.addWorker(
