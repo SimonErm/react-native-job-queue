@@ -6,6 +6,7 @@ import { RawJob } from './Job';
 export interface JobStore {
     addJob(job: RawJob): Promise<void>;
     getJobs(): Promise<RawJob[]>;
+    getActiveMarkedJobs(): Promise<RawJob[]>;
     getNextJob(): Promise<RawJob>;
     getJobsForWorker(name: string, count: number): Promise<RawJob[]>;
     updateJob(job: RawJob): void;
