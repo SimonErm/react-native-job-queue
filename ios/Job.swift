@@ -148,7 +148,14 @@ extension SQLiteDatabase {
     }
     func getJobs() -> [Job]? {
         let querySql = "SELECT * FROM job WHERE active == 0 AND failed == '' ORDER BY priority DESC,datetime(created);"
-        guard let queryStatement = try? prepareStatement(sql: querySql) else {
+        return getJobsByQuery(query: querySql)
+    }
+    func getActiveMarkedJobs() -> [Job]? {
+        let querySql = "SELECT * FROM job WHERE active == 1;" 
+        return getJobsByQuery(query: querySql)
+    }
+    func getJobsByQuery(query:String)->[Job]?{
+        guard let queryStatement = try? prepareStatement(sql: query) else {
             return nil
         }
         defer {

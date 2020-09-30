@@ -117,6 +117,23 @@ public class JobQueue:NSObject{
             
         }
     }
+
+    @objc
+    public func getActiveMarkedJobs(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock){
+        if(db != nil){
+            if let jobs =  db?.getActiveMarkedJobs(){
+                var jobsAsDictionaryArray=[[String:Any]]()
+                for job in jobs{
+                    jobsAsDictionaryArray.append(job.toDictionary())
+                }
+                resolve(jobsAsDictionaryArray)
+            }else{
+                resolve([[String:Any]]())
+            }
+            
+        }
+    }
+
     @objc static func requiresMainQueueSetup() -> Bool {
         return false
     }

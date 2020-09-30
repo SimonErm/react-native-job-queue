@@ -9,4 +9,6 @@ RCT_EXTERN_METHOD(removeJobsByWorkerName:(NSString *)workerName)
 RCT_EXTERN_METHOD(getNextJob:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(getJobsForWorker:(NSString *)name count:(NSInteger) count resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(getJobs:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(getActiveMarkedJobs:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
 @end
