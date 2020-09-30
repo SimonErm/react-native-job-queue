@@ -1,12 +1,15 @@
+import { Job } from '../models/Job';
 import queue from '../Queue';
 import { Worker } from '../Worker';
 
 export interface Payload {
     test: string;
 }
+
 describe('Queue Basics', () => {
     beforeEach(() => {
-        queue.removeWorker('testWorker');
+        queue.removeWorker('testWorker', true);
+        queue.configure({});
     });
     it('add Workers', () => {
         queue.addWorker(
@@ -17,6 +20,13 @@ describe('Queue Basics', () => {
         expect(workerNames.length).toEqual(1);
         expect(workerNames[0]).toEqual('testWorker');
     });
+    it('add Job for invalid Worker', () => {
+        queue.addWorker(
+            new Worker<Payload>('testWorker', async (payload: Payload) => {})
+        );
+        expect(() => queue.addJob('wrongWorker', {})).toThrowError('Missing worker with name wrongWorker');
+    });
+
     it('run queue', (done) => {
         const executer = async (payload: Payload) => {
             done();
@@ -34,7 +44,7 @@ describe('Queue Basics', () => {
      */
     it('handle priority correctly', (done) => {
         const calledOrder: string[] = [];
-        const expectedCallOrder = ["priority_id", "1"];
+        const expectedCallOrder = ['priority_id', '1'];
 
         function evaluateTest() {
             expect(calledOrder).toEqual(expectedCallOrder);
@@ -50,9 +60,49 @@ describe('Queue Basics', () => {
                 setTimeout(evaluateTest, 0);
             }
         };
-        queue.addWorker(new Worker<Payload>('testWorker', executer, {concurrency: 1}));
-        queue.addJob('testWorker', {test: "1"}, { attempts: 0, timeout: 0, priority: 0 }, false);
-        queue.addJob('testWorker', {test: "priority_id"}, {priority: 100, attempts: 0, timeout: 0}, false);
+        queue.addWorker(
+            new Worker<Payload>('testWorker', executer, { concurrency: 1 })
+        );
+        queue.addJob('testWorker', { test: '1' }, { attempts: 0, timeout: 0, priority: 0 }, false);
+        queue.addJob('testWorker', { test: 'priority_id' }, { priority: 100, attempts: 0, timeout: 0 }, false);
+        queue.start();
+    });
+    it('handle attempts correctly', (done) => {
+        const onQueueFinish = () => {
+            expect(executer).toBeCalledTimes(6);
+            done();
+        };
+        const executer = jest.fn(() => {
+            throw new Error();
+        });
+        queue.configure({ onQueueFinish: onQueueFinish });
+        queue.addWorker(
+            new Worker<Payload>('testWorker', executer, { concurrency: 1 })
+        );
+        queue.addJob('testWorker', { test: '1' }, { attempts: 5, timeout: 0, priority: 0 }, false);
+        queue.start();
+    });
+    it('handle timeouts correctly', (done) => {
+        const onQueueFinish = () => {
+            expect(executer).toBeCalledTimes(1);
+        };
+        const onError = (job: Job<Payload>, error: Error) => {
+            expect(error).toEqual(new Error(`Job ${job.id} timed out`));
+            done();
+        };
+        const executer = jest.fn(
+            () =>
+                new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve();
+                    }, 100);
+                })
+        );
+        queue.configure({ onQueueFinish: onQueueFinish });
+        queue.addWorker(
+            new Worker<Payload>('testWorker', executer, { concurrency: 1, onFailure: onError })
+        );
+        queue.addJob('testWorker', { test: '1' }, { attempts: 0, timeout: 5, priority: 0 }, false);
         queue.start();
     });
 });
