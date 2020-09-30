@@ -290,7 +290,7 @@ export class Queue {
             let { errors, failedAttempts } = JSON.parse(rawJob.metaData);
             failedAttempts++;
             let failed = '';
-            if (failedAttempts > attempts) {
+            if (failedAttempts >= attempts) {
                 failed = new Date().toISOString();
             }
             const metaData = JSON.stringify({ errors: [...errors, error], failedAttempts });
