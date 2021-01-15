@@ -3,7 +3,7 @@ import { NativeModules } from 'react-native';
 import { FALSE, Job, RawJob } from './models/Job';
 import { JobStore } from './models/JobStore';
 import { Uuid } from './utils/Uuid';
-import { Worker } from './Worker';
+import { Worker, CANCEL } from './Worker';
 
 /**
  * Options to configure the queue
@@ -75,10 +75,12 @@ export class Queue {
     private onQueueFinish: (executedJobs: Array<Job<any>>) => void;
 
     private queuedJobExecuter: any[] = [];
+    private runningJobPromises: {[key: string]: any};
 
     private constructor() {
         this.jobStore = NativeModules.JobQueue;
         this.workers = {};
+        this.runningJobPromises = {};
         this.isActive = false;
 
         this.timeoutId = 0;
@@ -182,6 +184,18 @@ export class Queue {
     stop() {
         this.isActive = false;
     }
+
+    /**
+     * cancel running job
+     */
+    cancelJob(jobId: string, exception: Error) {
+      const promise = this.runningJobPromises[jobId]
+      if (promise && typeof promise[CANCEL] === 'function') {
+        promise[CANCEL](exception || new Error(`canceled`))
+      } else {
+        throw new Error(`Job with id ${jobId} not currently running`);
+      }
+    }
     private resetActiveJob = async (job: RawJob) => {
         this.jobStore.updateJob({ ...job, ...{ active: FALSE } });
     };
@@ -277,14 +291,25 @@ export class Queue {
     }
 
     private excuteJob = async (rawJob: RawJob) => {
+        const worker = this.workers[rawJob.workerName];
+        const payload = JSON.parse(rawJob.payload);
+        const job = { ...rawJob, ...{ payload } };
+
         try {
             this.activeJobCount++;
             if (!this.workers[rawJob.workerName]) {
                 throw new Error(`Missing worker with name ${rawJob.workerName}`);
             }
-            await this.workers[rawJob.workerName].execute(rawJob);
+            const promise = worker.execute(rawJob);
+
+            this.runningJobPromises[rawJob.id] = promise
+            await promise
+
+            worker.makeSuccess(job)
+
             this.jobStore.removeJob(rawJob);
         } catch (error) {
+            worker.makeFailure(job, error);
             const { attempts } = rawJob;
             // tslint:disable-next-line: prefer-const
             let { errors, failedAttempts } = JSON.parse(rawJob.metaData);
@@ -296,6 +321,9 @@ export class Queue {
             const metaData = JSON.stringify({ errors: [...errors, error], failedAttempts });
             this.jobStore.updateJob({ ...rawJob, ...{ active: FALSE, metaData, failed } });
         } finally {
+            delete this.runningJobPromises[job.id]
+            worker.decreaseExecutionCount();
+            worker.makeCompletion(job);
             this.executedJobs.push(rawJob);
             this.activeJobCount--;
         }

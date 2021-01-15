@@ -1,11 +1,17 @@
 import { Job, RawJob } from './models/Job';
 
+export const CANCEL = 'rn_job_queue_cancel'
+
 export interface WorkerOptions<P extends object> {
     onStart?: (job: Job<P>) => void;
     onSuccess?: (job: Job<P>) => void;
     onFailure?: (job: Job<P>, error: Error) => void;
     onCompletion?: (job: Job<P>) => void;
     concurrency?: number;
+}
+
+export interface CancellablePromise<T> extends Promise<T> {
+  rn_job_queue_cancel?: () => void
 }
 /**
  * @typeparam P specifies the Type of the Job-Payload.
@@ -15,7 +21,7 @@ export class Worker<P extends object> {
     public readonly concurrency: number;
 
     private executionCount: number;
-    private executer: (payload: P) => Promise<any>;
+    private executer: (payload: P) => CancellablePromise<any>;
 
     private onStart: (job: Job<P>) => void;
     private onSuccess: (job: Job<P>) => void;
@@ -66,33 +72,55 @@ export class Worker<P extends object> {
      * This method should not be invoked manually and is used by the queue to execute jobs
      * @param job to be executed
      */
-    async execute(rawJob: RawJob) {
+    execute(rawJob: RawJob) {
         const { timeout } = rawJob;
         const payload: P = JSON.parse(rawJob.payload);
         const job = { ...rawJob, ...{ payload } };
         this.executionCount++;
-        try {
-            this.onStart(job);
-            if (timeout > 0) {
-                await this.executeWithTimeout(job, timeout);
-            } else {
-                await this.executer(payload);
-            }
-            this.onSuccess(job);
-        } catch (error) {
-            this.onFailure(job, error);
-            throw error;
-        } finally {
-            this.executionCount--;
-            this.onCompletion(job);
+        this.onStart(job);
+        if (timeout > 0) {
+            return this.executeWithTimeout(job, timeout);
+        } else {
+            return this.executer(payload);
         }
     }
-    private async executeWithTimeout(job: Job<P>, timeout: number) {
+    private executeWithTimeout(job: Job<P>, timeout: number) {
+      let cancel
+      const promise: CancellablePromise<any> = new Promise(async (resolve, reject) => {
         const timeoutPromise = new Promise((resolve, reject) => {
             setTimeout(() => {
                 reject(new Error(`Job ${job.id} timed out`));
             }, timeout);
         });
-        await Promise.race([timeoutPromise, this.executer(job.payload)]);
+        const executerPromise = this.executer(job.payload)
+        if (executerPromise) {
+          cancel = executerPromise[CANCEL]
+          try {
+            await Promise.race([timeoutPromise, executerPromise]);
+            resolve()
+          } catch (error) {
+            // cancel task if has cancel method
+            if (executerPromise[CANCEL] && typeof executerPromise[CANCEL] === 'function') {
+              executerPromise[CANCEL]!()
+            }
+            reject(error);
+          }
+        }
+      })
+      promise[CANCEL] = cancel
+      return promise
+    }
+
+    makeSuccess(job: Job<P>) {
+      this.onSuccess(job)
+    }
+    makeFailure(job: Job<P>, error: Error) {
+      this.onFailure(job, error)
+    }
+    makeCompletion(job: Job<P>) {
+      this.onCompletion(job)
+    }
+    decreaseExecutionCount() {
+      this.executionCount--;
     }
 }
