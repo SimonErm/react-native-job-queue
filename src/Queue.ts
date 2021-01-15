@@ -147,7 +147,7 @@ export class Queue {
         const job: RawJob = {
             id: Uuid.v4(),
             payload: JSON.stringify(payload || {}),
-            metaData: JSON.stringify({ faileAttempts: 0, errors: [] }),
+            metaData: JSON.stringify({ failedAttempts: 0, errors: [] }),
             active: FALSE,
             created: new Date().toISOString(),
             failed: '',
