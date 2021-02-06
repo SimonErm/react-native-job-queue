@@ -11,7 +11,9 @@ let counter = 0;
 export default class App extends React.Component<IAppProps, IAppState> {
     constructor(props: IAppProps) {
         super(props);
-        this.state = {};
+        this.state = {
+          jobId: null,
+        };
     }
     componentDidMount() {
         queue.configure({
@@ -20,7 +22,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
             }
         });
         queue.addWorker(
-            new Worker('testWorker', async (payload) => {
+            new Worker('testWorker', (payload) => {
               let cancel
                 const promise = new Promise((resolve, reject) => {
                     const timeout = setTimeout(() => {
@@ -36,6 +38,9 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
                 promise[CANCEL] = cancel
                 return promise
+            },{
+              onStart: ({id}) => this.setState({jobId: id}),
+              onCompletion: () => this.setState({jobId: null}),
             })
         );
     }
@@ -51,9 +56,11 @@ export default class App extends React.Component<IAppProps, IAppState> {
                 <Button
                     title='cancel Job'
                     onPress={() => {
-                        // get first running job id
-                        const runningPromiseKey = Object.keys(queue.runningJobPromises)[0]
-                        queue.cancelJob(runningPromiseKey, {message: 'Canceled'})
+                      if(this.state.jobId){
+                        queue.cancelJob(this.state.jobId, {message: 'Canceled'})
+                      } else {
+                        console.log("no job running");
+                      }
                     }}
                 />
                 <Button

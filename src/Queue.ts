@@ -188,7 +188,7 @@ export class Queue {
     /**
      * cancel running job
      */
-    cancelJob(jobId: string, exception: Error) {
+    cancelJob(jobId: string, exception?: Error) {
       const promise = this.runningJobPromises[jobId]
       if (promise && typeof promise[CANCEL] === 'function') {
         promise[CANCEL](exception || new Error(`canceled`))
@@ -305,11 +305,11 @@ export class Queue {
             this.runningJobPromises[rawJob.id] = promise
             await promise
 
-            worker.makeSuccess(job)
+            worker.triggerSuccess(job)
 
             this.jobStore.removeJob(rawJob);
         } catch (error) {
-            worker.makeFailure(job, error);
+            worker.triggerFailure(job, error);
             const { attempts } = rawJob;
             // tslint:disable-next-line: prefer-const
             let { errors, failedAttempts } = JSON.parse(rawJob.metaData);
@@ -323,7 +323,7 @@ export class Queue {
         } finally {
             delete this.runningJobPromises[job.id]
             worker.decreaseExecutionCount();
-            worker.makeCompletion(job);
+            worker.triggerCompletion(job);
             this.executedJobs.push(rawJob);
             this.activeJobCount--;
         }

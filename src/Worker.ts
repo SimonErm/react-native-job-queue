@@ -111,13 +111,13 @@ export class Worker<P extends object> {
       return promise
     }
 
-    makeSuccess(job: Job<P>) {
+    triggerSuccess(job: Job<P>) {
       this.onSuccess(job)
     }
-    makeFailure(job: Job<P>, error: Error) {
+    triggerFailure(job: Job<P>, error: Error) {
       this.onFailure(job, error)
     }
-    makeCompletion(job: Job<P>) {
+    triggerCompletion(job: Job<P>) {
       this.onCompletion(job)
     }
     decreaseExecutionCount() {
