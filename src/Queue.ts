@@ -192,6 +192,8 @@ export class Queue {
       const promise = this.runningJobPromises[jobId]
       if (promise && typeof promise[CANCEL] === 'function') {
         promise[CANCEL](exception || new Error(`canceled`))
+      } else if(!promise[CANCEL]){
+        console.warn("Worker does not have a cancel method implemented")
       } else {
         throw new Error(`Job with id ${jobId} not currently running`);
       }
