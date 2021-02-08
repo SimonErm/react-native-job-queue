@@ -1,7 +1,7 @@
 {
   "name": "react-native-job-queue",
   "title": "React Native Job Queue",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "TODO",
   "react-native": "src/index.ts",
   "types": "lib/typescript/src",
