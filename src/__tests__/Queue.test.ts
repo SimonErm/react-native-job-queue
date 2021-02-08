@@ -69,7 +69,7 @@ describe('Queue Basics', () => {
     });
     it('handle attempts correctly', (done) => {
         const onQueueFinish = () => {
-            expect(executer).toBeCalledTimes(6);
+            expect(executer).toBeCalledTimes(5);
             done();
         };
         const executer = jest.fn(() => {
