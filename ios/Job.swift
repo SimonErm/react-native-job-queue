@@ -83,8 +83,6 @@ extension SQLiteDatabase {
         guard sqlite3_step(insertStatement) == SQLITE_DONE else {
             throw SQLiteError.Step(message: errorMessage)
         }
-        
-        print("Successfully inserted row.")
     }
     func getJobBy(id: NSString) -> Job? {
         let querySql = "SELECT * FROM job WHERE id = ?;"
