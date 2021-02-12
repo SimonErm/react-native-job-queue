@@ -1,6 +1,6 @@
 import { Job } from '../models/Job';
 import queue from '../Queue';
-import { Worker, CANCEL } from '../Worker';
+import { Worker, CANCEL, CancellablePromise } from '../Worker';
 
 export interface Payload {
     test: string;
@@ -76,7 +76,7 @@ describe('Queue Basics', () => {
           'testWorker',
           (payload) => {
             let cancel
-            const promise = new Promise((resolve, reject) => {
+            const promise: CancellablePromise<any> = new Promise((resolve, reject) => {
               const timeout = setTimeout(() => {
                 resolve();
               }, 3000);
@@ -94,7 +94,7 @@ describe('Queue Basics', () => {
             onStart: ({id}) => {
               /* cancel the job after 1sec */
               setTimeout(() => {
-                queue.cancelJob(id, {message: 'canceled'})
+                queue.cancelJob(id, new Error('canceled'))
               }, 1000)
             },
             onFailure: (_, error) => {
@@ -110,7 +110,7 @@ describe('Queue Basics', () => {
           }
         )
       )
-      queue.addJob('testWorker', { test: '1' }, { attempts: 0, priority: 0 });
+      queue.addJob('testWorker', { test: '1' }, { attempts: 0, timeout: 0, priority: 0 });
       queue.start();
     });
     it('handle attempts correctly', (done) => {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, View } from 'react-native';
 
 import queue from '../src/Queue';
-import { Worker, CANCEL } from '../src/Worker';
+import { Worker, CANCEL, CancellablePromise } from '../src/Worker';
 
 export interface IAppProps {}
 
@@ -24,7 +24,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
         queue.addWorker(
             new Worker('testWorker', (payload) => {
               let cancel
-                const promise = new Promise((resolve, reject) => {
+                const promise: CancellablePromise<any> = new Promise((resolve, reject) => {
                     const timeout = setTimeout(() => {
                         console.log(payload);
                         resolve();
@@ -32,7 +32,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
                     cancel = () => {
                       clearTimeout(timeout)
-                      reject({message: 'canceled'})
+                      reject(new Error('canceled'))
                     }
                 });
 
