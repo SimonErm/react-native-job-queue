@@ -79,7 +79,7 @@ describe('Queue Basics', () => {
             const promise: CancellablePromise<any> = new Promise((resolve, reject) => {
               const timeout = setTimeout(() => {
                 resolve();
-              }, 3000);
+              }, 100);
 
               cancel = () => {
                 clearTimeout(timeout)
@@ -95,7 +95,7 @@ describe('Queue Basics', () => {
               /* cancel the job after 1sec */
               setTimeout(() => {
                 queue.cancelJob(id, new Error('canceled'))
-              }, 1000)
+              }, 50)
             },
             onFailure: (_, error) => {
               calledOrder.push('failed')

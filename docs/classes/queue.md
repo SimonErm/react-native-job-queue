@@ -117,7 +117,7 @@ Name | Type | Default |
 
 ▪`Default value`  **startQueue**: *boolean*= true
 
-**Returns:** *void*
+**Returns:** *string*
 
 ___
 

@@ -6,7 +6,7 @@ import { Worker, CANCEL, CancellablePromise } from '../src/Worker';
 
 export interface IAppProps {}
 
-export interface IAppState {}
+export interface IAppState {jobId?: string|null}
 let counter = 0;
 export default class App extends React.Component<IAppProps, IAppState> {
     constructor(props: IAppProps) {
