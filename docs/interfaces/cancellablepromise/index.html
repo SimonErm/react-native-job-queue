@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>CancellablePromise · React Native Job Queue</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="[CancellablePromise](/react-native-job-queue/docs/interfaces/cancellablepromise) /"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="CancellablePromise · React Native Job Queue"/><meta property="og:type" content="website"/><meta property="og:url" content="https://simonerm.github.io/react-native-job-queue/"/><meta property="og:description" content="[CancellablePromise](/react-native-job-queue/docs/interfaces/cancellablepromise) /"/><meta property="og:image" content="https://simonerm.github.io/react-native-job-queue/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://simonerm.github.io/react-native-job-queue/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/react-native-job-queue/img/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/react-native-job-queue/js/scrollSpy.js"></script><link rel="stylesheet" href="/react-native-job-queue/css/main.css"/><script src="/react-native-job-queue/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/react-native-job-queue/"><img class="logo" src="/react-native-job-queue/img/favicon.ico" alt="React Native Job Queue"/><h2 class="headerTitleWithLogo">React Native Job Queue</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/react-native-job-queue/docs/" target="_self">API</a></li><li class=""><a href="/react-native-job-queue/docs/docs" target="_self">Docs</a></li><li class=""><a href="/react-native-job-queue/help" target="_self">Help</a></li><li class=""><a href="https://github.com/SimonErm/react-native-job-queue" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Interfaces</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction</h3><ul class=""><li class="navListItem"><a class="navItem" href="/react-native-job-queue/docs/">Globals</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Classes</h3><ul class=""><li class="navListItem"><a class="navItem" href="/react-native-job-queue/docs/classes/jobstoremock">JobStoreMock</a></li><li class="navListItem"><a class="navItem" href="/react-native-job-queue/docs/classes/queue">Queue</a></li><li class="navListItem"><a class="navItem" href="/react-native-job-queue/docs/classes/uuid">Uuid</a></li><li class="navListItem"><a class="navItem" href="/react-native-job-queue/docs/classes/worker">Worker</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Interfaces</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/react-native-job-queue/docs/interfaces/cancellablepromise">CancellablePromise</a></li><li class="navListItem"><a class="navItem" href="/react-native-job-queue/docs/interfaces/job">Job</a></li><li class="navListItem"><a class="navItem" href="/react-native-job-queue/docs/interfaces/jobstore">JobStore</a></li><li class="navListItem"><a class="navItem" href="/react-native-job-queue/docs/interfaces/queueoptions">QueueOptions</a></li><li class="navListItem"><a class="navItem" href="/react-native-job-queue/docs/interfaces/rawjob">RawJob</a></li><li class="navListItem"><a class="navItem" href="/react-native-job-queue/docs/interfaces/workeroptions">WorkerOptions</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/SimonErm/react-native-job-queue/master/docs/interfaces/cancellablepromise.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">CancellablePromise</h1></header><article><div><span><p><a href="/react-native-job-queue/docs/interfaces/cancellablepromise">CancellablePromise</a> /</p>
+<h2><a class="anchor" aria-hidden="true" id="type-parameters"></a><a href="#type-parameters" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Type parameters</h2>
+<p>▪ <strong>T</strong></p>
+<h2><a class="anchor" aria-hidden="true" id="hierarchy"></a><a href="#hierarchy" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Hierarchy</h2>
+<ul>
+<li><p><code>Promise&lt;T&gt;</code></p>
+<ul>
+<li><strong>CancellablePromise</strong></li>
+</ul></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="index"></a><a href="#index" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Index</h2>
+<h3><a class="anchor" aria-hidden="true" id="properties"></a><a href="#properties" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Properties</h3>
+<ul>
+<li><a href="/react-native-job-queue/docs/interfaces/cancellablepromise#promise">Promise</a></li>
+<li><a href="/react-native-job-queue/docs/interfaces/cancellablepromise#__@tostringtag">__@toStringTag</a></li>
+<li><a href="/react-native-job-queue/docs/interfaces/cancellablepromise#optional-rn_job_queue_cancel">rn_job_queue_cancel</a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="methods"></a><a href="#methods" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Methods</h3>
+<ul>
+<li><a href="/react-native-job-queue/docs/interfaces/cancellablepromise#catch">catch</a></li>
+<li><a href="/react-native-job-queue/docs/interfaces/cancellablepromise#then">then</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="properties-1"></a><a href="#properties-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Properties</h2>
+<h3><a class="anchor" aria-hidden="true" id="promise"></a><a href="#promise" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Promise</h3>
+<p>• <strong>Promise</strong>: <em><code>PromiseConstructor</code></em></p>
+<p>Defined in /Users/simon/Developer/Projects/ReactNative/react-native-job-queue/node_modules/typescript/lib/lib.es2015.promise.d.ts:152</p>
+<hr>
+<h3><a class="anchor" aria-hidden="true" id="__tostringtag"></a><a href="#__tostringtag" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>__@toStringTag</h3>
+<p>• <strong>__@toStringTag</strong>: <em>string</em></p>
+<p><em>Inherited from void</em></p>
+<p>Defined in /Users/simon/Developer/Projects/ReactNative/react-native-job-queue/node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts:169</p>
+<hr>
+<h3><a class="anchor" aria-hidden="true" id="optional-rn_job_queue_cancel"></a><a href="#optional-rn_job_queue_cancel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Optional</code> rn_job_queue_cancel</h3>
+<p>• <strong>rn_job_queue_cancel</strong>? : <em>undefined | function</em></p>
+<p><em>Defined in <a href="https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Worker.ts#L14">Worker.ts:14</a></em></p>
+<h2><a class="anchor" aria-hidden="true" id="methods-1"></a><a href="#methods-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Methods</h2>
+<h3><a class="anchor" aria-hidden="true" id="catch"></a><a href="#catch" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>catch</h3>
+<p>▸ <strong>catch</strong>&lt;<strong>TResult</strong>&gt;(<code>onrejected?</code>: function | undefined | null): <em><code>Promise&lt;T | TResult&gt;</code></em></p>
+<p><em>Inherited from void</em></p>
+<p>Defined in /Users/simon/Developer/Projects/ReactNative/react-native-job-queue/node_modules/typescript/lib/lib.es5.d.ts:1413</p>
+<p>Attaches a callback for only the rejection of the Promise.</p>
+<p><strong>Type parameters:</strong></p>
+<p>▪ <strong>TResult</strong></p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>onrejected?</code></td><td>function | undefined | null</td><td>The callback to execute when the Promise is rejected.</td></tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <em><code>Promise&lt;T | TResult&gt;</code></em></p>
+<p>A Promise for the completion of the callback.</p>
+<hr>
+<h3><a class="anchor" aria-hidden="true" id="then"></a><a href="#then" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>then</h3>
+<p>▸ <strong>then</strong>&lt;<strong>TResult1</strong>, <strong>TResult2</strong>&gt;(<code>onfulfilled?</code>: function | undefined | null, <code>onrejected?</code>: function | undefined | null): <em><code>Promise&lt;TResult1 | TResult2&gt;</code></em></p>
+<p><em>Inherited from void</em></p>
+<p>Defined in /Users/simon/Developer/Projects/ReactNative/react-native-job-queue/node_modules/typescript/lib/lib.es5.d.ts:1406</p>
+<p>Attaches callbacks for the resolution and/or rejection of the Promise.</p>
+<p><strong>Type parameters:</strong></p>
+<p>▪ <strong>TResult1</strong></p>
+<p>▪ <strong>TResult2</strong></p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>onfulfilled?</code></td><td>function | undefined | null</td><td>The callback to execute when the Promise is resolved.</td></tr>
+<tr><td><code>onrejected?</code></td><td>function | undefined | null</td><td>The callback to execute when the Promise is rejected.</td></tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <em><code>Promise&lt;TResult1 | TResult2&gt;</code></em></p>
+<p>A Promise for the completion of which ever callback is executed.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/react-native-job-queue/docs/classes/worker"><span class="arrow-prev">← </span><span>Worker</span></a><a class="docs-next button" href="/react-native-job-queue/docs/interfaces/job"><span>Job</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#type-parameters">Type parameters</a></li><li><a href="#hierarchy">Hierarchy</a></li><li><a href="#index">Index</a><ul class="toc-headings"><li><a href="#properties">Properties</a></li><li><a href="#methods">Methods</a></li></ul></li><li><a href="#properties-1">Properties</a><ul class="toc-headings"><li><a href="#promise">Promise</a></li><li><a href="#__tostringtag">__@toStringTag</a></li><li><a href="#optional-rn_job_queue_cancel"><code>Optional</code> rn_job_queue_cancel</a></li></ul></li><li><a href="#methods-1">Methods</a><ul class="toc-headings"><li><a href="#catch">catch</a></li><li><a href="#then">then</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/react-native-job-queue/" class="nav-home"><img src="/react-native-job-queue/img/favicon.ico" alt="React Native Job Queue" width="66" height="58"/></a><div><h5>Docs</h5><a href="/react-native-job-queue/docs/en/doc1.html">Getting Started (or other categories)</a><a href="/react-native-job-queue/docs/en/doc2.html">Guides (or other categories)</a><a href="/react-native-job-queue/docs/en/doc3.html">API Reference (or other categories)</a></div><div><h5>Community</h5><a href="/react-native-job-queue/en/users.html">User Showcase</a><a href="https://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/react-native-job-queue/blog">Blog</a><a href="https://github.com/">GitHub</a><a class="github-button" href="https://github.com/SimonErm/react-native-job-queue" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/react-native-job-queue/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2021 Your Name or Your Company Name</section></footer></div></body></html>
