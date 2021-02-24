@@ -6,11 +6,13 @@ sidebar_label: Job
 
 [Job](job.md) /
 
-represents Job model with Generics to provide payload type
+represents Job model with Generics
 
 ## Type parameters
 
 ▪ **P**: *object*
+
+payload type
 
 ## Hierarchy
 
@@ -37,7 +39,7 @@ represents Job model with Generics to provide payload type
 
 • **active**: *[Bool](../index.md#bool)*
 
-*Defined in [models/Job.ts:7](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L7)*
+*Defined in [models/Job.ts:8](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/models/Job.ts#L8)*
 
 ___
 
@@ -45,7 +47,7 @@ ___
 
 • **attempts**: *number*
 
-*Defined in [models/Job.ts:10](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L10)*
+*Defined in [models/Job.ts:11](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/models/Job.ts#L11)*
 
 ___
 
@@ -53,7 +55,7 @@ ___
 
 • **created**: *string*
 
-*Defined in [models/Job.ts:11](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L11)*
+*Defined in [models/Job.ts:12](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/models/Job.ts#L12)*
 
 ___
 
@@ -61,7 +63,7 @@ ___
 
 • **failed**: *string*
 
-*Defined in [models/Job.ts:12](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L12)*
+*Defined in [models/Job.ts:13](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/models/Job.ts#L13)*
 
 ___
 
@@ -69,7 +71,7 @@ ___
 
 • **id**: *string*
 
-*Defined in [models/Job.ts:5](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L5)*
+*Defined in [models/Job.ts:6](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/models/Job.ts#L6)*
 
 ___
 
@@ -77,7 +79,7 @@ ___
 
 • **metaData**: *string*
 
-*Defined in [models/Job.ts:9](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L9)*
+*Defined in [models/Job.ts:10](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/models/Job.ts#L10)*
 
 ___
 
@@ -85,7 +87,7 @@ ___
 
 • **payload**: *`P`*
 
-*Defined in [models/Job.ts:8](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L8)*
+*Defined in [models/Job.ts:9](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/models/Job.ts#L9)*
 
 ___
 
@@ -93,7 +95,7 @@ ___
 
 • **priority**: *number*
 
-*Defined in [models/Job.ts:14](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L14)*
+*Defined in [models/Job.ts:15](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/models/Job.ts#L15)*
 
 ___
 
@@ -101,7 +103,7 @@ ___
 
 • **timeout**: *number*
 
-*Defined in [models/Job.ts:13](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L13)*
+*Defined in [models/Job.ts:14](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/models/Job.ts#L14)*
 
 ___
 
@@ -109,4 +111,4 @@ ___
 
 • **workerName**: *string*
 
-*Defined in [models/Job.ts:6](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/models/Job.ts#L6)*
+*Defined in [models/Job.ts:7](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/models/Job.ts#L7)*

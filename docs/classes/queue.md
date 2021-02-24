@@ -39,8 +39,8 @@ queue.addJob("testWorker",{text:"Job example palyoad content text",delay:5000})
 ### Methods
 
 * [addJob](queue.md#addjob)
-* [cancelJob](queue.md#canceljob)
 * [addWorker](queue.md#addworker)
+* [cancelJob](queue.md#canceljob)
 * [configure](queue.md#configure)
 * [getJobs](queue.md#getjobs)
 * [removeWorker](queue.md#removeworker)
@@ -53,7 +53,7 @@ queue.addJob("testWorker",{text:"Job example palyoad content text",delay:5000})
 
 • **get isRunning**(): *boolean*
 
-*Defined in [Queue.ts:79](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L79)*
+*Defined in [Queue.ts:54](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Queue.ts#L54)*
 
 **Returns:** *boolean*
 
@@ -65,7 +65,7 @@ ___
 
 • **get registeredWorkers**(): *object*
 
-*Defined in [Queue.ts:85](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L85)*
+*Defined in [Queue.ts:60](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Queue.ts#L60)*
 
 **Returns:** *object*
 
@@ -79,7 +79,7 @@ ___
 
 • **get instance**(): *[Queue](queue.md)*
 
-*Defined in [Queue.ts:68](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L68)*
+*Defined in [Queue.ts:43](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Queue.ts#L43)*
 
 **Returns:** *[Queue](queue.md)*
 
@@ -87,11 +87,15 @@ ___
 
 ###  addJob
 
-▸ **addJob**(`workerName`: string, `payload`: any, `options`: object, `startQueue`: boolean): *void*
+▸ **addJob**<**P**>(`workerName`: string, `payload`: `P`, `options`: object, `startQueue`: boolean): *string*
 
-*Defined in [Queue.ts:131](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L131)*
+*Defined in [Queue.ts:143](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Queue.ts#L143)*
 
 adds a job to the queue
+
+**Type parameters:**
+
+▪ **P**: *object*
 
 **Parameters:**
 
@@ -99,7 +103,7 @@ adds a job to the queue
 
 name of the worker which should be used to excute the job
 
-▪`Default value`  **payload**: *any*=  {}
+▪ **payload**: *`P`*
 
 which is passed as parameter to the executer
 
@@ -113,73 +117,19 @@ Name | Type | Default |
 `priority` | number | 0 |
 `timeout` | number | 0 |
 
-***note*** if a job timeout and it has `react-native-job-queue` `CANCEL` method then the cancel method will be invoked
-
 ▪`Default value`  **startQueue**: *boolean*= true
 
 **Returns:** *string*
 
-___
+job id
 
-###  canceljob
-▸ **cancelJob**(`jobId`: string, `exception`: Error): *void*
-
-*Defined in [Queue.ts:191](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L191)*
-
-cancel running job by id
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-`jobId` | *string* | currently running job id  |
-`exception?` | Error<*any*> | Error object |
-
-**Returns:** *void*
-
-***note*** before you cancel a job, you must have implemented a cancel method for the returned promise of the [Worker](worker.md).
-see example below
-
-**Example:**
-```jsx
-import queue, {Worker, CANCEL} from 'react-native-job-queue';
-
-queue.addWorker(
-  new Worker('testWorker', (payload) => {
-    let cancel
-    const promise = new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        console.log(payload);
-        resolve();
-      }, 5000);
-
-      cancel = () => {
-        clearTimeout(timeout)
-        reject({message: 'canceled'})
-      }
-    });
-
-    promise[CANCEL] = cancel
-    return promise
-  },{
-    onStart: ({id}) => {
-      /* cancel the job after 2sec */
-      setTimeout(() => {
-        queue.cancelJob(id, {message: 'Canceled'})
-      }, 2000)
-    },
-  })
-);
-
-
-```
 ___
 
 ###  addWorker
 
 ▸ **addWorker**(`worker`: [Worker](worker.md)‹*any*›): *void*
 
-*Defined in [Queue.ts:104](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L104)*
+*Defined in [Queue.ts:115](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Queue.ts#L115)*
 
 adds a [Worker](worker.md) to the queue which can execute Jobs
 
@@ -193,11 +143,30 @@ Name | Type | Description |
 
 ___
 
+###  cancelJob
+
+▸ **cancelJob**(`jobId`: string, `exception?`: `Error`): *void*
+
+*Defined in [Queue.ts:195](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Queue.ts#L195)*
+
+cancel running job
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`jobId` | string |
+`exception?` | `Error` |
+
+**Returns:** *void*
+
+___
+
 ###  configure
 
 ▸ **configure**(`options`: [QueueOptions](../interfaces/queueoptions.md)): *void*
 
-*Defined in [Queue.ts:95](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L95)*
+*Defined in [Queue.ts:101](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Queue.ts#L101)*
 
 **Parameters:**
 
@@ -213,7 +182,7 @@ ___
 
 ▸ **getJobs**(): *`Promise<RawJob[]>`*
 
-*Defined in [Queue.ts:91](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L91)*
+*Defined in [Queue.ts:97](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Queue.ts#L97)*
 
 **Returns:** *`Promise<RawJob[]>`*
 
@@ -225,7 +194,7 @@ ___
 
 ▸ **removeWorker**(`name`: string, `deleteRelatedJobs`: boolean): *void*
 
-*Defined in [Queue.ts:117](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L117)*
+*Defined in [Queue.ts:128](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Queue.ts#L128)*
 
 removes worker from queue
 
@@ -242,13 +211,13 @@ ___
 
 ###  start
 
-▸ **start**(): *void*
+▸ **start**(): *`Promise<void>`*
 
-*Defined in [Queue.ts:163](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L163)*
+*Defined in [Queue.ts:177](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Queue.ts#L177)*
 
 starts the queue to execute queued jobs
 
-**Returns:** *void*
+**Returns:** *`Promise<void>`*
 
 ___
 
@@ -256,7 +225,7 @@ ___
 
 ▸ **stop**(): *void*
 
-*Defined in [Queue.ts:174](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L174)*
+*Defined in [Queue.ts:188](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Queue.ts#L188)*
 
 stop the queue from executing queued jobs
 

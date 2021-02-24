@@ -22,6 +22,6 @@ sidebar_label: Uuid
 
 ▸ **v4**(): *string*
 
-*Defined in [utils/Uuid.ts:2](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/utils/Uuid.ts#L2)*
+*Defined in [utils/Uuid.ts:2](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/utils/Uuid.ts#L2)*
 
 **Returns:** *string*

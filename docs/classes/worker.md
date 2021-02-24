@@ -34,7 +34,11 @@ specifies the Type of the Job-Payload.
 
 ### Methods
 
+* [decreaseExecutionCount](worker.md#decreaseexecutioncount)
 * [execute](worker.md#execute)
+* [triggerCompletion](worker.md#triggercompletion)
+* [triggerFailure](worker.md#triggerfailure)
+* [triggerSuccess](worker.md#triggersuccess)
 
 ## Constructors
 
@@ -42,7 +46,7 @@ specifies the Type of the Job-Payload.
 
 \+ **new Worker**(`name`: string, `executer`: function, `options`: [WorkerOptions](../interfaces/workeroptions.md)‹*`P`*›): *[Worker](worker.md)*
 
-*Defined in [Worker.ts:23](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Worker.ts#L23)*
+*Defined in [Worker.ts:29](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Worker.ts#L29)*
 
 **`typeparam`** specifies the type of the job-payload.
 
@@ -76,7 +80,7 @@ to configure worker
 
 • **concurrency**: *number*
 
-*Defined in [Worker.ts:15](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Worker.ts#L15)*
+*Defined in [Worker.ts:21](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Worker.ts#L21)*
 
 ___
 
@@ -84,7 +88,7 @@ ___
 
 • **name**: *string*
 
-*Defined in [Worker.ts:14](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Worker.ts#L14)*
+*Defined in [Worker.ts:20](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Worker.ts#L20)*
 
 ## Accessors
 
@@ -92,7 +96,7 @@ ___
 
 • **get availableExecuters**(): *number*
 
-*Defined in [Worker.ts:62](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Worker.ts#L62)*
+*Defined in [Worker.ts:68](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Worker.ts#L68)*
 
 **Returns:** *number*
 
@@ -104,7 +108,7 @@ ___
 
 • **get isBusy**(): *boolean*
 
-*Defined in [Worker.ts:56](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Worker.ts#L56)*
+*Defined in [Worker.ts:62](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Worker.ts#L62)*
 
 **Returns:** *boolean*
 
@@ -112,11 +116,21 @@ true if worker runs max concurrent amout of jobs
 
 ## Methods
 
+###  decreaseExecutionCount
+
+▸ **decreaseExecutionCount**(): *void*
+
+*Defined in [Worker.ts:123](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Worker.ts#L123)*
+
+**Returns:** *void*
+
+___
+
 ###  execute
 
-▸ **execute**(`rawJob`: [RawJob](../interfaces/rawjob.md)): *`Promise<void>`*
+▸ **execute**(`rawJob`: [RawJob](../interfaces/rawjob.md)): *[CancellablePromise](../interfaces/cancellablepromise.md)‹*any*›*
 
-*Defined in [Worker.ts:69](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Worker.ts#L69)*
+*Defined in [Worker.ts:75](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Worker.ts#L75)*
 
 This method should not be invoked manually and is used by the queue to execute jobs
 
@@ -126,4 +140,53 @@ Name | Type |
 ------ | ------ |
 `rawJob` | [RawJob](../interfaces/rawjob.md) |
 
-**Returns:** *`Promise<void>`*
+**Returns:** *[CancellablePromise](../interfaces/cancellablepromise.md)‹*any*›*
+
+___
+
+###  triggerCompletion
+
+▸ **triggerCompletion**(`job`: [Job](../interfaces/job.md)‹*`P`*›): *void*
+
+*Defined in [Worker.ts:120](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Worker.ts#L120)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`job` | [Job](../interfaces/job.md)‹*`P`*› |
+
+**Returns:** *void*
+
+___
+
+###  triggerFailure
+
+▸ **triggerFailure**(`job`: [Job](../interfaces/job.md)‹*`P`*›, `error`: `Error`): *void*
+
+*Defined in [Worker.ts:117](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Worker.ts#L117)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`job` | [Job](../interfaces/job.md)‹*`P`*› |
+`error` | `Error` |
+
+**Returns:** *void*
+
+___
+
+###  triggerSuccess
+
+▸ **triggerSuccess**(`job`: [Job](../interfaces/job.md)‹*`P`*›): *void*
+
+*Defined in [Worker.ts:114](https://github.com/SimonErm/react-native-job-queue/blob/054fcbe/src/Worker.ts#L114)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`job` | [Job](../interfaces/job.md)‹*`P`*› |
+
+**Returns:** *void*

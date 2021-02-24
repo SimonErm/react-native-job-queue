@@ -4,11 +4,13 @@
       "index"
     ],
     "Classes": [
+      "classes/jobstoremock",
       "classes/queue",
       "classes/uuid",
       "classes/worker"
     ],
     "Interfaces": [
+      "interfaces/cancellablepromise",
       "interfaces/job",
       "interfaces/jobstore",
       "interfaces/queueoptions",
