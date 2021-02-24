@@ -1,6 +1,6 @@
 import { Job } from '../models/Job';
 import queue from '../Queue';
-import { Worker } from '../Worker';
+import { Worker, CANCEL, CancellablePromise } from '../Worker';
 
 export interface Payload {
     test: string;
@@ -66,6 +66,52 @@ describe('Queue Basics', () => {
         queue.addJob('testWorker', { test: '1' }, { attempts: 0, timeout: 0, priority: 0 }, false);
         queue.addJob('testWorker', { test: 'priority_id' }, { priority: 100, attempts: 0, timeout: 0 }, false);
         queue.start();
+    });
+    it('handle job canceling', (done) => {
+      const calledOrder: string[] = [];
+      const expectedCallOrder = ['failed', 'completed'];
+
+      queue.addWorker(
+        new Worker<Payload>(
+          'testWorker',
+          (payload) => {
+            let cancel
+            const promise: CancellablePromise<any> = new Promise((resolve, reject) => {
+              const timeout = setTimeout(() => {
+                resolve();
+              }, 100);
+
+              cancel = () => {
+                clearTimeout(timeout)
+                reject({message: 'canceled'})
+              }
+            });
+
+            promise[CANCEL] = cancel
+            return promise
+          },
+          {
+            onStart: ({id}) => {
+              /* cancel the job after 1sec */
+              setTimeout(() => {
+                queue.cancelJob(id, new Error('canceled'))
+              }, 50)
+            },
+            onFailure: (_, error) => {
+              calledOrder.push('failed')
+              expect(error).toHaveProperty('message', 'canceled');
+              done();
+            },
+            onCompletion: () => {
+              calledOrder.push('completed')
+              expect(calledOrder).toEqual(expectedCallOrder);
+              done();
+            },
+          }
+        )
+      )
+      queue.addJob('testWorker', { test: '1' }, { attempts: 0, timeout: 0, priority: 0 });
+      queue.start();
     });
     it('handle attempts correctly', (done) => {
         const onQueueFinish = () => {

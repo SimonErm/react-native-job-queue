@@ -3,7 +3,7 @@ import { NativeModules } from 'react-native';
 import { FALSE, Job, RawJob } from './models/Job';
 import { JobStore } from './models/JobStore';
 import { Uuid } from './utils/Uuid';
-import { Worker } from './Worker';
+import { Worker, CANCEL } from './Worker';
 
 /**
  * Options to configure the queue
@@ -75,10 +75,12 @@ export class Queue {
     private onQueueFinish: (executedJobs: Array<Job<any>>) => void;
 
     private queuedJobExecuter: any[] = [];
+    private runningJobPromises: {[key: string]: any};
 
     private constructor() {
         this.jobStore = NativeModules.JobQueue;
         this.workers = {};
+        this.runningJobPromises = {};
         this.isActive = false;
 
         this.timeoutId = 0;
@@ -136,6 +138,7 @@ export class Queue {
      * @param [payload={}] payload which is passed as parameter to the executer
      * @param [options={ attempts: 0, timeout: 0, priority: 0 }] options to set max attempts, a timeout and a priority
      * @param [startQueue=true] if set to false the queue won't start automaticly when adding a job
+     * @returns job id
      */
     addJob<P extends object>(
         workerName: string,
@@ -144,8 +147,9 @@ export class Queue {
         startQueue: boolean = true
     ) {
         const { attempts = 0, timeout = 0, priority = 0 } = options;
+        const id: string = Uuid.v4();
         const job: RawJob = {
-            id: Uuid.v4(),
+            id,
             payload: JSON.stringify(payload || {}),
             metaData: JSON.stringify({ failedAttempts: 0, errors: [] }),
             active: FALSE,
@@ -164,6 +168,8 @@ export class Queue {
         if (startQueue && !this.isActive) {
             this.start();
         }
+
+        return id;
     }
     /**
      * starts the queue to execute queued jobs
@@ -181,6 +187,20 @@ export class Queue {
      */
     stop() {
         this.isActive = false;
+    }
+
+    /**
+     * cancel running job
+     */
+    cancelJob(jobId: string, exception?: Error) {
+      const promise = this.runningJobPromises[jobId]
+      if (promise && typeof promise[CANCEL] === 'function') {
+        promise[CANCEL](exception || new Error(`canceled`))
+      } else if(!promise[CANCEL]){
+        console.warn("Worker does not have a cancel method implemented")
+      } else {
+        throw new Error(`Job with id ${jobId} not currently running`);
+      }
     }
     private resetActiveJob = async (job: RawJob) => {
         this.jobStore.updateJob({ ...job, ...{ active: FALSE } });
@@ -277,14 +297,25 @@ export class Queue {
     }
 
     private excuteJob = async (rawJob: RawJob) => {
+        const worker = this.workers[rawJob.workerName];
+        const payload = JSON.parse(rawJob.payload);
+        const job = { ...rawJob, ...{ payload } };
+
         try {
             this.activeJobCount++;
             if (!this.workers[rawJob.workerName]) {
                 throw new Error(`Missing worker with name ${rawJob.workerName}`);
             }
-            await this.workers[rawJob.workerName].execute(rawJob);
+            const promise = worker.execute(rawJob);
+
+            this.runningJobPromises[rawJob.id] = promise
+            await promise
+
+            worker.triggerSuccess(job)
+
             this.jobStore.removeJob(rawJob);
         } catch (error) {
+            worker.triggerFailure(job, error);
             const { attempts } = rawJob;
             // tslint:disable-next-line: prefer-const
             let { errors, failedAttempts } = JSON.parse(rawJob.metaData);
@@ -296,6 +327,9 @@ export class Queue {
             const metaData = JSON.stringify({ errors: [...errors, error], failedAttempts });
             this.jobStore.updateJob({ ...rawJob, ...{ active: FALSE, metaData, failed } });
         } finally {
+            delete this.runningJobPromises[job.id]
+            worker.decreaseExecutionCount();
+            worker.triggerCompletion(job);
             this.executedJobs.push(rawJob);
             this.activeJobCount--;
         }

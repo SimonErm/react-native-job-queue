@@ -39,6 +39,7 @@ queue.addJob("testWorker",{text:"Job example palyoad content text",delay:5000})
 ### Methods
 
 * [addJob](queue.md#addjob)
+* [cancelJob](queue.md#canceljob)
 * [addWorker](queue.md#addworker)
 * [configure](queue.md#configure)
 * [getJobs](queue.md#getjobs)
@@ -112,10 +113,66 @@ Name | Type | Default |
 `priority` | number | 0 |
 `timeout` | number | 0 |
 
+***note*** if a job timeout and it has `react-native-job-queue` `CANCEL` method then the cancel method will be invoked
+
 ▪`Default value`  **startQueue**: *boolean*= true
+
+**Returns:** *string*
+
+___
+
+###  canceljob
+▸ **cancelJob**(`jobId`: string, `exception`: Error): *void*
+
+*Defined in [Queue.ts:191](https://github.com/SimonErm/react-native-job-queue/blob/acf0a20/src/Queue.ts#L191)*
+
+cancel running job by id
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`jobId` | *string* | currently running job id  |
+`exception?` | Error<*any*> | Error object |
 
 **Returns:** *void*
 
+***note*** before you cancel a job, you must have implemented a cancel method for the returned promise of the [Worker](worker.md).
+see example below
+
+**Example:**
+```jsx
+import queue, {Worker, CANCEL} from 'react-native-job-queue';
+
+queue.addWorker(
+  new Worker('testWorker', (payload) => {
+    let cancel
+    const promise = new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        console.log(payload);
+        resolve();
+      }, 5000);
+
+      cancel = () => {
+        clearTimeout(timeout)
+        reject({message: 'canceled'})
+      }
+    });
+
+    promise[CANCEL] = cancel
+    return promise
+  },{
+    onStart: ({id}) => {
+      /* cancel the job after 2sec */
+      setTimeout(() => {
+        queue.cancelJob(id, {message: 'Canceled'})
+      }, 2000)
+    },
+  })
+);
+
+
+```
 ___
 
 ###  addWorker

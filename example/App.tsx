@@ -2,16 +2,18 @@ import * as React from 'react';
 import { Button, View } from 'react-native';
 
 import queue from '../src/Queue';
-import { Worker } from '../src/Worker';
+import { Worker, CANCEL, CancellablePromise } from '../src/Worker';
 
 export interface IAppProps {}
 
-export interface IAppState {}
+export interface IAppState {jobId?: string|null}
 let counter = 0;
 export default class App extends React.Component<IAppProps, IAppState> {
     constructor(props: IAppProps) {
         super(props);
-        this.state = {};
+        this.state = {
+          jobId: null,
+        };
     }
     componentDidMount() {
         queue.configure({
@@ -20,13 +22,25 @@ export default class App extends React.Component<IAppProps, IAppState> {
             }
         });
         queue.addWorker(
-            new Worker('testWorker', async (payload) => {
-                return new Promise((resolve) => {
-                    setTimeout(() => {
+            new Worker('testWorker', (payload) => {
+              let cancel
+                const promise: CancellablePromise<any> = new Promise((resolve, reject) => {
+                    const timeout = setTimeout(() => {
                         console.log(payload);
                         resolve();
                     }, 5000);
+
+                    cancel = () => {
+                      clearTimeout(timeout)
+                      reject(new Error('canceled'))
+                    }
                 });
+
+                promise[CANCEL] = cancel
+                return promise
+            },{
+              onStart: ({id}) => this.setState({jobId: id}),
+              onCompletion: () => this.setState({jobId: null}),
             })
         );
     }
@@ -37,6 +51,16 @@ export default class App extends React.Component<IAppProps, IAppState> {
                     title='add Job'
                     onPress={() => {
                         queue.addJob('testWorker', { id: counter++ }, undefined, false);
+                    }}
+                />
+                <Button
+                    title='cancel Job'
+                    onPress={() => {
+                      if(this.state.jobId){
+                        queue.cancelJob(this.state.jobId, {message: 'Canceled'})
+                      } else {
+                        console.log("no job running");
+                      }
                     }}
                 />
                 <Button
