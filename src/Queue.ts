@@ -92,7 +92,7 @@ export class Queue {
         this.concurrency = -1;
     }
     /**
-     * @returns a promise that resolves all jobs that are queued and not active
+     * @returns a promise that resolves all jobs of jobStore
      */
     async getJobs() {
         return await this.jobStore.getJobs();
