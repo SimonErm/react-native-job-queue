@@ -103,6 +103,12 @@ export class Queue {
     async removeJob(job: RawJob) {
         return await this.jobStore.removeJob(job);
     }
+    /**
+     * @param job the job which should be requeued
+     */
+    async requeueJob(job: RawJob) {
+        return await this.jobStore.updateJob({ ...job, failed: '' });
+    }
 
     configure(options: QueueOptions) {
         const {
