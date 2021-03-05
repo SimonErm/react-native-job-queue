@@ -97,6 +97,12 @@ export class Queue {
     async getJobs() {
         return await this.jobStore.getJobs();
     }
+    /**
+     * @param job the job to be deleted
+     */
+    async removeJob(job: RawJob) {
+        return await this.jobStore.removeJob(job);
+    }
 
     configure(options: QueueOptions) {
         const {
