@@ -56,11 +56,34 @@ export default class App extends React.Component<IAppProps, IAppState> {
                 <Button
                     title='cancel Job'
                     onPress={() => {
-                      if(this.state.jobId){
-                        queue.cancelJob(this.state.jobId, {message: 'Canceled'})
-                      } else {
-                        console.log("no job running");
-                      }
+                        if (this.state.jobId) {
+                            queue.cancelJob(this.state.jobId, { message: 'Canceled' })
+                        } else {
+                            console.log("no job running");
+                        }
+                    }}
+                />
+                <Button
+                    title='remove failed Jobs'
+                    onPress={async () => {
+                        let jobs = await queue.getJobs();
+                        let jobRemovals = jobs.filter(job => job.failed !== '').map(async job => await queue.removeJob(job))
+                        await Promise.all(jobRemovals)
+                    }}
+                />
+                <Button
+                    title='requeue failed Jobs'
+                    onPress={async () => {
+                        let jobs = await queue.getJobs();
+                        let jobRequeues = jobs.filter(job => job.failed !== '').map(async job => await queue.requeueJob(job))
+                        await Promise.all(jobRequeues)
+                    }}
+                />
+                <Button
+                    title='getJobs'
+                    onPress={async () => {
+                        let jobs = await queue.getJobs();
+                        console.log(jobs)
                     }}
                 />
                 <Button
