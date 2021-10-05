@@ -118,13 +118,23 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Job.cs" />
+    <Compile Include="JobQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReactNativeModule.cs" />
     <Compile Include="ReactPackageProvider.cs" />
+    <Compile Include="SQLiteDatabase.cs" />
+    <Compile Include="SQLTable.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite.Core">
+      <Version>6.0.0-rc.1.21452.10</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
+    </PackageReference>
+    <PackageReference Include="SQLitePCLRaw.bundle_winsqlite3">
+      <Version>2.0.7-pre20210929171745</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '16.0' ">

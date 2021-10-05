@@ -8,5 +8,6 @@ namespace ReactNativeJobQueue
 {
     class SQLTable
     {
+        static string CreateStatement { get; }
     }
 }
