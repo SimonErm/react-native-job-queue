@@ -1,11 +1,18 @@
 {
-  "name": "react-native-job-queue-example",
+  "name": "ReactNativeJobQueueExample",
   "version": "1.0.0",
   "description": "example to test out the react-native-job-queue",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "windows": "react-native run-windows"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-native": "^0.64.2",
+    "react-native-job-queue": "file:../react-native-job-queue-0.4.0.tgz",
+    "react-native-windows": "0.64.11"
+  }
 }
