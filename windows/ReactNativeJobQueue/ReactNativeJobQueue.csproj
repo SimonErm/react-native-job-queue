@@ -119,7 +119,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Job.cs" />
-    <Compile Include="JobQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReactNativeModule.cs" />
     <Compile Include="ReactPackageProvider.cs" />

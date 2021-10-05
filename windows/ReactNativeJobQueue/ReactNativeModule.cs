@@ -9,7 +9,7 @@ using Microsoft.ReactNative.Managed;
 
 namespace ReactNativeJobQueue
 {
-    [ReactModule("ReactNativeJobQueue")]
+    [ReactModule("JobQueue")]
     internal sealed class ReactNativeModule
     {
         // See https://microsoft.github.io/react-native-windows/docs/native-modules for details on writing native modules
@@ -17,16 +17,22 @@ namespace ReactNativeJobQueue
         private ReactContext _reactContext;
 
         [ReactInitializer]
-        public void Initialize(ReactContext reactContext)
+        public async void InitializeAsync(ReactContext reactContext)
         {
             _reactContext = reactContext;
+            await SQLiteDatabase.InitializeDB();
         }
 
-        [ReactMethod]
-        public void sampleMethod(string stringArgument, int numberArgument, Action<string> callback)
+        [ReactMethod("addJob")]
+        public void AddJob(Job job)
         {
-            // TODO: Implement some actually useful functionality
-            callback("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
+            SQLiteDatabase.Insert(job);
         }
+        [ReactMethod("getJobs")]
+        public async Task<List<Job>> getJobs(Job job)
+        {
+            return await SQLiteDatabase.GetAllData();
+        }
+
     }
 }

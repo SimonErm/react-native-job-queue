@@ -9,16 +9,17 @@ namespace ReactNativeJobQueue
     class Job
     {
 
-        string Id { get; set; }
-        string WorkerName { get; set; }
-        int Active { get; set; }
-        string Payload { get; set; }
-        string MetaData { get; set; }
-        int Attempts { get; set; }
-        string Created { get; set; }
-        string Failed { get; set; }
-        int Timeout { get; set; }
-        int Priority { get; set; }
+        // All properties are lower-case to match JS. Uppercase causes Job objects in JS to convert to Null in C#
+        public string id { get; set; }
+        public string workerName { get; set; }
+        public int active { get; set; }
+        public string payload { get; set; }
+        public string metaData { get; set; }
+        public int attempts { get; set; }
+        public string created { get; set; }
+        public string failed { get; set; }
+        public int timeout { get; set; }
+        public int priority { get; set; }
 
 
     }
