@@ -91,17 +91,14 @@ namespace ReactNativeJobQueue
                     {
                         id = query["id"].ToString(),
                         workerName = query["worker_name"].ToString(),
-                        active = (int)query["active"],
+                        active = query.GetInt32(2),
                         payload = query["payload"].ToString(),
                         metaData = query["meta_data"].ToString(),
-                        attempts = (int)query["attempts"],
+                        attempts = query.GetInt32(4),
                         created = query["created"].ToString(),
                         failed = query["failed"].ToString(),
-                        timeout = (int)query["timeout"],
-                        priority = (int)query["priority"],
-
-
-
+                        timeout = (int)(long)query["timeout"],
+                        priority = (int)(long)query["priority"],
 
                     };
                     entries.Add(newJob);
