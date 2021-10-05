@@ -87,20 +87,7 @@ namespace ReactNativeJobQueue
 
                 while (query.Read())
                 {
-                    Job newJob = new Job
-                    {
-                        id = query["id"].ToString(),
-                        workerName = query["worker_name"].ToString(),
-                        active = query.GetInt32(2),
-                        payload = query["payload"].ToString(),
-                        metaData = query["meta_data"].ToString(),
-                        attempts = query.GetInt32(4),
-                        created = query["created"].ToString(),
-                        failed = query["failed"].ToString(),
-                        timeout = (int)(long)query["timeout"],
-                        priority = (int)(long)query["priority"],
-
-                    };
+                    Job newJob = convertQueryResultsToJob(query);
                     entries.Add(newJob);
                 }
 
@@ -108,6 +95,103 @@ namespace ReactNativeJobQueue
             }
 
             return entries;
+        }
+        public static async Task<List<Job>> GetActiveMarkedJobs()
+        {
+            List<Job> entries = new List<Job>();
+
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbName);
+            using (SqliteConnection db =
+               new SqliteConnection($"Filename={dbpath}"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand
+                    ("SELECT * from Job WHERE active == 1", db);
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    Job newJob = convertQueryResultsToJob(query);
+                    entries.Add(newJob);
+                }
+
+                db.Close();
+            }
+
+            return entries;
+        }
+        public static async Task<Job> GetNextJob()
+        {
+            Job nextJob = new Job();
+
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbName);
+            using (SqliteConnection db =
+               new SqliteConnection($"Filename={dbpath}"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand
+                    ("SELECT * FROM Job WHERE active == 0 AND failed == '' ORDER BY priority DESC,datetime(created) LIMIT 1", db);
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    nextJob = convertQueryResultsToJob(query);
+                }
+
+                db.Close();
+            }
+
+            return nextJob;
+        }
+        public static void Update(Job job)
+        {
+            string updateQuery = "UPDATE job SET active = @active, failed = @failed, meta_data = @metaData, attempts = @attempts WHERE id = @id;";
+
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbName);
+            using (SqliteConnection db =
+              new SqliteConnection($"Filename={dbpath}"))
+            {
+                db.Open();
+
+                SqliteCommand updateCommand = new SqliteCommand();
+                updateCommand.Connection = db;
+
+                // Use parameterized query to prevent SQL injection attacks
+                updateCommand.CommandText = updateQuery;
+                updateCommand.Parameters.AddWithValue("@active", job.active);
+                updateCommand.Parameters.AddWithValue("@failed", job.failed);
+                updateCommand.Parameters.AddWithValue("@metaData", job.metaData);
+                updateCommand.Parameters.AddWithValue("@attempts", job.attempts);
+                updateCommand.Parameters.AddWithValue("@id", job.id);
+
+                updateCommand.ExecuteReader();
+
+                db.Close();
+            }
+        }
+
+        static Job convertQueryResultsToJob(SqliteDataReader query)
+        {
+            Job newJob = new Job
+            {
+                id = query["id"].ToString(),
+                workerName = query["worker_name"].ToString(),
+                active = query.GetInt32(2),
+                payload = query["payload"].ToString(),
+                metaData = query["meta_data"].ToString(),
+                attempts = query.GetInt32(4),
+                created = query["created"].ToString(),
+                failed = query["failed"].ToString(),
+                timeout = (int)(long)query["timeout"],
+                priority = (int)(long)query["priority"],
+
+            };
+
+            return newJob;
         }
 
     }

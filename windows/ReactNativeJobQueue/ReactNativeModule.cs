@@ -29,9 +29,24 @@ namespace ReactNativeJobQueue
             SQLiteDatabase.Insert(job);
         }
         [ReactMethod("getJobs")]
-        public async Task<List<Job>> getJobs(Job job)
+        public async Task<List<Job>> getJobs()
         {
             return await SQLiteDatabase.GetAllData();
+        }
+        [ReactMethod("getActiveMarkedJobs")]
+        public async Task<List<Job>> GetActiveMarkedJobs()
+        {
+            return await SQLiteDatabase.GetActiveMarkedJobs();
+        }
+        [ReactMethod("getNextJob")]
+        public async Task<Job> GetNextJob()
+        {
+            return await SQLiteDatabase.GetNextJob();
+        }
+        [ReactMethod("updateJob")]
+        public void UpdateJob(Job job)
+        {
+            SQLiteDatabase.Update(job);
         }
 
     }
