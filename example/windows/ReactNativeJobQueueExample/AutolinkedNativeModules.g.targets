@@ -4,7 +4,7 @@
   <ItemGroup>
     <!-- Projects from react-native-job-queue -->
     <ProjectReference Include="$(ProjectDir)..\..\node_modules\react-native-job-queue\windows\ReactNativeJobQueue\ReactNativeJobQueue.csproj">
-      <Project>{EF37E426-2BB2-4A64-AB72-A46119D37497}</Project>
+      <Project>{AFE06582-C604-43F0-8909-62247B894E4D}</Project>
     </ProjectReference>
   </ItemGroup>
 </Project>

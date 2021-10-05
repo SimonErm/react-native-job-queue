@@ -36,7 +36,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.ReactNative.Manag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.ReactNative.Managed.CodeGen", "..\node_modules\react-native-windows\Microsoft.ReactNative.Managed.CodeGen\Microsoft.ReactNative.Managed.CodeGen.csproj", "{ADED4FBE-887D-4271-AF24-F0823BCE7961}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactNativeJobQueue", "..\node_modules\react-native-job-queue\windows\ReactNativeJobQueue\ReactNativeJobQueue.csproj", "{EF37E426-2BB2-4A64-AB72-A46119D37497}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactNativeJobQueue", "..\node_modules\react-native-job-queue\windows\ReactNativeJobQueue\ReactNativeJobQueue.csproj", "{AFE06582-C604-43F0-8909-62247B894E4D}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -215,6 +215,22 @@ Global
 		{EF37E426-2BB2-4A64-AB72-A46119D37497}.Release|x64.Build.0 = Release|x64
 		{EF37E426-2BB2-4A64-AB72-A46119D37497}.Release|x86.ActiveCfg = Release|x86
 		{EF37E426-2BB2-4A64-AB72-A46119D37497}.Release|x86.Build.0 = Release|x86
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Debug|ARM.ActiveCfg = Debug|ARM
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Debug|ARM.Build.0 = Debug|ARM
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Debug|ARM64.Build.0 = Debug|ARM64
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Debug|x64.ActiveCfg = Debug|x64
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Debug|x64.Build.0 = Debug|x64
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Debug|x86.ActiveCfg = Debug|x86
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Debug|x86.Build.0 = Debug|x86
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Release|ARM.ActiveCfg = Release|ARM
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Release|ARM.Build.0 = Release|ARM
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Release|ARM64.ActiveCfg = Release|ARM64
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Release|ARM64.Build.0 = Release|ARM64
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Release|x64.ActiveCfg = Release|x64
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Release|x64.Build.0 = Release|x64
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Release|x86.ActiveCfg = Release|x86
+		{AFE06582-C604-43F0-8909-62247B894E4D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
