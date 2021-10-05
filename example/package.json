@@ -1,0 +1,11 @@
+{
+  "name": "react-native-job-queue-example",
+  "version": "1.0.0",
+  "description": "example to test out the react-native-job-queue",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
