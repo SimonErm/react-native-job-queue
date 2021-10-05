@@ -49,11 +49,9 @@ namespace ReactNativeJobQueue
             {
                 db.Open();
 
-                SqliteCommand insertCommand = new SqliteCommand();
-                insertCommand.Connection = db;
+                SqliteCommand insertCommand = new SqliteCommand(insertSql, db);
 
                 // Use parameterized query to prevent SQL injection attacks
-                insertCommand.CommandText = insertSql;
                 insertCommand.Parameters.AddWithValue("@id", job.id);
                 insertCommand.Parameters.AddWithValue("@workerName", job.workerName);
                 insertCommand.Parameters.AddWithValue("@active", job.active);
@@ -157,11 +155,9 @@ namespace ReactNativeJobQueue
             {
                 db.Open();
 
-                SqliteCommand updateCommand = new SqliteCommand();
-                updateCommand.Connection = db;
+                SqliteCommand updateCommand = new SqliteCommand(updateQuery, db);
 
                 // Use parameterized query to prevent SQL injection attacks
-                updateCommand.CommandText = updateQuery;
                 updateCommand.Parameters.AddWithValue("@active", job.active);
                 updateCommand.Parameters.AddWithValue("@failed", job.failed);
                 updateCommand.Parameters.AddWithValue("@metaData", job.metaData);
@@ -171,6 +167,53 @@ namespace ReactNativeJobQueue
                 updateCommand.ExecuteReader();
 
                 db.Close();
+            }
+        }
+        public static async Task<List<Job>> GetJobsForWorker(string workerName, int limit)
+        {
+            List<Job> entries = new List<Job>();
+
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbName);
+            using (SqliteConnection db =
+               new SqliteConnection($"Filename={dbpath}"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand
+                    ("SELECT * FROM job WHERE active == 0 AND failed == '' AND worker_name == @workerName ORDER BY priority DESC,datetime(created) LIMIT @limit", db);
+
+                selectCommand.Parameters.AddWithValue("@workerName", workerName);
+                selectCommand.Parameters.AddWithValue("@limit", limit);
+
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    Job newJob = convertQueryResultsToJob(query);
+                    entries.Add(newJob);
+                }
+
+                db.Close();
+            }
+
+            return entries;
+        }
+        public static void deleteJob(Job job)
+        {
+            string deleteQuery = "DELETE FROM Job where id = @id";
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbName);
+            using (SqliteConnection db =
+               new SqliteConnection($"Filename={dbpath}"))
+            {
+                db.Open();
+                SqliteCommand deleteCommand = new SqliteCommand(deleteQuery, db);
+
+                deleteCommand.Parameters.AddWithValue("@id", job.id);
+                deleteCommand.ExecuteReader();
+
+                db.Close();
+
             }
         }
 

@@ -48,6 +48,16 @@ namespace ReactNativeJobQueue
         {
             SQLiteDatabase.Update(job);
         }
+        [ReactMethod("getJobsForWorker")]
+        public async Task<List<Job>> GetJobsForWorker(string workerName, int limit)
+        {
+            return await SQLiteDatabase.GetJobsForWorker(workerName, limit);
+        }
+        [ReactMethod("removeJob")]
+        public void RemoveJob(Job job)
+        {
+       
+        }
 
     }
 }
