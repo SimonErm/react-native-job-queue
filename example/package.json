@@ -1,5 +1,5 @@
 {
-  "name": "ReactNativeJobQueueExample",
+  "name": "example",
   "version": "1.0.0",
   "description": "example to test out the react-native-job-queue",
   "main": "index.js",
@@ -13,6 +13,7 @@
     "react": "^17.0.2",
     "react-native": "^0.64.2",
     "react-native-job-queue": "file:../react-native-job-queue-0.4.0.tgz",
+    "react-native-macos": "^0.63.0-0",
     "react-native-windows": "0.64.11"
   }
 }

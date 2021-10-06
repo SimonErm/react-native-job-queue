@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.license      = "MIT"
   # s.license    = { :type => "MIT", :file => "FILE_LICENSE" }
   s.authors      = { "Simon" => "simon_ermler@web.de" }
-  s.platform     = :ios, "7.0"
+  s.platforms    = { :ios => "7.0", :osx => "10.13" }
   s.source       = { :git => "https://github.com/SimonErm/react-native-job-queue.git", :tag => "#{s.version}" }
   s.swift_version = "5.0"
 
@@ -22,5 +22,7 @@ Pod::Spec.new do |s|
   s.dependency "React"
   s.library = "sqlite3"
   # s.dependency "..."
+
+  s.pod_target_xcconfig = {"DEFINES_MODULE" => "YES"}
 end
 
