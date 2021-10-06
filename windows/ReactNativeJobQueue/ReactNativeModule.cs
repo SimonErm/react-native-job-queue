@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.ReactNative;
@@ -56,7 +54,12 @@ namespace ReactNativeJobQueue
         [ReactMethod("removeJob")]
         public void RemoveJob(Job job)
         {
-       
+            SQLiteDatabase.DeleteJob(job);
+        }
+        [ReactMethod("removeJobByWorkerName")]
+        public void RemoveJobByWorkerName(string workerName)
+        {
+            SQLiteDatabase.DeleteJobsByWorkerName(workerName);
         }
 
     }

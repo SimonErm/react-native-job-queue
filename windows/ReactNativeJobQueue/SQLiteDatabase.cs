@@ -122,7 +122,7 @@ namespace ReactNativeJobQueue
         }
         public static async Task<Job> GetNextJob()
         {
-            Job nextJob = new Job();
+            Job nextJob = null;
 
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbName);
             using (SqliteConnection db =
@@ -199,7 +199,7 @@ namespace ReactNativeJobQueue
 
             return entries;
         }
-        public static void deleteJob(Job job)
+        public static void DeleteJob(Job job)
         {
             string deleteQuery = "DELETE FROM Job where id = @id";
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbName);
@@ -210,6 +210,23 @@ namespace ReactNativeJobQueue
                 SqliteCommand deleteCommand = new SqliteCommand(deleteQuery, db);
 
                 deleteCommand.Parameters.AddWithValue("@id", job.id);
+                deleteCommand.ExecuteReader();
+
+                db.Close();
+
+            }
+        }
+        public static void DeleteJobsByWorkerName(string workerName)
+        {
+            string deleteQuery = "DELETE FROM Job WHERE worker_name = @workerName";
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dbName);
+            using (SqliteConnection db =
+               new SqliteConnection($"Filename={dbpath}"))
+            {
+                db.Open();
+                SqliteCommand deleteCommand = new SqliteCommand(deleteQuery, db);
+
+                deleteCommand.Parameters.AddWithValue("@workerName", workerName);
                 deleteCommand.ExecuteReader();
 
                 db.Close();
