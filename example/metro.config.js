@@ -4,25 +4,40 @@
  *
  * @format
  */
-const path = require('path');
-const exclusionList = require('metro-config/src/defaults/exclusionList');
+
+const path = require("path");
+
+const exclusionList = (() => {
+  try {
+    return require("metro-config/src/defaults/exclusionList");
+  } catch (_) {
+    // `blacklist` was renamed to `exclusionList` in 0.60
+    return require("metro-config/src/defaults/blacklist");
+  }
+})();
+
+const blockList = exclusionList([
+  /node_modules\/.*\/node_modules\/react-native\/.*/,
+
+  // This stops "react-native run-windows" from causing the metro server to
+  // crash if its already running
+  new RegExp(`${path.join(__dirname, "windows").replace(/[/\\]+/g, "/")}.*`),
+
+  // Workaround for `EBUSY: resource busy or locked, open '~\msbuild.ProjectImports.zip'`
+  // when building with `yarn windows --release`
+  /.*\.ProjectImports\.zip/,
+]);
 
 module.exports = {
   resolver: {
-    blockList: exclusionList([
-      // This stops "react-native run-windows" from causing the metro server to crash if its already running
-      new RegExp(
-        `${path.resolve(__dirname, 'windows').replace(/[/\\]/g, '/')}.*`,
-      ),
-      // This prevents "react-native run-windows" from hitting: EBUSY: resource busy or locked, open msbuild.ProjectImports.zip
-      /.*\.ProjectImports\.zip/,
-    ]),
+    blacklistRE: blockList,
+    blockList,
   },
   transformer: {
     getTransformOptions: async () => ({
       transform: {
         experimentalImportSupport: false,
-        inlineRequires: true,
+        inlineRequires: false,
       },
     }),
   },

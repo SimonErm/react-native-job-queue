@@ -31,7 +31,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
                     const promise: CancellablePromise<any> = new Promise((resolve, reject) => {
                         const timeout = setTimeout(() => {
                             console.log(payload);
-                            resolve();
+                            resolve(true);
                         }, 5000);
 
                         cancel = () => {
@@ -63,7 +63,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
                     title='cancel Job'
                     onPress={() => {
                         if (this.state.jobId) {
-                            queue.cancelJob(this.state.jobId, { message: 'Canceled' });
+                            queue.cancelJob(this.state.jobId, new Error('Canceled'));
                         } else {
                             console.log('no job running');
                         }
