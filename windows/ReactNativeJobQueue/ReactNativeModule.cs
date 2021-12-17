@@ -56,8 +56,8 @@ namespace ReactNativeJobQueue
         {
             SQLiteDatabase.DeleteJob(job);
         }
-        [ReactMethod("removeJobByWorkerName")]
-        public void RemoveJobByWorkerName(string workerName)
+        [ReactMethod("removeJobsByWorkerName")]
+        public void RemoveJobsByWorkerName(string workerName)
         {
             SQLiteDatabase.DeleteJobsByWorkerName(workerName);
         }
