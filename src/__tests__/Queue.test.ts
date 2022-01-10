@@ -145,9 +145,23 @@ describe('Queue Basics', () => {
                 })
         );
         queue.configure({ onQueueFinish: onQueueFinish });
-        queue.addWorker(
-            new Worker<Payload>('testWorker', executer, { concurrency: 1, onFailure: onError })
-        );
+        queue.addWorker(new Worker<Payload>('testWorker', executer, { concurrency: 1, onFailure: onError }));
+        queue.addJob('testWorker', { test: '1' }, { attempts: 0, timeout: 5, priority: 0 }, false);
+        queue.start();
+    });
+    it('trigger onFailure', (done) => {
+        const executer = async () => {
+            throw new Error('This is an error');
+        };
+        const onFailure = (job: Job<Payload>, _: Error) => {
+            try {
+                expect(job.failed).not.toEqual('');
+                done();
+            } catch (error) {
+                done(error);
+            }
+        };
+        queue.addWorker(new Worker<Payload>('testWorker', executer, { concurrency: 1, onFailure }));
         queue.addJob('testWorker', { test: '1' }, { attempts: 0, timeout: 5, priority: 0 }, false);
         queue.start();
     });
