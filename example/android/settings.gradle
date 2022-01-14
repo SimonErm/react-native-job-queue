@@ -1,5 +1,12 @@
-rootProject.name = 'example'
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings,"../../")
-include ':react-native-job-queue'
-project(':react-native-job-queue').projectDir = new File(rootProject.projectDir, '../../android')
-include ':app'
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+        google()
+    }
+}
+
+rootProject.name='example'
+
+apply from: file("../node_modules/react-native-test-app/test-app.gradle")
+applyTestAppSettings(settings)

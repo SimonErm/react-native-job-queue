@@ -24,11 +24,9 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      - name: Run Test
-        # You may pin to the exact commit or the version.
-        # uses: stefanoeb/jest-action@f9bb23f509cde20ee9b494f0496d1d3323861cc4
-        uses: stefanoeb/jest-action@1.0.4
-        with:
-          # Args to jest
-          jestArgs: --coverage
+      - name: Install modules
+        run: yarn
+      - name: Check types
+        run: yarn validate:typescript
+      - name: Run tests
+        run: yarn test

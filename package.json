@@ -13,7 +13,8 @@
     "validate:typescript": "tsc --project ./ --noEmit",
     "test": "jest --coverage",
     "prepare": "bob build",
-    "typedoc": "typedoc"
+    "typedoc": "typedoc",
+    "windows": "react-native run-windows"
   },
   "repository": {
     "type": "git",
@@ -31,8 +32,8 @@
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
   "peerDependencies": {
-    "react": "^16.5.0",
-    "react-native": ">=0.57.0-rc.0 <1.0.x"
+    "react": ">=16.8.1",
+    "react-native": ">=0.60.0-rc.0 <1.0.x"
   },
   "devDependencies": {
     "@react-native-community/bob": "0.6.1",
@@ -41,8 +42,10 @@
     "@types/react-native": "0.60.3",
     "jest": "24.8.0",
     "metro-react-native-babel-preset": "^0.56.0",
-    "react": "16.8.0",
-    "react-native": "0.60.4",
+    "react": "^17.0.2",
+    "react-native": "0.64.2",
+    "react-native-test-app": "^0.9.9",
+    "react-native-windows": "0.64.11",
     "tslint": "5.18.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "4.0.0",
@@ -59,5 +62,6 @@
       "module",
       "typescript"
     ]
-  }
+  },
+  "dependencies": {}
 }

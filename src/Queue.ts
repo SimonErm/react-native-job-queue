@@ -75,7 +75,7 @@ export class Queue {
     private onQueueFinish: (executedJobs: Array<Job<any>>) => void;
 
     private queuedJobExecuter: any[] = [];
-    private runningJobPromises: {[key: string]: any};
+    private runningJobPromises: { [key: string]: any };
 
     private constructor() {
         this.jobStore = NativeModules.JobQueue;
@@ -205,14 +205,14 @@ export class Queue {
      * cancel running job
      */
     cancelJob(jobId: string, exception?: Error) {
-      const promise = this.runningJobPromises[jobId]
-      if (promise && typeof promise[CANCEL] === 'function') {
-        promise[CANCEL](exception || new Error(`canceled`))
-      } else if(!promise[CANCEL]){
-        console.warn("Worker does not have a cancel method implemented")
-      } else {
-        throw new Error(`Job with id ${jobId} not currently running`);
-      }
+        const promise = this.runningJobPromises[jobId];
+        if (promise && typeof promise[CANCEL] === 'function') {
+            promise[CANCEL](exception || new Error(`canceled`));
+        } else if (!promise[CANCEL]) {
+            console.warn('Worker does not have a cancel method implemented');
+        } else {
+            throw new Error(`Job with id ${jobId} not currently running`);
+        }
     }
     private resetActiveJob = async (job: RawJob) => {
         this.jobStore.updateJob({ ...job, ...{ active: FALSE } });
@@ -243,7 +243,7 @@ export class Queue {
     };
 
     private isJobNotEmpty(rawJob: RawJob | {}) {
-        return Object.keys(rawJob).length > 0;
+        return rawJob && Object.keys(rawJob).length > 0;
     }
 
     private limitExecution = async (executer: (rawJob: RawJob) => Promise<void>, rawJob: RawJob) => {
@@ -320,10 +320,10 @@ export class Queue {
             }
             const promise = worker.execute(rawJob);
 
-            this.runningJobPromises[rawJob.id] = promise
-            await promise
+            this.runningJobPromises[rawJob.id] = promise;
+            await promise;
 
-            worker.triggerSuccess(job)
+            worker.triggerSuccess(job);
 
             this.jobStore.removeJob(rawJob);
         } catch (error) {
@@ -339,7 +339,7 @@ export class Queue {
             worker.triggerFailure({ ...job, metaData, failed }, error);
             this.jobStore.updateJob({ ...rawJob, ...{ active: FALSE, metaData, failed } });
         } finally {
-            delete this.runningJobPromises[job.id]
+            delete this.runningJobPromises[job.id];
             worker.decreaseExecutionCount();
             worker.triggerCompletion(job);
             this.executedJobs.push(rawJob);
