@@ -327,7 +327,6 @@ export class Queue {
 
             this.jobStore.removeJob(rawJob);
         } catch (error) {
-            worker.triggerFailure(job, error);
             const { attempts } = rawJob;
             // tslint:disable-next-line: prefer-const
             let { errors, failedAttempts } = JSON.parse(rawJob.metaData);
@@ -337,6 +336,7 @@ export class Queue {
                 failed = new Date().toISOString();
             }
             const metaData = JSON.stringify({ errors: [...errors, error], failedAttempts });
+            worker.triggerFailure({ ...job, metaData, failed }, error);
             this.jobStore.updateJob({ ...rawJob, ...{ active: FALSE, metaData, failed } });
         } finally {
             delete this.runningJobPromises[job.id]
