@@ -72,7 +72,7 @@ describe('Queue Basics', () => {
                     let cancel;
                     const promise: CancellablePromise<any> = new Promise((resolve, reject) => {
                         const timeout = setTimeout(() => {
-                            resolve();
+                            resolve(true);
                         }, 100);
 
                         cancel = () => {
@@ -132,7 +132,7 @@ describe('Queue Basics', () => {
             () =>
                 new Promise((resolve, reject) => {
                     setTimeout(() => {
-                        resolve();
+                        resolve(true);
                     }, 100);
                 })
         );

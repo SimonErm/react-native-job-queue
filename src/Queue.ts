@@ -252,7 +252,7 @@ export class Queue {
 
     private enqueueJobExecuter = async (
         executer: (rawJob: RawJob) => Promise<void>,
-        resolve: () => void,
+        resolve: (_: unknown) => void,
         rawJob: RawJob
     ) => {
         if (this.isExecuterAvailable()) {
@@ -262,11 +262,15 @@ export class Queue {
         }
     };
 
-    private runExecuter = async (executer: (rawJob: RawJob) => Promise<void>, resolve: () => void, rawJob: RawJob) => {
+    private runExecuter = async (
+        executer: (rawJob: RawJob) => Promise<void>,
+        resolve: (_: unknown) => void,
+        rawJob: RawJob
+    ) => {
         try {
             await executer(rawJob);
         } finally {
-            resolve();
+            resolve(true);
             if (this.queuedJobExecuter.length > 0 && this.isExecuterAvailable()) {
                 await this.queuedJobExecuter.shift()();
             }
@@ -326,7 +330,8 @@ export class Queue {
             worker.triggerSuccess(job);
 
             this.jobStore.removeJob(rawJob);
-        } catch (error) {
+        } catch (err) {
+            const error = err as Error;
             const { attempts } = rawJob;
             // tslint:disable-next-line: prefer-const
             let { errors, failedAttempts } = JSON.parse(rawJob.metaData);

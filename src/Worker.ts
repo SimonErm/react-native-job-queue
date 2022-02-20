@@ -97,7 +97,7 @@ export class Worker<P extends object> {
                 cancel = executerPromise[CANCEL];
                 try {
                     await Promise.race([timeoutPromise, executerPromise]);
-                    resolve();
+                    resolve(true);
                 } catch (error) {
                     // cancel task if has cancel method
                     if (executerPromise[CANCEL] && typeof executerPromise[CANCEL] === 'function') {
