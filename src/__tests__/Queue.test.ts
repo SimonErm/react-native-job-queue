@@ -12,18 +12,14 @@ describe('Queue Basics', () => {
         queue.configure({});
     });
     it('add Workers', () => {
-        queue.addWorker(
-            new Worker<Payload>('testWorker', async (payload: Payload) => {})
-        );
+        queue.addWorker(new Worker<Payload>('testWorker', async (payload: Payload) => {}));
         const workers = queue.registeredWorkers;
         const workerNames = Object.keys(workers);
         expect(workerNames.length).toEqual(1);
         expect(workerNames[0]).toEqual('testWorker');
     });
     it('add Job for invalid Worker', () => {
-        queue.addWorker(
-            new Worker<Payload>('testWorker', async (payload: Payload) => {})
-        );
+        queue.addWorker(new Worker<Payload>('testWorker', async (payload: Payload) => {}));
         expect(() => queue.addJob('wrongWorker', {})).toThrowError('Missing worker with name wrongWorker');
     });
 
@@ -60,58 +56,56 @@ describe('Queue Basics', () => {
                 setTimeout(evaluateTest, 0);
             }
         };
-        queue.addWorker(
-            new Worker<Payload>('testWorker', executer, { concurrency: 1 })
-        );
+        queue.addWorker(new Worker<Payload>('testWorker', executer, { concurrency: 1 }));
         queue.addJob('testWorker', { test: '1' }, { attempts: 0, timeout: 0, priority: 0 }, false);
         queue.addJob('testWorker', { test: 'priority_id' }, { priority: 100, attempts: 0, timeout: 0 }, false);
         queue.start();
     });
     it('handle job canceling', (done) => {
-      const calledOrder: string[] = [];
-      const expectedCallOrder = ['failed', 'completed'];
+        const calledOrder: string[] = [];
+        const expectedCallOrder = ['failed', 'completed'];
 
-      queue.addWorker(
-        new Worker<Payload>(
-          'testWorker',
-          (payload) => {
-            let cancel
-            const promise: CancellablePromise<any> = new Promise((resolve, reject) => {
-              const timeout = setTimeout(() => {
-                resolve();
-              }, 100);
+        queue.addWorker(
+            new Worker<Payload>(
+                'testWorker',
+                (payload) => {
+                    let cancel;
+                    const promise: CancellablePromise<any> = new Promise((resolve, reject) => {
+                        const timeout = setTimeout(() => {
+                            resolve();
+                        }, 100);
 
-              cancel = () => {
-                clearTimeout(timeout)
-                reject({message: 'canceled'})
-              }
-            });
+                        cancel = () => {
+                            clearTimeout(timeout);
+                            reject({ message: 'canceled' });
+                        };
+                    });
 
-            promise[CANCEL] = cancel
-            return promise
-          },
-          {
-            onStart: ({id}) => {
-              /* cancel the job after 1sec */
-              setTimeout(() => {
-                queue.cancelJob(id, new Error('canceled'))
-              }, 50)
-            },
-            onFailure: (_, error) => {
-              calledOrder.push('failed')
-              expect(error).toHaveProperty('message', 'canceled');
-              done();
-            },
-            onCompletion: () => {
-              calledOrder.push('completed')
-              expect(calledOrder).toEqual(expectedCallOrder);
-              done();
-            },
-          }
-        )
-      )
-      queue.addJob('testWorker', { test: '1' }, { attempts: 0, timeout: 0, priority: 0 });
-      queue.start();
+                    promise[CANCEL] = cancel;
+                    return promise;
+                },
+                {
+                    onStart: ({ id }) => {
+                        /* cancel the job after 1sec */
+                        setTimeout(() => {
+                            queue.cancelJob(id, new Error('canceled'));
+                        }, 50);
+                    },
+                    onFailure: (_, error) => {
+                        calledOrder.push('failed');
+                        expect(error).toHaveProperty('message', 'canceled');
+                        done();
+                    },
+                    onCompletion: () => {
+                        calledOrder.push('completed');
+                        expect(calledOrder).toEqual(expectedCallOrder);
+                        done();
+                    },
+                }
+            )
+        );
+        queue.addJob('testWorker', { test: '1' }, { attempts: 0, timeout: 0, priority: 0 });
+        queue.start();
     });
     it('handle attempts correctly', (done) => {
         const onQueueFinish = () => {
@@ -122,9 +116,7 @@ describe('Queue Basics', () => {
             throw new Error();
         });
         queue.configure({ onQueueFinish: onQueueFinish });
-        queue.addWorker(
-            new Worker<Payload>('testWorker', executer, { concurrency: 1 })
-        );
+        queue.addWorker(new Worker<Payload>('testWorker', executer, { concurrency: 1 }));
         queue.addJob('testWorker', { test: '1' }, { attempts: 5, timeout: 0, priority: 0 }, false);
         queue.start();
     });

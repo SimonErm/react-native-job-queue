@@ -1,6 +1,6 @@
 import { Job, RawJob } from './models/Job';
 
-export const CANCEL = 'rn_job_queue_cancel'
+export const CANCEL = 'rn_job_queue_cancel';
 
 export interface WorkerOptions<P extends object> {
     onStart?: (job: Job<P>) => void;
@@ -11,7 +11,7 @@ export interface WorkerOptions<P extends object> {
 }
 
 export interface CancellablePromise<T> extends Promise<T> {
-  rn_job_queue_cancel?: () => void
+    rn_job_queue_cancel?: () => void;
 }
 /**
  * @typeparam P specifies the Type of the Job-Payload.
@@ -41,7 +41,7 @@ export class Worker<P extends object> {
             onSuccess = (job: Job<P>) => {},
             onFailure = (job: Job<P>, error: Error) => {},
             onCompletion = (job: Job<P>) => {},
-            concurrency = 5
+            concurrency = 5,
         } = options;
 
         this.name = name;
@@ -85,42 +85,42 @@ export class Worker<P extends object> {
         }
     }
     private executeWithTimeout(job: Job<P>, timeout: number) {
-      let cancel
-      const promise: CancellablePromise<any> = new Promise(async (resolve, reject) => {
-        const timeoutPromise = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                reject(new Error(`Job ${job.id} timed out`));
-            }, timeout);
-        });
-        const executerPromise = this.executer(job.payload)
-        if (executerPromise) {
-          cancel = executerPromise[CANCEL]
-          try {
-            await Promise.race([timeoutPromise, executerPromise]);
-            resolve()
-          } catch (error) {
-            // cancel task if has cancel method
-            if (executerPromise[CANCEL] && typeof executerPromise[CANCEL] === 'function') {
-              executerPromise[CANCEL]!()
+        let cancel;
+        const promise: CancellablePromise<any> = new Promise(async (resolve, reject) => {
+            const timeoutPromise = new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    reject(new Error(`Job ${job.id} timed out`));
+                }, timeout);
+            });
+            const executerPromise = this.executer(job.payload);
+            if (executerPromise) {
+                cancel = executerPromise[CANCEL];
+                try {
+                    await Promise.race([timeoutPromise, executerPromise]);
+                    resolve();
+                } catch (error) {
+                    // cancel task if has cancel method
+                    if (executerPromise[CANCEL] && typeof executerPromise[CANCEL] === 'function') {
+                        executerPromise[CANCEL]!();
+                    }
+                    reject(error);
+                }
             }
-            reject(error);
-          }
-        }
-      })
-      promise[CANCEL] = cancel
-      return promise
+        });
+        promise[CANCEL] = cancel;
+        return promise;
     }
 
     triggerSuccess(job: Job<P>) {
-      this.onSuccess(job)
+        this.onSuccess(job);
     }
     triggerFailure(job: Job<P>, error: Error) {
-      this.onFailure(job, error)
+        this.onFailure(job, error);
     }
     triggerCompletion(job: Job<P>) {
-      this.onCompletion(job)
+        this.onCompletion(job);
     }
     decreaseExecutionCount() {
-      this.executionCount--;
+        this.executionCount--;
     }
 }
