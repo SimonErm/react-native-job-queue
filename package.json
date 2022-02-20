@@ -1,63 +1,63 @@
 {
-  "name": "react-native-job-queue",
-  "title": "React Native Job Queue",
-  "version": "0.4.1",
-  "description": "TODO",
-  "react-native": "src/index.ts",
-  "types": "lib/typescript/src",
-  "main": "lib/commonjs/index.js",
-  "module": "lib/module/index.js",
-  "scripts": {
-    "start": "react-native start",
-    "validate:eslint": "eslint \"src/**/*.{js,ts,tsx}\" \"example/**/*.{js,ts,tsx}\"",
-    "validate:typescript": "tsc --project ./ --noEmit",
-    "test": "jest --coverage",
-    "prepare": "bob build",
-    "typedoc": "typedoc"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SimonErm/react-native-job-queue.git",
-    "baseUrl": "https://github.com/SimonErm/react-native-job-queue"
-  },
-  "keywords": [
-    "react-native"
-  ],
-  "author": {
-    "name": "Simon",
-    "email": "simon_ermler@web.de"
-  },
-  "license": "MIT",
-  "licenseFilename": "LICENSE",
-  "readmeFilename": "README.md",
-  "peerDependencies": {
-    "react": "^16.5.0",
-    "react-native": ">=0.57.0-rc.0 <1.0.x"
-  },
-  "devDependencies": {
-    "@react-native-community/bob": "0.6.1",
-    "@types/jest": "^24.0.17",
-    "@types/react": "^16.8.25",
-    "@types/react-native": "0.60.3",
-    "jest": "24.8.0",
-    "metro-react-native-babel-preset": "^0.56.0",
-    "react": "16.8.0",
-    "react-native": "0.60.4",
-    "tslint": "5.18.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-react": "4.0.0",
-    "tslint-react-native": "0.0.7",
-    "typedoc": "^0.15.0",
-    "typedoc-plugin-markdown": "^2.1.1",
-    "typescript": "3.5.3"
-  },
-  "@react-native-community/bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      "commonjs",
-      "module",
-      "typescript"
-    ]
-  }
+    "name": "react-native-job-queue",
+    "title": "React Native Job Queue",
+    "version": "0.4.1",
+    "description": "TODO",
+    "react-native": "src/index.ts",
+    "types": "lib/typescript/src",
+    "main": "lib/commonjs/index.js",
+    "module": "lib/module/index.js",
+    "scripts": {
+        "start": "react-native start",
+        "validate:eslint": "eslint \"src/**/*.{js,ts,tsx}\" \"example/**/*.{js,ts,tsx}\"",
+        "validate:typescript": "tsc --project ./ --noEmit",
+        "test": "jest --coverage",
+        "prepare": "bob build",
+        "typedoc": "typedoc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SimonErm/react-native-job-queue.git",
+        "baseUrl": "https://github.com/SimonErm/react-native-job-queue"
+    },
+    "keywords": [
+        "react-native"
+    ],
+    "author": {
+        "name": "Simon",
+        "email": "simon_ermler@web.de"
+    },
+    "license": "MIT",
+    "licenseFilename": "LICENSE",
+    "readmeFilename": "README.md",
+    "peerDependencies": {
+        "react": "^16.5.0",
+        "react-native": ">=0.57.0-rc.0 <1.0.x"
+    },
+    "devDependencies": {
+        "@react-native-community/bob": "0.6.1",
+        "@types/jest": "^24.0.17",
+        "@types/react": "^16.8.25",
+        "@types/react-native": "0.60.3",
+        "@typescript-eslint/eslint-plugin": "^5.12.0",
+        "@typescript-eslint/parser": "^5.12.0",
+        "eslint": "^8.9.0",
+        "eslint-config-prettier": "^8.4.0",
+        "jest": "24.8.0",
+        "metro-react-native-babel-preset": "^0.56.0",
+        "react": "16.8.0",
+        "react-native": "0.60.4",
+        "typedoc": "^0.15.0",
+        "typedoc-plugin-markdown": "^2.1.1",
+        "typescript": "^4.5.5"
+    },
+    "@react-native-community/bob": {
+        "source": "src",
+        "output": "lib",
+        "targets": [
+            "commonjs",
+            "module",
+            "typescript"
+        ]
+    }
 }

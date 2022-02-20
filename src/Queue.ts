@@ -75,7 +75,7 @@ export class Queue {
     private onQueueFinish: (executedJobs: Array<Job<any>>) => void;
 
     private queuedJobExecuter: any[] = [];
-    private runningJobPromises: {[key: string]: any};
+    private runningJobPromises: { [key: string]: any };
 
     private constructor() {
         this.jobStore = NativeModules.JobQueue;
@@ -114,7 +114,7 @@ export class Queue {
         const {
             onQueueFinish = (executedJobs: Array<Job<any>>) => {},
             updateInterval = 10,
-            concurrency = -1
+            concurrency = -1,
         } = options;
         this.onQueueFinish = onQueueFinish;
         this.updateInterval = updateInterval;
@@ -170,7 +170,7 @@ export class Queue {
             workerName,
             attempts,
             timeout,
-            priority
+            priority,
         };
         if (!this.workers[job.workerName]) {
             throw new Error(`Missing worker with name ${job.workerName}`);
@@ -205,14 +205,14 @@ export class Queue {
      * cancel running job
      */
     cancelJob(jobId: string, exception?: Error) {
-      const promise = this.runningJobPromises[jobId]
-      if (promise && typeof promise[CANCEL] === 'function') {
-        promise[CANCEL](exception || new Error(`canceled`))
-      } else if(!promise[CANCEL]){
-        console.warn("Worker does not have a cancel method implemented")
-      } else {
-        throw new Error(`Job with id ${jobId} not currently running`);
-      }
+        const promise = this.runningJobPromises[jobId];
+        if (promise && typeof promise[CANCEL] === 'function') {
+            promise[CANCEL](exception || new Error(`canceled`));
+        } else if (!promise[CANCEL]) {
+            console.warn('Worker does not have a cancel method implemented');
+        } else {
+            throw new Error(`Job with id ${jobId} not currently running`);
+        }
     }
     private resetActiveJob = async (job: RawJob) => {
         this.jobStore.updateJob({ ...job, ...{ active: FALSE } });
@@ -252,7 +252,7 @@ export class Queue {
 
     private enqueueJobExecuter = async (
         executer: (rawJob: RawJob) => Promise<void>,
-        resolve: () => void,
+        resolve: (_: unknown) => void,
         rawJob: RawJob
     ) => {
         if (this.isExecuterAvailable()) {
@@ -262,11 +262,15 @@ export class Queue {
         }
     };
 
-    private runExecuter = async (executer: (rawJob: RawJob) => Promise<void>, resolve: () => void, rawJob: RawJob) => {
+    private runExecuter = async (
+        executer: (rawJob: RawJob) => Promise<void>,
+        resolve: (_: unknown) => void,
+        rawJob: RawJob
+    ) => {
         try {
             await executer(rawJob);
         } finally {
-            resolve();
+            resolve(true);
             if (this.queuedJobExecuter.length > 0 && this.isExecuterAvailable()) {
                 await this.queuedJobExecuter.shift()();
             }
@@ -320,13 +324,14 @@ export class Queue {
             }
             const promise = worker.execute(rawJob);
 
-            this.runningJobPromises[rawJob.id] = promise
-            await promise
+            this.runningJobPromises[rawJob.id] = promise;
+            await promise;
 
-            worker.triggerSuccess(job)
+            worker.triggerSuccess(job);
 
             this.jobStore.removeJob(rawJob);
-        } catch (error) {
+        } catch (err) {
+            const error = err as Error;
             const { attempts } = rawJob;
             // tslint:disable-next-line: prefer-const
             let { errors, failedAttempts } = JSON.parse(rawJob.metaData);
@@ -339,7 +344,7 @@ export class Queue {
             worker.triggerFailure({ ...job, metaData, failed }, error);
             this.jobStore.updateJob({ ...rawJob, ...{ active: FALSE, metaData, failed } });
         } finally {
-            delete this.runningJobPromises[job.id]
+            delete this.runningJobPromises[job.id];
             worker.decreaseExecutionCount();
             worker.triggerCompletion(job);
             this.executedJobs.push(rawJob);
