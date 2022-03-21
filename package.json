@@ -1,7 +1,7 @@
 {
     "name": "react-native-job-queue",
     "title": "React Native Job Queue",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "description": "TODO",
     "react-native": "src/index.ts",
     "types": "lib/typescript/src",
@@ -31,7 +31,7 @@
     "licenseFilename": "LICENSE",
     "readmeFilename": "README.md",
     "peerDependencies": {
-        "react": "^16.5.0",
+        "react": "^17.0.0",
         "react-native": ">=0.57.0-rc.0 <1.0.x"
     },
     "devDependencies": {
