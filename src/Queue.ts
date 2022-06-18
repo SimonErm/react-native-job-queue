@@ -29,14 +29,14 @@ export interface QueueOptions {
  * queue.configure({onQueueFinish:(executedJobs:Job[])=>{
  *      console.log("Queue stopped and executed",executedJobs)
  * }});
- * queue.addWorker(new Worker("testWorker",async(payload)=>{
+ * queue.addWorker(new Worker("testWorker",async(payload, id)=>{
  *      return new Promise((resolve) => {
  *      setTimeout(() => {
- *          console.log(payload.text);
+ *          console.log('Executing jobId', id, 'with:', payload.text);
  *          resolve();
  *      }, payload.delay);});
  * }))
- * queue.addJob("testWorker",{text:"Job example palyoad content text",delay:5000})
+ * queue.addJob("testWorker",{text:"Job example payload content text",delay:5000})
  * ```
  */
 export class Queue {

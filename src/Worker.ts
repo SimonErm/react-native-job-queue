@@ -21,7 +21,7 @@ export class Worker<P extends object> {
     public readonly concurrency: number;
 
     private executionCount: number;
-    private executer: (payload: P) => CancellablePromise<any>;
+    private executer: (payload: P, id: string) => CancellablePromise<any>;
 
     private onStart: (job: Job<P>) => void;
     private onSuccess: (job: Job<P>) => void;
@@ -35,7 +35,7 @@ export class Worker<P extends object> {
      * @param executer function to run jobs
      * @param options to configure worker
      */
-    constructor(name: string, executer: (payload: P) => Promise<any>, options: WorkerOptions<P> = {}) {
+    constructor(name: string, executer: (payload: P, id: string) => Promise<any>, options: WorkerOptions<P> = {}) {
         const {
             onStart = (job: Job<P>) => {},
             onSuccess = (job: Job<P>) => {},
@@ -81,7 +81,7 @@ export class Worker<P extends object> {
         if (timeout > 0) {
             return this.executeWithTimeout(job, timeout);
         } else {
-            return this.executer(payload);
+            return this.executer(payload, job.id);
         }
     }
     private executeWithTimeout(job: Job<P>, timeout: number) {
@@ -92,7 +92,7 @@ export class Worker<P extends object> {
                     reject(new Error(`Job ${job.id} timed out`));
                 }, timeout);
             });
-            const executerPromise = this.executer(job.payload);
+            const executerPromise = this.executer(job.payload, job.id);
             if (executerPromise) {
                 cancel = executerPromise[CANCEL];
                 try {
