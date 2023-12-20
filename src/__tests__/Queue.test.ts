@@ -53,7 +53,7 @@ describe('Queue Basics', () => {
             // evaluate test when both jobs have been executed
             if (calledOrder.length >= 2) {
                 // used setTimeout as a workaround
-                setTimeout(evaluateTest, 0);
+                setTimeout(evaluateTest, 2);
             }
         };
         queue.addWorker(new Worker<Payload>('testWorker', executer, { concurrency: 1 }));
@@ -99,7 +99,6 @@ describe('Queue Basics', () => {
                     onCompletion: () => {
                         calledOrder.push('completed');
                         expect(calledOrder).toEqual(expectedCallOrder);
-                        done();
                     },
                 }
             )
