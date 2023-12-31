@@ -46,6 +46,7 @@
         "metro-react-native-babel-preset": "0.77.0",
         "react": "18.2.0",
         "react-native": "0.73.1",
+        "react-native-test-app": "^2.5.34",
         "typedoc": "0.25.4",
         "typedoc-plugin-markdown": "3.17.1",
         "typescript": "5.3.3"
