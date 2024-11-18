@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, AppState } from 'react-native';
 
 import { FALSE, Job, RawJob } from './models/Job';
 import { JobStore } from './models/JobStore';
@@ -223,7 +223,11 @@ export class Queue {
         await Promise.all(resetTasks);
     }
     private scheduleQueue() {
-        this.timeoutId = setTimeout(this.runQueue, this.updateInterval);
+        if (AppState.currentState === 'active') {
+            this.timeoutId = setTimeout(this.runQueue, this.updateInterval);
+        } else {
+            this.runQueue();
+        }
     }
     private runQueue = async () => {
         if (!this.isActive) {
