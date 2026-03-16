@@ -233,7 +233,9 @@ export class Queue {
         const nextJob = await this.jobStore.getNextJob();
         if (this.isJobNotEmpty(nextJob)) {
             const nextJobs = await this.getJobsForWorker(nextJob.workerName);
-            const processingJobs = nextJobs.map(async (job) => this.limitExecution(this.excuteJob, job));
+            // Deduplicate by job id - native getJobsForWorker may return same job multiple times when count > available jobs
+            const uniqueJobs = nextJobs.filter((job, i, arr) => arr.findIndex((j) => j.id === job.id) === i);
+            const processingJobs = uniqueJobs.map(async (job) => this.limitExecution(this.excuteJob, job));
             await Promise.all(processingJobs);
         } else if (!this.isExecuting()) {
             this.finishQueue();
